@@ -1,5 +1,5 @@
-// const express = require('express');
-import express from 'express';
+const express = require('express');
+// import express from 'express';
 const bodyParser = require('body-parser');
 const app = express();
 app.use(bodyParser.json());
