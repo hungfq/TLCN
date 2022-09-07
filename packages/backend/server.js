@@ -3,9 +3,13 @@ import bodyParser from 'body-parser';
 
 const app = express();
 app.use(bodyParser.json());
-app.get('/', (req, res) => {
-  res.send('Welcome to Node Babel');
-});
-app.listen(5000, () => {
-  console.log('app is listening to port 5000');
+
+// allow cors
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.header('Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.header('Access-Control-Max-Age', 3600);
+  next();
 });
