@@ -4,9 +4,15 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
+<<<<<<< HEAD
     "@babel/core": "^7.19.0",
     "@babel/node": "^7.18.10",
     "@babel/preset-env": "^7.19.0",
+=======
+    "@babel/core": "^7.18.13",
+    "@babel/node": "^7.18.10",
+    "@babel/preset-env": "^7.18.10",
+>>>>>>> 7e8c83b29d2016f9970ddbaf8489af290423c434
     "body-parser": "^1.20.0",
     "cors": "^2.8.5",
     "eslint": "^8.23.0",
