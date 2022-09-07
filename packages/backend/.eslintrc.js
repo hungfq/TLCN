@@ -1,23 +1,23 @@
 module.exports = {
-  "env": {
-      "commonjs": true,
-      "es6": true,
-      "node": true,
-      "jest": true
+  env: {
+    commonjs: true,
+    es6: true,
+    node: true,
+    jest: true,
   },
-  "extends": [
-      "airbnb-base"
+  extends: [
+    'airbnb-base',
   ],
-  "globals": {
-      "Atomics": "readonly",
-      "SharedArrayBuffer": "readonly"
+  globals: {
+    Atomics: 'readonly',
+    SharedArrayBuffer: 'readonly',
   },
-  "parserOptions": {
-      "ecmaVersion": 2018
+  parserOptions: {
+    ecmaVersion: 2018,
   },
-  "rules": {
-      "max-len": ["warn", 80, 2],
-      "no-underscore-dangle": "off"
+  rules: {
+    'max-len': ['warn', 80, 2],
+    'no-underscore-dangle': 'off',
   },
-  "plugins":["jest"]
-}
+  plugins: ['jest'],
+};
