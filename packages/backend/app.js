@@ -2,6 +2,7 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const _ = require('lodash');
 const AccessDenied = require('./api/utils/errors/AccessDenied');
+const userRoutes = require('./api/routes/user');
 
 const app = express();
 
@@ -17,7 +18,8 @@ app.use((req, res, next) => {
   next();
 });
 
-// featureFlagRouter(app);
+// add router
+userRoutes(app);
 
 // handle error controller
 // need exactly 4 params for express to regconize
