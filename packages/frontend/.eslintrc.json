@@ -1,0 +1,38 @@
+{
+  "env": {
+    "node": true
+  },
+  "extends": [
+    "airbnb-base",
+    "eslint:recommended",
+    "plugin:vue/vue3-recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings"
+  ],
+  "rules": {
+    "space-before-function-paren": [
+      "error",
+      "always"
+    ],
+    "no-underscore-dangle": "off",
+    "no-param-reassign": [
+      "error",
+      {
+        "props": false
+      }
+    ],
+    "indent": [
+      "error",
+      2,
+      {
+        "SwitchCase": 1
+      }
+    ]
+    // override/add rules settings here, such as:
+    // 'vue/no-unused-vars': 'error'
+  },
+  "globals": {
+    "_": "readonly",
+    "$": "readonly"
+  }
+}
