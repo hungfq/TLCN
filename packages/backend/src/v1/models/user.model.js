@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const UserSchema = new mongoose.Schema({
   firstName: { type: String },
   lastName: { type: String },
+  email: { type: String },
   sex: {
     type: String,
     enum: ['male', 'female'],
@@ -15,5 +16,4 @@ UserSchema.index(
   { code: 1 },
   { unique: true },
 );
-const User = mongoose.model('User', UserSchema);
-module.exports = User;
+module.exports = mongoose.model('User', UserSchema);
