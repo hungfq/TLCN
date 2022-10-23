@@ -1,0 +1,8 @@
+GET http://localhost:5000/checkstatus
+###
+GET http://localhost:5000/v1/user HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "lequocbao29072001@gmail.com"
+}

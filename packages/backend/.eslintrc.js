@@ -19,5 +19,4 @@ module.exports = {
     'max-len': ['warn', 80, 2],
     'no-underscore-dangle': 'off',
   },
-  plugins: ['jest'],
 };

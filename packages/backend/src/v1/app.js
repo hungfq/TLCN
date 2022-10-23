@@ -1,8 +1,8 @@
 const bodyParser = require('body-parser');
 const express = require('express');
 const _ = require('lodash');
-const AccessDenied = require('./api/utils/errors/AccessDenied');
-const userRoutes = require('./api/routes/user');
+const AccessDenied = require('./utils/errors/AppError');
+const userRoutes = require('./routes/user.route');
 
 const app = express();
 
