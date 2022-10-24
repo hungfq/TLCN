@@ -12,6 +12,7 @@ const UserSchema = new mongoose.Schema({
   code: { type: String },
 
 });
+
 UserSchema.index(
   { code: 1 },
   { unique: true },
