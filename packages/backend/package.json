@@ -16,7 +16,7 @@
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
     "mailtrap": "^3.0.1",
-    "mongoose": "^6.5.4",
+    "mongoose": "^5.0.0",
     "node-dev": "^7.4.3",
     "nodemailer": "^6.8.0",
     "nodemon": "^2.0.19",

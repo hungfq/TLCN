@@ -2,7 +2,7 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const path = require('path');
 // Mapping the schemas in MongoDB into mongoose mode
-require('./src/v1/models/user.model');
+// require('./src/v1/models/user.model');
 const app = require('./src/v1/app');
 
 const { PORT } = process.env;
