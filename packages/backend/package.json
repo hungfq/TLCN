@@ -5,9 +5,9 @@
   "license": "MIT",
   "dependencies": {
     "@babel/cli": "^7.18.10",
-    "@babel/core": "^7.19.0",
+    "@babel/core": "^7.19.6",
     "@babel/node": "^7.18.10",
-    "@babel/preset-env": "^7.19.0",
+    "@babel/preset-env": "^7.19.4",
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.0",
     "cors": "^2.8.5",
@@ -16,7 +16,7 @@
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
     "mailtrap": "^3.0.1",
-    "mongoose": "^6.5.4",
+    "mongoose": "^5.0.0",
     "node-dev": "^7.4.3",
     "nodemailer": "^6.8.0",
     "nodemon": "^2.0.19",
@@ -24,6 +24,7 @@
     "save": "^2.5.0"
   },
   "devDependencies": {
+    "babel-jest": "^29.2.2",
     "eslint": "^8.23.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.22.0",
@@ -33,6 +34,7 @@
   "scripts": {
     "start": "nodemon server.js",
     "build": "babel server.js -d dist",
-    "dev": "node ./node_modules/node-dev/bin/node-dev server.js"
+    "dev": "node ./node_modules/node-dev/bin/node-dev server.js",
+    "test": "jest -i"
   }
 }

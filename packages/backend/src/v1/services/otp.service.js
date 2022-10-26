@@ -14,6 +14,7 @@ const insertOtp = async (email, otp) => {
     return console.error(e);
   }
 };
+
 const validOtp = async (rawOtp, hashOtp) => {
   try {
     const isValid = await bcrypt.compare(rawOtp, hashOtp);
@@ -22,6 +23,7 @@ const validOtp = async (rawOtp, hashOtp) => {
     return console.error(error.message);
   }
 };
+
 module.exports = {
   insertOtp,
   validOtp,
