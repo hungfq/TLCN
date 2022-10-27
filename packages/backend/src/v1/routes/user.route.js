@@ -5,7 +5,7 @@ const {
 
 const router = (app) => {
   app.get('/v1/user', index); // show list of all versions
-  app.get('/checkstatus', (req, res, next) => {
+  app.get('/checkstatus', (req, res) => {
     res.status(200).json({
       status: 'success',
       message: 'api ok',
