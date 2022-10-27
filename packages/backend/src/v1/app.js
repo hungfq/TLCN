@@ -3,6 +3,7 @@ const express = require('express');
 const _ = require('lodash');
 const AccessDenied = require('./utils/errors/AppError');
 const userRoutes = require('./routes/user.route');
+const topicRoutes = require('./routes/topic.route');
 
 const app = express();
 
@@ -12,14 +13,17 @@ app.use(bodyParser.json());
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.header('Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept, Authorization',
+  );
   res.header('Access-Control-Max-Age', 3600);
   next();
 });
 
 // add router
 userRoutes(app);
+topicRoutes(app);
 
 // handle error controller
 // need exactly 4 params for express to regconize

@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 require('dotenv').config();
 const path = require('path');
 const mongoose = require('mongoose');
