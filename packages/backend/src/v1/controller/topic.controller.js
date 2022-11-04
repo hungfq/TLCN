@@ -35,8 +35,9 @@ const listTopic = async (req, res, next) => {
 
 const updateTopic = async (req, res, next) => {
   try {
+    const { id } = req.params;
     const {
-      id, title, description, type, lecturerId,
+      title, description, type, lecturerId,
     } = req.body;
     await update(id, title, description, type, lecturerId);
     return res.status(200).send('success');
@@ -47,7 +48,7 @@ const updateTopic = async (req, res, next) => {
 
 const deleteTopic = async (req, res, next) => {
   try {
-    const { id } = req.body;
+    const { id } = req.params;
     await remove(id);
     return res.status(200).send('success');
   } catch (err) {

@@ -6,8 +6,8 @@ const router = (app) => {
   app.post('/v1/topic', insertTopic);
   app.get('/v1/topic/:id', findOneTopic);
   app.get('/v1/topic', listTopic);
-  app.put('/v1/topic', updateTopic);
-  app.delete('/v1/topic', deleteTopic);
+  app.put('/v1/topic/:id', updateTopic);
+  app.delete('/v1/topic/:id', deleteTopic);
 };
 
 module.exports = router;

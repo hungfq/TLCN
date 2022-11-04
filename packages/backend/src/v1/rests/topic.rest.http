@@ -2,34 +2,28 @@ POST http://localhost:5000/v1/topic
 Content-Type: application/json
 
 {
-  "title": "123",
-  "description": "mo ta",
-  "type": "dgudbjkd",
-  "lecturerId": "635942d4cf459a148ca5f033"
+  "title": "Xây dựng trang web quản lý đề tài khoa CNTT",
+  "description": "Sử dụng NodeJS VueJS MongoDB",
+  "type": "CNPM",
+  "lecturerId": "63648a8c4672d1425c3f129e"
 }
 ###
 
 GET http://localhost:5000/v1/topic
 ###
 
-GET http://localhost:5000/v1/topic/635a2f9304c8b351f08d35bf
+GET http://localhost:5000/v1/topic/63651af3436a862a8c24fd50
 ###
 
-PUT http://localhost:5000/v1/topic
+PUT http://localhost:5000/v1/topic/63651a65436a862a8c24fd4c
 Content-Type: application/json
 
 {
-  "id":"635a2ee704c8b351f08d35ba",
-  "title": "123",
-  "description": "mo ta",
-  "type": "dgudbjkd",
-  "lecturerId": "635942d4cf459a148ca5f033"
+  "title": "Xây dựng trang web quản lý đề tài khoa CNTT",
+  "description": "Sử dụng NodeJS VueJS MongoDB",
+  "type": "CNPMssss",
+  "lecturerId": "63648a8c4672d1425c3f129e"
 }
 
 ###
-DELETE http://localhost:5000/v1/topic
-Content-Type: application/json
-
-{
-  "id":"635a2ee704c8b351f08d35ba"
-}
+DELETE http://localhost:5000/v1/topic/63651af3436a862a8c24fd50
