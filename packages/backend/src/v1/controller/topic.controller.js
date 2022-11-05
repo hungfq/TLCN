@@ -26,8 +26,9 @@ const findOneTopic = async (req, res, next) => {
 
 const listTopic = async (req, res, next) => {
   try {
-    const topics = await list();
-    return res.status(201).send(topics);
+    const { title, lecturerId } = req.query;
+    const topics = await list(title, lecturerId);
+    return res.status(200).send(topics);
   } catch (err) {
     return next(err);
   }

@@ -27,3 +27,11 @@ Content-Type: application/json
 
 ###
 DELETE http://localhost:5000/v1/topic/63651af3436a862a8c24fd50
+
+###
+GET http://localhost:5000/v1/topic
+?title=web
+
+###
+GET http://localhost:5000/v1/topic
+?lecturerId=63648a8c4672d1425c3f129e
