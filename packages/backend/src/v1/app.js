@@ -4,6 +4,7 @@ const _ = require('lodash');
 const AccessDenied = require('./utils/errors/AppError');
 const userRoutes = require('./routes/user.route');
 const topicRoutes = require('./routes/topic.route');
+const authRoutes = require('./routes/auth.route');
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use((req, res, next) => {
 // add router
 userRoutes(app);
 topicRoutes(app);
+authRoutes(app);
 
 // handle error controller
 // need exactly 4 params for express to regconize
