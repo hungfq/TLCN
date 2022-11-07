@@ -24,9 +24,16 @@ const update = async (id, firstName, lastName, sex, email) => {
     firstName, lastName, sex, email,
   });
 };
+
+const getUser = async (id) => {
+  const user = await _User.findOne({ _id: id });
+  return user;
+};
+
 module.exports = {
   list,
   insert,
   remove,
   update,
+  getUser,
 };

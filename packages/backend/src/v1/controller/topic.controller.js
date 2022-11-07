@@ -26,8 +26,9 @@ const findOneTopic = async (req, res, next) => {
 
 const listTopic = async (req, res, next) => {
   try {
-    const topics = await list();
-    return res.status(201).send(topics);
+    const { title, lecturerId } = req.query;
+    const topics = await list(title, lecturerId);
+    return res.status(200).send(topics);
   } catch (err) {
     return next(err);
   }
@@ -35,8 +36,9 @@ const listTopic = async (req, res, next) => {
 
 const updateTopic = async (req, res, next) => {
   try {
+    const { id } = req.params;
     const {
-      id, title, description, type, lecturerId,
+      title, description, type, lecturerId,
     } = req.body;
     await update(id, title, description, type, lecturerId);
     return res.status(200).send('success');
@@ -47,7 +49,7 @@ const updateTopic = async (req, res, next) => {
 
 const deleteTopic = async (req, res, next) => {
   try {
-    const { id } = req.body;
+    const { id } = req.params;
     await remove(id);
     return res.status(200).send('success');
   } catch (err) {

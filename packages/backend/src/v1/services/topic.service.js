@@ -12,8 +12,15 @@ const findOne = async (id) => {
   return topic;
 };
 
-const list = async () => {
-  const listTopic = await _Topic.find({});
+const list = async (title, lecturerId) => {
+  let listTopic;
+  if (title) {
+    listTopic = await _Topic.find({ title: { $regex: `.*${title}.*` } });
+  } else if (lecturerId) {
+    listTopic = await _Topic.find({ lecturerId });
+  } else {
+    listTopic = await _Topic.find({});
+  }
   return listTopic;
 };
 
