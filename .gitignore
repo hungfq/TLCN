@@ -23,3 +23,5 @@ dist-ssr
 *.sln
 *.sw?
 packages/frontend/yarn.lock
+packages/frontend/tests_output/nightwatch-html-report/js/bootstrap.min.js
+packages/frontend/tests_output
