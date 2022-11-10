@@ -52,6 +52,7 @@ const loginWithGoogle = async (req, res, next) => {
         email,
         code: email,
         picture,
+        role,
       });
       return res.status(200).send({ userInfo: newUser, accessToken: token });
     }
