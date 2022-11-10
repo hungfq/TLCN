@@ -1,6 +1,6 @@
 const {
   loginWithGoogle,
-} = require('../controller/user.controller');
+} = require('../controller/auth.controller');
 
 const router = (app) => {
   app.post('/v1/auth', loginWithGoogle);

@@ -15,12 +15,18 @@
       <HeaderButton :name-button="'Tư vấn'" />
       <HeaderButton :name-button="'TT-Tin học'" />
       <HeaderButton :name-button="'Giới thiệu'" />
-      <LoginButton />
+      <LoginButton @click="Login" />
+      <!-- <GoogleLogin :callback="callback" /> -->
+      <!-- <button @click="logout">
+        Logout
+      </button> -->
     </div>
   </div>
 </template>
 
 <script>
+import { decodeCredential, googleLogout, googleTokenLogin } from 'vue3-google-login';
+import { signInWithGoogle } from '../../utils/api/auth';
 import HeaderButton from './HeaderButton.vue';
 import LoginButton from './LoginButton.vue';
 
@@ -39,6 +45,18 @@ export default {
   computed: {
   },
   methods: {
+    async Login () {
+      try {
+        const response = await googleTokenLogin();
+        const rp = await signInWithGoogle(response.access_token);
+        console.log('🚀 ~ file: Header.vue ~ line 52 ~ Login ~ rp', rp);
+      } catch (err) {
+        console.log(err.message);
+      }
+    },
+    logout () {
+      googleLogout();
+    },
   },
 };
 </script>
