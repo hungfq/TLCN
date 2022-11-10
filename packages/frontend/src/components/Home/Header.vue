@@ -47,9 +47,9 @@ export default {
   methods: {
     async Login () {
       try {
-        const response = await googleTokenLogin();
-        const rp = await signInWithGoogle(response.access_token);
-        console.log('🚀 ~ file: Header.vue ~ line 52 ~ Login ~ rp', rp);
+        const payload = await googleTokenLogin();
+        await this.$store.dispatch('auth/signIn', payload);
+        this.$router.push('/dashboard');
       } catch (err) {
         console.log(err.message);
       }

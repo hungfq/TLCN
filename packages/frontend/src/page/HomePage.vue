@@ -25,7 +25,7 @@
 </template>
 
 <script>
-// import { mapGetters } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import HeaderPage from '../components/Home/Header.vue';
 import TabBar from '../components/Home/TabBar.vue';
 import BannerFrame from '../components/Home/BannerFrame.vue';
@@ -55,6 +55,10 @@ export default {
     };
   },
   computed: {
+    ...mapState({
+      isAuthenticated: (state) => state.auth.isAuthenticated,
+      userInfo: (state) => state.ui.auth.userinfo,
+    }),
   },
   methods: {
   },

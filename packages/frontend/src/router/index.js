@@ -10,11 +10,6 @@ const routes = [
     component: HomePage,
   },
   {
-    path: '/login',
-    name: 'Login',
-    component: LoginForm,
-  },
-  {
     path: '/dashboard',
     name: 'Dashboard',
     component: DashBoardPage,

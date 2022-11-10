@@ -3,6 +3,7 @@ import './style.css';
 import vue3GoogleLogin from 'vue3-google-login';
 import App from './App.vue';
 import router from './router/index';
+import store from './store/index';
 
 const app = createApp(App);
 app.use(vue3GoogleLogin, {
@@ -10,4 +11,5 @@ app.use(vue3GoogleLogin, {
   scope: 'email profile openid',
 });
 app.use(router);
+app.use(store);
 app.mount('#app');
