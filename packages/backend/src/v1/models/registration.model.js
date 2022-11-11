@@ -1,9 +1,16 @@
 const mongoose = require('mongoose');
 
-const { Schema: { Types: { ObjectId } } } = mongoose;
+const { Schema } = mongoose;
+
 const RegistrationSchema = new mongoose.Schema({
-  studentId: { type: ObjectId },
-  topicId: { type: ObjectId },
+  studentId: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+  },
+  topicId: {
+    type: Schema.Types.ObjectId,
+    ref: 'Topic',
+  },
   group: { type: String },
 });
 

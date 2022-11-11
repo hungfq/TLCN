@@ -1,9 +1,20 @@
-GET http://localhost:5000/checkstatus
+GET http://localhost:5000/check-status
 ###
 
-
-GET http://localhost:5000/v1/user/6365214d61765324bc6f488c
+GET http://localhost:5000/v1/user
 ###
 
+GET http://localhost:5000/v1/user/636dbbc34489475518991d2a
+###
 
-http://localhost:5000/v1/user
+PUT http://localhost:5000/v1/user/636dbbc34489475518991d2a
+Content-Type: application/json
+
+{
+  "sex": "female",
+  "name": "Pham Quang Hung",
+  "email": "19110373@student.hcmute.edu.vn",
+  "code": "19110373@student.hcmute.edu.vn",
+  "picture": "https://lh3.googleusercontent.com/a/ALm5wu0Dfvn_Z7jfrXtPc456CxYUZzRb4CB5ImSezi3A=s96-c",
+  "role": "STUDENT"
+}
