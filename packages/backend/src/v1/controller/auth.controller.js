@@ -6,7 +6,9 @@ const _User = require('../models/user.model');
 
 const listEmailAdmins = new Set([
   'lequocbao29072001@gmail.com',
-  'quanghungpham07@gmail.com']);
+  'quanghungpham07@gmail.com',
+  'bao.lq@holistics.io',
+]);
 const secretKey = 'SecretKey';
 
 const client = new OAuth2Client();

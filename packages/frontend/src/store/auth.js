@@ -30,6 +30,7 @@ const actions = {
       if (res.status === 200) {
         const { data } = res;
         const { userInfo, accessToken } = data;
+        console.log(userInfo);
         commit('setAuthenticated', { ...userInfo, token: accessToken });
       } else {
         console.log(e);
