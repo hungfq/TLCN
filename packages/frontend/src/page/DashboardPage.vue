@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from 'vuex';
 import SideBar from '../components/Dashboard/SideBar.vue';
 import HeaderBar from '../components/Dashboard/HeaderBar.vue';
 import TableDKMH from '../components/Dashboard/TableDKMH.vue';
@@ -66,6 +67,12 @@ export default {
     };
   },
   computed: {
+    ...mapState({
+      isAuthenticated: ({ auth: { isAuthenticated } }) => isAuthenticated,
+    }),
+    ...mapGetters('auth', [
+      'userId', 'userEmail', 'userRole',
+    ]),
   },
   methods: {
     handleChange (value) {

@@ -36,7 +36,7 @@
     "vuex-router-sync": "^5.0.0"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^3.1.0",
+    "@vitejs/plugin-vue": "^3.2.0",
     "autoprefixer": "^10.4.8",
     "babel-core": "^6.26.3",
     "babel-eslint": "^10.1.0",

@@ -32,10 +32,12 @@ const actions = {
         const { userInfo, accessToken } = data;
         commit('setAuthenticated', { ...userInfo, token: accessToken });
       } else {
+        console.log(e);
         // handle ui display error in UI
         console.log('Error in login');
       }
     } catch (e) {
+      console.log(e);
       // handle ui display error in UI
       console.log('Error in login');
     }

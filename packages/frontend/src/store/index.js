@@ -11,6 +11,7 @@ const vuexLocal = createPersistedState({
   paths: [
     'auth.userInfo',
     'auth.isAuthenticated',
+    'auth',
   ],
 
   getState: (key, storage) => {
