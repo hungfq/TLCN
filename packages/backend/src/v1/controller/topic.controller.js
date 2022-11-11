@@ -5,9 +5,9 @@ const {
 const insertTopic = async (req, res, next) => {
   try {
     const {
-      title, description, type, lecturerId,
+      title, description, limit, lecturerId,
     } = req.body;
-    const topic = await insert(title, description, type, lecturerId);
+    const topic = await insert(title, description, limit, lecturerId);
     return res.status(201).send(topic);
   } catch (err) {
     return next(err);
@@ -38,9 +38,9 @@ const updateTopic = async (req, res, next) => {
   try {
     const { id } = req.params;
     const {
-      title, description, type, lecturerId,
+      title, description, limit, lecturerId,
     } = req.body;
-    await update(id, title, description, type, lecturerId);
+    await update(id, title, description, limit, lecturerId);
     return res.status(200).send('success');
   } catch (err) {
     return next(err);

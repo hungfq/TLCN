@@ -5,6 +5,7 @@ const AccessDenied = require('./utils/errors/AppError');
 const userRoutes = require('./routes/user.route');
 const topicRoutes = require('./routes/topic.route');
 const authRoutes = require('./routes/auth.route');
+const registrationRoutes = require('./routes/registration.route');
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use((req, res, next) => {
 userRoutes(app);
 topicRoutes(app);
 authRoutes(app);
+registrationRoutes(app);
 
 // handle error controller
 // need exactly 4 params for express to regconize

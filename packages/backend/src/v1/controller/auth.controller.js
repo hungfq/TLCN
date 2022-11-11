@@ -1,8 +1,12 @@
+/* eslint-disable max-len */
+/* eslint-disable camelcase */
 const { OAuth2Client } = require('google-auth-library');
 const jwt = require('jsonwebtoken');
 const _User = require('../models/user.model');
 
-const listEmailAdmins = new Set(['lequocbao29072001@gmail.com']);
+const listEmailAdmins = new Set([
+  'lequocbao29072001@gmail.com',
+  'quanghungpham07@gmail.com']);
 const secretKey = 'SecretKey';
 
 const client = new OAuth2Client();

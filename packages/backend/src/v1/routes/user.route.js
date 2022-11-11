@@ -1,19 +1,19 @@
 const {
-  listUser,
-  loginWithEmail,
-  getUserInfo,
+  list,
+  findOne,
+  update,
 } = require('../controller/user.controller');
 
 const router = (app) => {
-  app.get('/v1/user', listUser); // show list of all versions
-  app.get('/checkstatus', (req, res) => {
+  app.get('/check-status', (req, res) => {
     res.status(200).json({
       status: 'success',
       message: 'api ok',
     });
   });
-  app.post('/v1/login', loginWithEmail);
-  app.get('/v1/user/:id', getUserInfo);
+  app.get('/v1/user', list);
+  app.get('/v1/user/:id', findOne);
+  app.put('/v1/user/:id', update);
 };
 
 module.exports = router;

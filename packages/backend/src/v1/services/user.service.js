@@ -19,9 +19,9 @@ const remove = async (id) => {
   await _User.remove({ _id: id });
 };
 
-const update = async (id, firstName, lastName, sex, email) => {
+const update = async (id, name, email, code, picture, role) => {
   await _User.updateOne({ _id: id }, {
-    firstName, lastName, sex, email,
+    name, email, code, picture, role,
   });
 };
 

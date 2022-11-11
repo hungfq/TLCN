@@ -1,0 +1,47 @@
+POST http://localhost:5000/v1/register HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjE5MTEwMzczQHN0dWRlbnQuaGNtdXRlLmVkdS52biIsImlhdCI6MTY2ODEzOTk4OCwiZXhwIjoxNjY4MjI2Mzg4fQ.KeQE5fAhsbw-r6l9FFIxHPIqTqJj7pXmDP4bqSavG7c
+Content-Type: application/json
+
+{
+    "topic_id": "636dbd15af1e9b5b60c401f5"
+}
+###
+
+
+DELETE http://localhost:5000/v1/register/636df4cbd43e7977c88f5842
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjE5MTEwMzczQHN0dWRlbnQuaGNtdXRlLmVkdS52biIsImlhdCI6MTY2ODEzOTk4OCwiZXhwIjoxNjY4MjI2Mzg4fQ.KeQE5fAhsbw-r6l9FFIxHPIqTqJj7pXmDP4bqSavG7c
+###
+
+GET http://localhost:5000/v1/registration
+###
+
+
+GET http://localhost:5000/v1/registration
+?topic_id=636dbd15af1e9b5b60c401f5
+###
+
+POST http://localhost:5000/v1/registration
+Content-Type: application/json
+
+{
+    "topicId": "636dcc7334d38c6dec494e7e",
+    "studentId": "636dbbc34489475518991d2a", 
+    "group":"NHOM 1"
+}
+###
+
+
+PUT http://localhost:5000/v1/registration/636e448afe0c2c275cd1745d
+Content-Type: application/json
+
+{
+    "topicId": "636dcc7334d38c6dec494e7e",
+    "studentId": "636dbbc34489475518991d2a", 
+    "group":"NHOM 1s"
+}
+###
+
+
+DELETE http://localhost:5000/v1/registration/636e448afe0c2c275cd1745d
+
+
