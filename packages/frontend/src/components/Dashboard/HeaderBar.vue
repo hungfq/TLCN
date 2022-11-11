@@ -9,7 +9,10 @@
         Chúc bạn một ngày làm việc và học tập hiệu quả!
       </div>
     </div>
-    <SearchBar class="w-[400px]  mt-16 mr-10 ml-auto" />
+    <SearchBar
+      v-if="showSearch"
+      class="w-[400px]  mt-16 mr-10 ml-auto"
+    />
   </div>
 </template>
 
@@ -25,6 +28,10 @@ export default {
     nameUser: {
       type: String,
       default: 'Lê Quốc Bảo',
+    },
+    showSearch: {
+      type: Boolean,
+      default: true,
     },
   },
   data () {

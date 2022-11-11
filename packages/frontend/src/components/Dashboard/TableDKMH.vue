@@ -1,8 +1,8 @@
 <!-- eslint-disable max-len -->
 <template>
   <div class="overflow-x-auto relative shadow-md sm:rounded-lg m-4">
-    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-      <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+    <table class="w-full text-sm text-left text-gray-500">
+      <thead class="text-xs text-gray-700 uppercase bg-gray-300">
         <tr>
           <th
             scope="col"
@@ -31,10 +31,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+        <tr class="bg-slate-300 border- hover:bg-gray-50 ">
           <th
             scope="row"
-            class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+            class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap"
           >
             Apple MacBook Pro 17"
           </th>
@@ -55,10 +55,10 @@
             >Xem chi tiết</a>
           </td>
         </tr>
-        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+        <tr class="bg-slate-300 border-b  hover:bg-gray-50 ">
           <th
             scope="row"
-            class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+            class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap "
           >
             Microsoft Surface Pro
           </th>
@@ -79,10 +79,10 @@
             >Xem chi tiết</a>
           </td>
         </tr>
-        <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
+        <tr class="bg-slate-300 hover:bg-gray-50 ">
           <th
             scope="row"
-            class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+            class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap "
           >
             Magic Mouse 2
           </th>
