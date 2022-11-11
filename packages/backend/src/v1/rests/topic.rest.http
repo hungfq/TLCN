@@ -4,34 +4,31 @@ Content-Type: application/json
 {
   "title": "Xây dựng trang web quản lý đề tài khoa CNTT",
   "description": "Sử dụng NodeJS VueJS MongoDB",
-  "type": "CNPM",
-  "lecturerId": "63648a8c4672d1425c3f129e"
+  "limit": 3,
+  "lecturerId": "636dbc12af1e9b5b60c401f2"
 }
 ###
 
 GET http://localhost:5000/v1/topic
 ###
-
-GET http://localhost:5000/v1/topic/63651af3436a862a8c24fd50
+GET http://localhost:5000/v1/topic
+?title=web
+###
+GET http://localhost:5000/v1/topic
+?lecturerId=636dbc12af1e9b5b60c401f2
+###
+GET http://localhost:5000/v1/topic/636dcc7234d38c6dec494e7c
 ###
 
-PUT http://localhost:5000/v1/topic/63651a65436a862a8c24fd4c
+PUT http://localhost:5000/v1/topic/636e567fd96a673a70082cab
 Content-Type: application/json
 
 {
   "title": "Xây dựng trang web quản lý đề tài khoa CNTT",
   "description": "Sử dụng NodeJS VueJS MongoDB",
-  "type": "CNPMssss",
-  "lecturerId": "63648a8c4672d1425c3f129e"
+  "limit": 3,
+  "lecturerId": "636dbc12af1e9b5b60c401f2"
 }
 
 ###
 DELETE http://localhost:5000/v1/topic/63651af3436a862a8c24fd50
-
-###
-GET http://localhost:5000/v1/topic
-?title=web
-
-###
-GET http://localhost:5000/v1/topic
-?lecturerId=63648a8c4672d1425c3f129e
