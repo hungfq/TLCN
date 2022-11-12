@@ -8,7 +8,7 @@ const insert = async (topicId, studentId) => {
 };
 
 const remove = async (id) => {
-  await _Registration.remove({ _id: id });
+  await _Registration.deleteOne({ _id: id });
 };
 
 const list = async (topicId) => {

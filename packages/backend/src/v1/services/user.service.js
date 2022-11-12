@@ -16,7 +16,7 @@ const list = async () => {
 };
 
 const remove = async (id) => {
-  await _User.remove({ _id: id });
+  await _User.deleteOne({ _id: id });
 };
 
 const update = async (id, name, email, code, picture, role) => {

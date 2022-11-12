@@ -34,7 +34,7 @@ const update = async (id, title, description, limit, lecturerId) => {
 };
 
 const remove = async (id) => {
-  await _Topic.remove({ _id: id });
+  await _Topic.deleteOne({ _id: id });
 };
 
 module.exports = {

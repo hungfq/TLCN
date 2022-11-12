@@ -1,3 +1,5 @@
+/* eslint-disable consistent-return */
+/* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
 /* eslint-disable camelcase */
 const { OAuth2Client } = require('google-auth-library');
@@ -9,7 +11,7 @@ const listEmailAdmins = new Set([
   'quanghungpham07@gmail.com',
   'bao.lq@holistics.io',
 ]);
-const secretKey = 'SecretKey';
+const secretKey = process.env.JWT_SECRET_KEY;
 
 const client = new OAuth2Client();
 

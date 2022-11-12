@@ -7,14 +7,18 @@ const {
   remove,
 } = require('../controller/registration.controller');
 
-const router = (app) => {
-  app.get('/v1/registration', list);
-  app.post('/v1/registration', create);
-  app.put('/v1/registration/:id', update);
-  app.delete('/v1/registration/:id', remove);
+const authMiddleware = require('../middlewares/auth.middlewares');
 
-  app.post('/v1/register', registrationTopic);
-  app.delete('/v1/register/:id', cancelRegistration);
+const { isAuth } = authMiddleware;
+
+const router = (app) => {
+  app.get('/v1/registration', isAuth, list);
+  app.post('/v1/registration', isAuth, create);
+  app.put('/v1/registration/:id', isAuth, update);
+  app.delete('/v1/registration/:id', isAuth, remove);
+
+  app.post('/v1/register', isAuth, registrationTopic);
+  app.delete('/v1/register/:id', isAuth, cancelRegistration);
 };
 
 module.exports = router;

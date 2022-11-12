@@ -1,13 +1,18 @@
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjE5MTEwMzczQHN0dWRlbnQuaGNtdXRlLmVkdS52biIsImlhdCI6MTY2ODIyMzg4NywiZXhwIjoxNjY4MzEwMjg3fQ.9PjiBT8xaqxKA9FePNTuxSwMsqFK6AXg1jNrvSjQDVs
+
 GET http://localhost:5000/check-status
 ###
 
 GET http://localhost:5000/v1/user
+Authorization: Bearer {{token}}
 ###
 
 GET http://localhost:5000/v1/user/636dbbc34489475518991d2a
+Authorization: Bearer {{token}}
 ###
 
 PUT http://localhost:5000/v1/user/636dbbc34489475518991d2a
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
