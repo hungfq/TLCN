@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 const {
   registrationTopic,
   cancelRegistration,
@@ -8,17 +9,19 @@ const {
 } = require('../controller/registration.controller');
 
 const authMiddleware = require('../middlewares/auth.middlewares');
+const roleMiddleware = require('../middlewares/role.middlewares');
 
 const { isAuth } = authMiddleware;
+const { permit } = roleMiddleware;
 
 const router = (app) => {
-  app.get('/v1/registration', isAuth, list);
-  app.post('/v1/registration', isAuth, create);
-  app.put('/v1/registration/:id', isAuth, update);
-  app.delete('/v1/registration/:id', isAuth, remove);
+  app.get('/v1/registration', isAuth, permit('registration.list'), list);
+  app.post('/v1/registration', isAuth, permit('registration.create'), create);
+  app.put('/v1/registration/:id', isAuth, permit('registration.update'), update);
+  app.delete('/v1/registration/:id', isAuth, permit('registration.delete'), remove);
 
-  app.post('/v1/register', isAuth, registrationTopic);
-  app.delete('/v1/register/:id', isAuth, cancelRegistration);
+  app.post('/v1/register', isAuth, permit('register.create'), registrationTopic);
+  app.delete('/v1/register/:id', isAuth, permit('register.delete'), cancelRegistration);
 };
 
 module.exports = router;

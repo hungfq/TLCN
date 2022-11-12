@@ -1,0 +1,24 @@
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjE5MTEwMzczQHN0dWRlbnQuaGNtdXRlLmVkdS52biIsImlhdCI6MTY2ODIyMzg4NywiZXhwIjoxNjY4MzEwMjg3fQ.9PjiBT8xaqxKA9FePNTuxSwMsqFK6AXg1jNrvSjQDVs
+
+GET http://localhost:5000/v1/permissions
+Authorization: Bearer {{token}}
+###
+
+
+
+
+
+
+POST http://localhost:5000/v1/permissions
+Content-Type: application/json
+
+{
+    "name": "user.update"
+}
+
+# topic:  create  view  list  update  delete
+# permission.list
+# registration list create update  delete
+# register create delete
+# roles list view sync
+# user list view update
