@@ -11,7 +11,8 @@ const insert = async (firstName, lastName, sex, email) => {
 };
 
 const list = async () => {
-  const listUser = await _User.find({});
+  const listUser = await _User.find({})
+    .populate({ path: 'roleId', select: 'name _id' });
   return listUser;
 };
 
@@ -19,9 +20,9 @@ const remove = async (id) => {
   await _User.deleteOne({ _id: id });
 };
 
-const update = async (id, name, email, code, picture, role) => {
+const update = async (id, name, email, code, picture, roleId) => {
   await _User.updateOne({ _id: id }, {
-    name, email, code, picture, role,
+    name, email, code, picture, roleId,
   });
 };
 

@@ -1,0 +1,28 @@
+# POST http://localhost:5000/v1/roles
+# Content-Type: application/json
+
+# {
+#     "name": "STUDENT",
+#     "description": null
+# }
+
+# ADMIN, TEACHER, STUDENT
+###
+GET http://localhost:5000/v1/roles
+###
+GET http://localhost:5000/v1/roles/636fb37074302f3e88865875/permissions
+###
+POST http://localhost:5000/v1/roles/636fb37074302f3e88865875/permissions
+Content-Type: application/json 
+
+{
+    "permissions" : [
+        "636fb7b8c7edd42a709d89b0",
+        "636fb7bdc7edd42a709d89b3",
+        "636fb7c1c7edd42a709d89b6"
+    ]
+}
+
+
+###
+GET http://localhost:5000/test

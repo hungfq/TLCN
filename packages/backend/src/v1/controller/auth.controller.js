@@ -5,6 +5,7 @@
 const { OAuth2Client } = require('google-auth-library');
 const jwt = require('jsonwebtoken');
 const _User = require('../models/user.model');
+const roleService = require('../services/role.service');
 
 const listEmailAdmins = new Set([
   'lequocbao29072001@gmail.com',
@@ -24,11 +25,12 @@ async function verifyToken(token) {
   return userinfo.data;
 }
 
-function validateEmail(email, hd) {
+async function validateEmail(email, hd) {
   let role = null;
-  if (listEmailAdmins.has(email)) role = 'ADMIN';
-  else if (hd === 'hcmute.edu.vn') role = 'TEACHER';
-  else if (hd === 'student.hcmute.edu.vn') role = 'STUDENT';
+  const roles = await roleService.list();
+  if (listEmailAdmins.has(email)) role = roles.find((x) => x.name === 'ADMIN')._id;
+  else if (hd === 'hcmute.edu.vn') role = roles.find((x) => x.name === 'TEACHER')._id;
+  else if (hd === 'student.hcmute.edu.vn') role = roles.find((x) => x.name === 'STUDENT')._id;
   return role;
 }
 
@@ -38,14 +40,19 @@ const loginWithGoogle = async (req, res, next) => {
       access_token,
     } = req.body;
     const userInfo = await verifyToken(access_token);
+    if (!userInfo || !userInfo.email) {
+      return res.status(401).send(
+        { message: 'Not valid data' },
+      );
+    }
     const {
       email,
       name,
       picture,
       hd,
     } = userInfo;
-    const role = validateEmail(email, hd);
-    if (!role) {
+    const roleId = await validateEmail(email, hd);
+    if (!roleId) {
       return res.status(401).send(
         { message: 'The email not exist in organization' },
       );
@@ -60,7 +67,7 @@ const loginWithGoogle = async (req, res, next) => {
         email,
         code: email,
         picture,
-        role,
+        roleId,
       });
       return res.status(200).send({ userInfo: newUser, accessToken: token });
     }

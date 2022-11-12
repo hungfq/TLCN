@@ -26,9 +26,9 @@ const update = async (req, res, next) => {
   try {
     const { id } = req.params;
     const {
-      name, email, code, picture, role,
+      name, email, code, picture, roleId,
     } = req.body;
-    await userService.update(id, name, email, code, picture, role);
+    await userService.update(id, name, email, code, picture, roleId);
     return res.status(200).send('success');
   } catch (err) {
     return next(err);
