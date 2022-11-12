@@ -1,7 +1,8 @@
+/* eslint-disable max-len */
 const jwt = require('jsonwebtoken');
 
-const secret = 'SecretKey';
-if (!secret) throw new Error('ENV "JWT_SECRET" is required');
+const secret = process.env.JWT_SECRET_KEY;
+if (!secret) throw new Error('ENV "JWT_SECRET_KEY" is required');
 // https://www.npmjs.com/package/jsonwebtoken#jwtsignpayload-secretorprivatekey-options-callback
 // jwt doesn't return a promise, so we wrap it in a promise here
 function verify(token) {

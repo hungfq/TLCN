@@ -1,18 +1,8 @@
 /* eslint-disable max-len */
-const jwt = require('jsonwebtoken');
-const _User = require('../models/user.model');
+
 const _Registration = require('../models/registration.model');
 const topicService = require('../services/topic.service');
 const registrationService = require('../services/registration.service');
-
-async function getUserInfo(req) {
-  const authorization = req.header('Authorization');
-  const token = authorization.split(' ')[1];
-  const { email } = await jwt.decode(token);
-  const user = await _User.findOne({ email });
-
-  return user;
-}
 
 async function checkCanRegistration(user, topic) {
   const currentLimit = await _Registration.countDocuments({ topicId: topic._id });
@@ -23,7 +13,7 @@ async function checkCanRegistration(user, topic) {
 const registrationTopic = async (req, res, next) => {
   try {
     const topicId = req.body.topic_id;
-    const user = await getUserInfo(req);
+    const { user } = req;
     const topic = await topicService.findOne({ _id: topicId });
     if (await checkCanRegistration(user, topic)) {
       const regis = await registrationService.insert(topic._id, user._id);
@@ -38,8 +28,11 @@ const registrationTopic = async (req, res, next) => {
 const cancelRegistration = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const user = await getUserInfo(req);
+    const { user } = req;
     const registration = await _Registration.findOne({ _id: id });
+    if (!registration) {
+      return res.sendStatus(404);
+    }
     if (String(registration.studentId) === String(user._id)) {
       await registrationService.remove(id);
       return res.status(200).send('success');

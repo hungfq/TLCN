@@ -1,4 +1,7 @@
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjE5MTEwMzczQHN0dWRlbnQuaGNtdXRlLmVkdS52biIsImlhdCI6MTY2ODIyMzg4NywiZXhwIjoxNjY4MzEwMjg3fQ.9PjiBT8xaqxKA9FePNTuxSwMsqFK6AXg1jNrvSjQDVs
+
 POST http://localhost:5000/v1/topic
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -10,17 +13,22 @@ Content-Type: application/json
 ###
 
 GET http://localhost:5000/v1/topic
+Authorization: Bearer {{token}}
 ###
 GET http://localhost:5000/v1/topic
 ?title=web
+Authorization: Bearer {{token}}
 ###
 GET http://localhost:5000/v1/topic
 ?lecturerId=636dbc12af1e9b5b60c401f2
+Authorization: Bearer {{token}}
 ###
 GET http://localhost:5000/v1/topic/636dcc7234d38c6dec494e7c
+Authorization: Bearer {{token}}
 ###
 
 PUT http://localhost:5000/v1/topic/636e567fd96a673a70082cab
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -32,3 +40,4 @@ Content-Type: application/json
 
 ###
 DELETE http://localhost:5000/v1/topic/63651af3436a862a8c24fd50
+Authorization: Bearer {{token}}
