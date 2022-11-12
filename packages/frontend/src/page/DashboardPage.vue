@@ -11,11 +11,13 @@
       <div class=" h-full bg-white m-2 rounded-xl">
         <TableDKMH v-if="select === 'register'" />
         <SearchTopic v-if="select === 'search'" />
-
-        <ProfileInfo
-          v-if="select === 'info'"
-        />
+        <ProfileInfo v-if="select === 'info'" />
         <TableDKMH v-if="select === 'result'" />
+        <ManageUserAdmin v-if="select === 'manage_user_admin'" />
+        <ManageTopicAdmin v-if="select === 'manage_topic_admin'" />
+        <ManageRegisterAdmin v-if="select === 'manage_register_admin'" />
+        <ManageRegisterTeacher v-if="select === 'manage_register_teacher'" />
+        <ManageTopicTeacher v-if="select === 'manage_topic_teacher'" />
       </div>
     </div>
   </div>
@@ -28,6 +30,11 @@ import HeaderBar from '../components/Dashboard/HeaderBar.vue';
 import TableDKMH from '../components/Student/TableDKMH.vue';
 import ProfileInfo from '../components/Dashboard/ProfileInfo.vue';
 import SearchTopic from '../components/Student/SearchTopic.vue';
+import ManageUserAdmin from '../components/Admin/ManageUserAdmin.vue';
+import ManageTopicAdmin from '../components/Admin/ManageTopicAdmin.vue';
+import ManageRegisterAdmin from '../components/Admin/ManageRegisterAdmin.vue';
+import ManageTopicTeacher from '../components/Teacher/ManageTopicTeacher.vue';
+import ManageRegisterTeacher from '../components/Teacher/ManageRegisterTeacher.vue';
 
 export default {
   name: 'DashboardPage',
@@ -37,6 +44,11 @@ export default {
     TableDKMH,
     ProfileInfo,
     SearchTopic,
+    ManageUserAdmin,
+    ManageTopicAdmin,
+    ManageRegisterAdmin,
+    ManageTopicTeacher,
+    ManageRegisterTeacher,
   },
   props: {
   },

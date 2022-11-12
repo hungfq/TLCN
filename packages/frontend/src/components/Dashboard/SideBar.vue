@@ -52,7 +52,7 @@
     <template v-if="role==='TEACHER'">
       <div
         class="flex my-2 hover:bg-gray-100 text-base font-normal p-2 rounded"
-        :class=" isResult ? 'bg-gray-100' : ''"
+        :class=" isManageTopicTeacher ? 'bg-gray-100' : ''"
         @click="handleClick('manage_topic_teacher')"
       >
         <svg
@@ -65,8 +65,8 @@
       </div>
       <div
         class="flex my-2 hover:bg-gray-100 text-base font-normal p-2 rounded"
-        :class=" isResult ? 'bg-gray-100' : ''"
-        @click="handleClick('list_student_of_topic')"
+        :class=" isManageRegisterTeacher ? 'bg-gray-100' : ''"
+        @click="handleClick('manage_register_teacher')"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -80,8 +80,8 @@
     <template v-if="role==='ADMIN'">
       <div
         class="flex my-2 hover:bg-gray-100 text-base font-normal p-2 rounded"
-        :class=" isResult ? 'bg-gray-100' : ''"
-        @click="handleClick('manage_topic_teacher')"
+        :class=" isManageTopicAdmin ? 'bg-gray-100' : ''"
+        @click="handleClick('manage_topic_admin')"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -93,8 +93,8 @@
       </div>
       <div
         class="flex my-2 hover:bg-gray-100 text-base font-normal p-2 rounded"
-        :class=" isResult ? 'bg-gray-100' : ''"
-        @click="handleClick('manage_user')"
+        :class=" isManageUserAdmin ? 'bg-gray-100' : ''"
+        @click="handleClick('manage_user_admin')"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -106,8 +106,8 @@
       </div>
       <div
         class="flex my-2 hover:bg-gray-100 text-base font-normal p-2 rounded"
-        :class=" isResult ? 'bg-gray-100' : ''"
-        @click="handleClick('manage_user')"
+        :class=" isManageRegisterAdmin ? 'bg-gray-100' : ''"
+        @click="handleClick('manage_register_admin')"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -174,6 +174,21 @@ export default {
     },
     isResult () {
       return this.select === 'result';
+    },
+    isManageTopicTeacher () {
+      return this.select === 'manage_topic_teacher';
+    },
+    isManageRegisterTeacher () {
+      return this.select === 'manage_register_teacher';
+    },
+    isManageRegisterAdmin () {
+      return this.select === 'manage_register_admin';
+    },
+    isManageUserAdmin () {
+      return this.select === 'manage_user_admin';
+    },
+    isManageTopicAdmin () {
+      return this.select === 'manage_topic_admin';
     },
   },
   methods: {
