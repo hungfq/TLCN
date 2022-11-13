@@ -35,8 +35,33 @@ const update = async (req, res, next) => {
   }
 };
 
+const viewProfile = async (req, res, next) => {
+  try {
+    const id = req.user._id;
+    const user = await userService.getUser(id);
+    return res.status(200).send(user);
+  } catch (err) {
+    return next(err);
+  }
+};
+
+const editProfile = async (req, res, next) => {
+  try {
+    const id = req.user._id;
+    const {
+      name, code, sex,
+    } = req.body;
+    await userService.editProfile(id, name, code, sex);
+    return res.status(200).send('success');
+  } catch (err) {
+    return next(err);
+  }
+};
+
 module.exports = {
   findOne,
   list,
   update,
+  viewProfile,
+  editProfile,
 };

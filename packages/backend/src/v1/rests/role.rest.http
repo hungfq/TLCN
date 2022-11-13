@@ -16,7 +16,7 @@ Authorization: Bearer {{token}}
 GET http://localhost:5000/v1/roles/636fb37074302f3e88865875/permissions
 Authorization: Bearer {{token}}
 ###
-POST http://localhost:5000/v1/roles/636fb36974302f3e8886586f/permissions
+POST http://localhost:5000/v1/roles/636fb37074302f3e88865875/permissions
 Authorization: Bearer {{token}}
 Content-Type: application/json 
 
@@ -39,7 +39,9 @@ Content-Type: application/json
         "636fda3dbea0ef7a70025ff1",
         "636fda9611176270e00c47ac",
         "636fda9911176270e00c47af",
-        "636fda9c11176270e00c47b2"
+        "636fda9c11176270e00c47b2",
+        "6370965ac5c4fb4ac8d56679",
+        "6370965ec5c4fb4ac8d5667c"
     ]
 }
 

@@ -1,4 +1,4 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjE5MTEwMzczQHN0dWRlbnQuaGNtdXRlLmVkdS52biIsImlhdCI6MTY2ODIyMzg4NywiZXhwIjoxNjY4MzEwMjg3fQ.9PjiBT8xaqxKA9FePNTuxSwMsqFK6AXg1jNrvSjQDVs
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjE5MTEwMzczQHN0dWRlbnQuaGNtdXRlLmVkdS52biIsImlhdCI6MTY2ODMxMDQxNywiZXhwIjoxNjY4Mzk2ODE3fQ.L6ay8SXzcLt2HDVXqPM5WmufaRAczwwH-iGCQLiv9A4
 
 GET http://localhost:5000/check-status
 ###
@@ -22,4 +22,17 @@ Content-Type: application/json
   "code": "19110373@student.hcmute.edu.vn",
   "picture": "https://lh3.googleusercontent.com/a/ALm5wu0Dfvn_Z7jfrXtPc456CxYUZzRb4CB5ImSezi3A=s96-c",
   "role": "STUDENT"
+}
+###
+GET http://localhost:5000/v1/profile
+Authorization: Bearer {{token}}
+###
+POST http://localhost:5000/v1/profile
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "sex": "female",
+  "name": "Pham Quang Hung",
+  "code": "19110373"
 }
