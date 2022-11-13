@@ -1,4 +1,4 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjE5MTEwMzczQHN0dWRlbnQuaGNtdXRlLmVkdS52biIsImlhdCI6MTY2ODIyMzg4NywiZXhwIjoxNjY4MzEwMjg3fQ.9PjiBT8xaqxKA9FePNTuxSwMsqFK6AXg1jNrvSjQDVs
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjE5MTEwMzczQHN0dWRlbnQuaGNtdXRlLmVkdS52biIsImlhdCI6MTY2ODMxMDQxNywiZXhwIjoxNjY4Mzk2ODE3fQ.L6ay8SXzcLt2HDVXqPM5WmufaRAczwwH-iGCQLiv9A4
 
 POST http://localhost:5000/v1/topic
 Authorization: Bearer {{token}}
@@ -21,6 +21,11 @@ Authorization: Bearer {{token}}
 ###
 GET http://localhost:5000/v1/topic
 ?lecturerId=636dbc12af1e9b5b60c401f2
+Authorization: Bearer {{token}}
+###
+GET http://localhost:5000/v1/topic
+?title=web
+&lecturerId=636dbc12af1e9b5b60c401f2
 Authorization: Bearer {{token}}
 ###
 GET http://localhost:5000/v1/topic/636dcc7234d38c6dec494e7c

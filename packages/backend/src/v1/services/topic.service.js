@@ -1,4 +1,5 @@
 const _Topic = require('../models/topic.model');
+const regisService = require('./registration.service');
 
 const insert = async (title, description, limit, lecturerId) => {
   const topic = await _Topic.create({
@@ -14,7 +15,13 @@ const findOne = async (id) => {
 
 const list = async (title, lecturerId) => {
   let listTopic;
-  if (title) {
+  if (title && lecturerId) {
+    listTopic = await _Topic.find({
+      lecturerId,
+      title: { $regex: `.*${title}.*` },
+    })
+      .populate({ path: 'lecturerId', select: 'name _id' });
+  } else if (title) {
     listTopic = await _Topic.find({ title: { $regex: `.*${title}.*` } })
       .populate({ path: 'lecturerId', select: 'name _id' });
   } else if (lecturerId) {
@@ -24,7 +31,15 @@ const list = async (title, lecturerId) => {
     listTopic = await _Topic.find({})
       .populate({ path: 'lecturerId', select: 'name _id' });
   }
-  return listTopic;
+
+  const results = await Promise.all(
+    listTopic.map(async (topic) => {
+      const count = await regisService.countTopicLimit(topic._id);
+      return { ...topic._doc, current: count };
+    }),
+  );
+
+  return results;
 };
 
 const update = async (id, title, description, limit, lecturerId) => {

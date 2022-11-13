@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
 const {
+  viewRegistration,
   registrationTopic,
   cancelRegistration,
   list,
@@ -20,6 +21,7 @@ const router = (app) => {
   app.put('/v1/registration/:id', isAuth, permit('registration.update'), update);
   app.delete('/v1/registration/:id', isAuth, permit('registration.delete'), remove);
 
+  app.get('/v1/register', isAuth, permit('register.create'), viewRegistration);
   app.post('/v1/register', isAuth, permit('register.create'), registrationTopic);
   app.delete('/v1/register/:id', isAuth, permit('register.delete'), cancelRegistration);
 };

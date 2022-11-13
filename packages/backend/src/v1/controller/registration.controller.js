@@ -10,9 +10,23 @@ async function checkCanRegistration(user, topic) {
   return (currentLimit < topic.limit) && (!alreadyRegistered);
 }
 
+const viewRegistration = async (req, res, next) => {
+  try {
+    const topicId = null;
+    const studentId = req.user._id;
+    const registrations = await registrationService.list(topicId, studentId);
+    return res.status(200).send(registrations);
+  } catch (err) {
+    return next(err);
+  }
+};
+
 const registrationTopic = async (req, res, next) => {
   try {
     const topicId = req.body.topic_id;
+    if (!topicId) {
+      return res.status(422).send('topic_id is required');
+    }
     const { user } = req;
     const topic = await topicService.findOne({ _id: topicId });
     if (await checkCanRegistration(user, topic)) {
@@ -45,8 +59,9 @@ const cancelRegistration = async (req, res, next) => {
 
 const list = async (req, res, next) => {
   try {
-    const topicId = req.params.topic_id;
-    const registrations = await registrationService.list(topicId);
+    const topicId = req.query.topic_id;
+    const studentId = req.query.student_id;
+    const registrations = await registrationService.list(topicId, studentId);
     return res.status(200).send(registrations);
   } catch (err) {
     return next(err);
@@ -85,6 +100,7 @@ const remove = async (req, res, next) => {
 };
 
 module.exports = {
+  viewRegistration,
   registrationTopic,
   cancelRegistration,
   list,
