@@ -8,18 +8,38 @@
 
 # ADMIN, TEACHER, STUDENT
 ###
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjE5MTEwMzczQHN0dWRlbnQuaGNtdXRlLmVkdS52biIsImlhdCI6MTY2ODMxMDQxNywiZXhwIjoxNjY4Mzk2ODE3fQ.L6ay8SXzcLt2HDVXqPM5WmufaRAczwwH-iGCQLiv9A4
+###
 GET http://localhost:5000/v1/roles
+Authorization: Bearer {{token}}
 ###
 GET http://localhost:5000/v1/roles/636fb37074302f3e88865875/permissions
+Authorization: Bearer {{token}}
 ###
-POST http://localhost:5000/v1/roles/636fb37074302f3e88865875/permissions
+POST http://localhost:5000/v1/roles/636fb36974302f3e8886586f/permissions
+Authorization: Bearer {{token}}
 Content-Type: application/json 
 
 {
     "permissions" : [
         "636fb7b8c7edd42a709d89b0",
         "636fb7bdc7edd42a709d89b3",
-        "636fb7c1c7edd42a709d89b6"
+        "636fb7c1c7edd42a709d89b6",
+        "636fb7c6c7edd42a709d89b9",
+        "636fb7cac7edd42a709d89bc",
+        "636fd95c464d273f9cfe10d9",
+        "636fd981464d273f9cfe10dc",
+        "636fd985464d273f9cfe10df",
+        "636fd98b464d273f9cfe10e2",
+        "636fd98e464d273f9cfe10e5",
+        "636fd9a7464d273f9cfe10e8",
+        "636fd9a9464d273f9cfe10eb",
+        "636fda36bea0ef7a70025feb",
+        "636fda3abea0ef7a70025fee",
+        "636fda3dbea0ef7a70025ff1",
+        "636fda9611176270e00c47ac",
+        "636fda9911176270e00c47af",
+        "636fda9c11176270e00c47b2"
     ]
 }
 
