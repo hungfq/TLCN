@@ -9,10 +9,22 @@
     <div class="flex flex-col w-full">
       <HeaderBar :show-search="(select ==='register')" />
       <div class=" h-full bg-white m-2 rounded-xl">
-        <TableDKMH v-if="select === 'register'" />
-        <SearchTopic v-if="select === 'search'" />
+        <TableDKMH
+          v-if="select === 'register'"
+          :list-topic="listTopic"
+          @register-topic="fetchData"
+        />
+        <SearchTopic
+          v-if="select === 'search'"
+          :list-topic-search="listTopicSearch"
+          @search="handleSearchTopic"
+        />
         <ProfileInfo v-if="select === 'info'" />
-        <TableDKMH v-if="select === 'result'" />
+        <ResultRegisterStudent
+          v-if="select === 'result'"
+          :list-register-topic="listRegisterByUser"
+          @cancel-register="fetchData"
+        />
         <ManageUserAdmin v-if="select === 'manage_user_admin'" />
         <ManageTopicAdmin v-if="select === 'manage_topic_admin'" />
         <ManageRegisterAdmin v-if="select === 'manage_register_admin'" />
@@ -25,16 +37,20 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex';
+import { ModalsContainer } from 'vue-final-modal';
 import SideBar from '../components/Dashboard/SideBar.vue';
 import HeaderBar from '../components/Dashboard/HeaderBar.vue';
 import TableDKMH from '../components/Student/TableDKMH.vue';
 import ProfileInfo from '../components/Dashboard/ProfileInfo.vue';
 import SearchTopic from '../components/Student/SearchTopic.vue';
+import ResultRegisterStudent from '../components/Student/ResultRegisterStudent.vue';
 import ManageUserAdmin from '../components/Admin/ManageUserAdmin.vue';
 import ManageTopicAdmin from '../components/Admin/ManageTopicAdmin.vue';
 import ManageRegisterAdmin from '../components/Admin/ManageRegisterAdmin.vue';
 import ManageTopicTeacher from '../components/Teacher/ManageTopicTeacher.vue';
 import ManageRegisterTeacher from '../components/Teacher/ManageRegisterTeacher.vue';
+import TopicApi from '../utils/api/topic';
+import RegisterApi from '../utils/api/register';
 
 export default {
   name: 'DashboardPage',
@@ -49,12 +65,17 @@ export default {
     ManageRegisterAdmin,
     ManageTopicTeacher,
     ManageRegisterTeacher,
+    ResultRegisterStudent,
   },
   props: {
   },
   data () {
     return {
       select: 'register',
+      listTopic: [],
+      listTopicSearch: [],
+      showConfirmRegister: false,
+      listRegisterByUser: [],
     };
   },
   computed: {
@@ -62,12 +83,26 @@ export default {
       isAuthenticated: ({ auth: { isAuthenticated } }) => isAuthenticated,
     }),
     ...mapGetters('auth', [
-      'userId', 'userEmail', 'userRole',
+      'userId', 'userEmail', 'userRole', 'token',
     ]),
+  },
+  async mounted () {
+    await this.fetchData();
   },
   methods: {
     handleChange (value) {
       this.select = value;
+    },
+    async handleSearchTopic (data) {
+      this.listTopicSearch = await TopicApi.listTopicWithName(this.token, data.value) || [];
+    },
+    async fetchData () {
+      try {
+        this.listTopic = await TopicApi.listAllTopics(this.token) || [];
+        this.listRegisterByUser = await RegisterApi.studentViewRegister(this.token);
+      } catch (e) {
+        console.log(e.message);
+      }
     },
   },
 };

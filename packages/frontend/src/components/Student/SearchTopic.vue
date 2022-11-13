@@ -5,6 +5,7 @@
       <select
         id="grid-state"
         class="block appearance-none w-full py-2 pl-4 text-gray-900 bg-gray-50 rounded-lg border-l-gray-50 border-l-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+        @change="onChange"
       >
         <option>Mặc đinh</option>
         <option>Tên đề tài</option>
@@ -18,10 +19,13 @@
         ><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
       </div>
     </div>
-    <SearchBar class="relative w-2/3 m-2" />
+    <SearchBar
+      class="relative w-2/3 m-2"
+      @on-click-search="searchTopics"
+    />
   </div>
 
-  <TableDKMH />
+  <TableDKMH :list-topic="listTopicSearch" />
 </template>
 
 <script>
@@ -35,14 +39,24 @@ export default {
     SearchBar,
   },
   props: {
+    listTopicSearch: Array,
   },
+  emits: ['search'],
   data () {
     return {
+      selected: '',
     };
   },
   computed: {
   },
   methods: {
+    searchTopics (value) {
+      this.$emit('search', { value, type: this.selected });
+    },
+    onChange (e) {
+      const { value } = e.target;
+      this.selected = value;
+    },
   },
 };
 </script>

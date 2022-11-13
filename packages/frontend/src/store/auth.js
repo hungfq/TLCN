@@ -1,4 +1,5 @@
 import { signInWithGoogle } from '../utils/api/auth';
+import UserApi from '../utils/api/user';
 
 const emptyUserInfo = {
   email: null,
@@ -6,6 +7,7 @@ const emptyUserInfo = {
   role: null,
   token: null,
   picture: null,
+  name: null,
 };
 
 const initState = {
@@ -20,6 +22,7 @@ const getters = {
   userInfo: (state) => state.userInfo,
   token: (state) => state.userInfo.token,
   userRole: (state) => state.userInfo.role,
+  userName: (state) => state.userInfo.name,
 };
 
 const actions = {
@@ -48,11 +51,21 @@ const actions = {
     commit('unsetAuthenticated');
     window.location.href = `${window.location.origin}/`;
   },
+  async fetchInfo ({ commit }, token) {
+    const userInfo = await UserApi.getUserInfo(token);
+    commit('setUserInfo', userInfo);
+  },
 };
 
 const mutations = {
   setAuthenticated: (state, userInfo) => {
     state.userInfo = userInfo;
+    state.isAuthenticated = true;
+  },
+  setUserInfo: (state, userInfo) => {
+    state.userInfo.name = userInfo.name;
+    state.userInfo.sex = userInfo.sex;
+    state.userInfo.code = userInfo.code;
     state.isAuthenticated = true;
   },
   unsetAuthenticated: (state) => {
