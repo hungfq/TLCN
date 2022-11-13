@@ -2,6 +2,8 @@ const {
   list,
   findOne,
   update,
+  viewProfile,
+  editProfile,
 } = require('../controller/user.controller');
 
 const authMiddleware = require('../middlewares/auth.middlewares');
@@ -20,6 +22,9 @@ const router = (app) => {
   app.get('/v1/user', isAuth, permit('user.list'), list);
   app.get('/v1/user/:id', isAuth, permit('user.view'), findOne);
   app.put('/v1/user/:id', isAuth, permit('user.update'), update);
+
+  app.get('/v1/profile', isAuth, permit('profile.view'), viewProfile);
+  app.post('/v1/profile', isAuth, permit('profile.edit'), editProfile);
 };
 
 module.exports = router;

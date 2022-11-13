@@ -27,8 +27,15 @@ const update = async (id, name, email, code, picture, roleId) => {
 };
 
 const getUser = async (id) => {
-  const user = await _User.findOne({ _id: id });
+  const user = await _User.findOne({ _id: id })
+    .populate({ path: 'roleId', select: 'name _id' });
   return user;
+};
+
+const editProfile = async (id, name, code, sex) => {
+  await _User.updateOne({ _id: id }, {
+    name, code, sex,
+  });
 };
 
 module.exports = {
@@ -37,4 +44,5 @@ module.exports = {
   remove,
   update,
   getUser,
+  editProfile,
 };

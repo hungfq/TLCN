@@ -13,7 +13,7 @@ POST http://localhost:5000/v1/permissions
 Content-Type: application/json
 
 {
-    "name": "user.update"
+    "name": "profile.edit"
 }
 
 # topic:  create  view  list  update  delete
@@ -22,3 +22,4 @@ Content-Type: application/json
 # register create delete
 # roles list view sync
 # user list view update
+# profile   view  edit
