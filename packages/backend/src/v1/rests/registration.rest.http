@@ -1,5 +1,8 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjE5MTEwMzczQHN0dWRlbnQuaGNtdXRlLmVkdS52biIsImlhdCI6MTY2ODIyMzg4NywiZXhwIjoxNjY4MzEwMjg3fQ.9PjiBT8xaqxKA9FePNTuxSwMsqFK6AXg1jNrvSjQDVs
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjE5MTEwMzczQHN0dWRlbnQuaGNtdXRlLmVkdS52biIsImlhdCI6MTY2ODMxMDQxNywiZXhwIjoxNjY4Mzk2ODE3fQ.L6ay8SXzcLt2HDVXqPM5WmufaRAczwwH-iGCQLiv9A4
 
+GET http://localhost:5000/v1/register
+Authorization: Bearer {{token}}
+###
 POST http://localhost:5000/v1/register HTTP/1.1
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -7,6 +10,8 @@ Content-Type: application/json
 {
     "topic_id": "636dbd15af1e9b5b60c401f5"
 }
+    
+    
 ###
 DELETE http://localhost:5000/v1/register/636f10e8b619327e48ad6766
 Authorization: Bearer {{token}}
@@ -21,6 +26,11 @@ Authorization: Bearer {{token}}
 
 GET http://localhost:5000/v1/registration
 ?topic_id=636dbd15af1e9b5b60c401f5
+Authorization: Bearer {{token}}
+###
+
+GET http://localhost:5000/v1/registration
+?student_id=636fd51a841a040f5cece78f
 Authorization: Bearer {{token}}
 ###
 
