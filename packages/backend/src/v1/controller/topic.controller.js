@@ -1,5 +1,5 @@
 const {
-  insert, list, update, remove, findOne,
+  insert, list, search, update, remove, findOne,
 } = require('../services/topic.service');
 
 const insertTopic = async (req, res, next) => {
@@ -34,6 +34,16 @@ const listTopic = async (req, res, next) => {
   }
 };
 
+const searchTopic = async (req, res, next) => {
+  try {
+    const { value, type } = req.query;
+    const topics = await search(value, type);
+    return res.status(200).send(topics);
+  } catch (err) {
+    return next(err);
+  }
+};
+
 const updateTopic = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -61,6 +71,7 @@ module.exports = {
   insertTopic,
   findOneTopic,
   listTopic,
+  searchTopic,
   updateTopic,
   deleteTopic,
 };

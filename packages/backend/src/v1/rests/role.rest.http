@@ -22,26 +22,28 @@ Content-Type: application/json
 
 {
     "permissions" : [
-        "636fb7b8c7edd42a709d89b0",
-        "636fb7bdc7edd42a709d89b3",
-        "636fb7c1c7edd42a709d89b6",
-        "636fb7c6c7edd42a709d89b9",
-        "636fb7cac7edd42a709d89bc",
-        "636fd95c464d273f9cfe10d9",
-        "636fd981464d273f9cfe10dc",
-        "636fd985464d273f9cfe10df",
-        "636fd98b464d273f9cfe10e2",
-        "636fd98e464d273f9cfe10e5",
-        "636fd9a7464d273f9cfe10e8",
-        "636fd9a9464d273f9cfe10eb",
-        "636fda36bea0ef7a70025feb",
-        "636fda3abea0ef7a70025fee",
-        "636fda3dbea0ef7a70025ff1",
-        "636fda9611176270e00c47ac",
-        "636fda9911176270e00c47af",
-        "636fda9c11176270e00c47b2",
-        "6370965ac5c4fb4ac8d56679",
-        "6370965ec5c4fb4ac8d5667c"
+        "637103b0e117d439a8dcb383",
+        "637103b5e117d439a8dcb386",
+        "637103b8e117d439a8dcb389",
+        "637103bbe117d439a8dcb38c",
+        "637103bfe117d439a8dcb38f",
+        "637103c4e117d439a8dcb392",
+        "637103cce117d439a8dcb395",
+        "637103d3e117d439a8dcb398",
+        "637103dae117d439a8dcb39b",
+        "637103dfe117d439a8dcb39e",
+        "637103e3e117d439a8dcb3a1",
+        "637103ece117d439a8dcb3a4",
+        "637103f3e117d439a8dcb3a7",
+        "637103f8e117d439a8dcb3aa",
+        "637103fee117d439a8dcb3ad",
+        "63710405e117d439a8dcb3b0",
+        "6371040de117d439a8dcb3b3",
+        "63710415e117d439a8dcb3b6",
+        "6371041ae117d439a8dcb3b9",
+        "6371041ee117d439a8dcb3bc",
+        "63710424e117d439a8dcb3bf",
+        "63710429e117d439a8dcb3c2"
     ]
 }
 

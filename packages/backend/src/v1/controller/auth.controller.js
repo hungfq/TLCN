@@ -9,6 +9,7 @@ const roleService = require('../services/role.service');
 
 const listEmailAdmins = new Set([
   'lequocbao29072001@gmail.com',
+  't.hungpham2314@gmail.com',
   'quanghungpham07@gmail.com',
   'bao.lq@holistics.io',
 ]);
@@ -59,7 +60,7 @@ const loginWithGoogle = async (req, res, next) => {
     }
     const user = await _User.findOne({ email });
     const token = jwt.sign({ email }, secretKey, {
-      expiresIn: '24h',
+      expiresIn: '720h',
     });
     if (!user) {
       const newUser = await _User.create({
