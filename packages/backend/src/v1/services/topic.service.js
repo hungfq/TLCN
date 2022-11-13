@@ -9,8 +9,10 @@ const insert = async (title, description, limit, lecturerId) => {
 };
 
 const findOne = async (id) => {
-  const topic = await _Topic.findOne({ _id: id }).populate('lecturerId');
-  return topic;
+  const topic = await _Topic.findOne({ _id: id })
+    .populate({ path: 'lecturerId', select: 'name _id' });
+  const count = await regisService.countTopicLimit(topic._id);
+  return { ...topic._doc, current: count };
 };
 
 const list = async (title, lecturerId) => {

@@ -34,7 +34,7 @@ const syncPermissions = async (req, res, next) => {
     const { id } = req.params;
     const { permissions } = req.body;
     await roleService.sync(id, permissions);
-    return res.status(200).send(permissions);
+    return res.status(200).send('success');
   } catch (err) {
     return next(err);
   }
