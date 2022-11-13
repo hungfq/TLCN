@@ -1,4 +1,10 @@
+/* eslint-disable max-len */
+/* eslint-disable no-case-declarations */
+const _ = require('lodash');
+
 const _Topic = require('../models/topic.model');
+const _User = require('../models/user.model');
+const _Role = require('../models/role.model');
 const regisService = require('./registration.service');
 
 const insert = async (title, description, limit, lecturerId) => {
@@ -13,6 +19,47 @@ const findOne = async (id) => {
     .populate({ path: 'lecturerId', select: 'name _id' });
   const count = await regisService.countTopicLimit(topic._id);
   return { ...topic._doc, current: count };
+};
+
+const search = async (value, type) => {
+  const roleTeacher = await _Role.findOne({ name: 'TEACHER' });
+  let listTopic;
+  let listTeacher;
+  let listTeacherId;
+
+  switch (type) {
+    case 'title':
+      listTopic = await _Topic.find({ title: { $regex: `.*${value}.*` } })
+        .populate({ path: 'lecturerId', select: 'name _id' });
+      break;
+    case 'teacher':
+      listTeacher = await _User.find({
+        name: { $regex: `.*${value}.*` },
+        roleId: roleTeacher._id,
+      });
+      listTeacherId = listTeacher.map((teacher) => teacher._id);
+      listTopic = await _Topic.find({ lecturerId: { $in: listTeacherId } })
+        .populate({ path: 'lecturerId', select: 'name _id' });
+      break;
+    default:
+      const listTopic1 = await _Topic.find({ title: { $regex: `.*${value}.*` } })
+        .populate({ path: 'lecturerId', select: 'name _id' });
+      listTeacher = await _User.find({
+        name: { $regex: `.*${value}.*` },
+        roleId: roleTeacher._id,
+      });
+      listTeacherId = listTeacher.map((teacher) => teacher._id);
+      const listTopic2 = await _Topic.find({ lecturerId: { $in: listTeacherId } })
+        .populate({ path: 'lecturerId', select: 'name _id' });
+      listTopic = _.merge(listTopic1, listTopic2);
+  }
+  const results = await Promise.all(
+    listTopic.map(async (topic) => {
+      const count = await regisService.countTopicLimit(topic._id);
+      return { ...topic._doc, current: count };
+    }),
+  );
+  return results;
 };
 
 const list = async (title, lecturerId) => {
@@ -58,6 +105,7 @@ module.exports = {
   insert,
   findOne,
   list,
+  search,
   update,
   remove,
 };

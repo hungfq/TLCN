@@ -1,4 +1,4 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjE5MTEwMzczQHN0dWRlbnQuaGNtdXRlLmVkdS52biIsImlhdCI6MTY2ODMxMDQxNywiZXhwIjoxNjY4Mzk2ODE3fQ.L6ay8SXzcLt2HDVXqPM5WmufaRAczwwH-iGCQLiv9A4
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjE5MTEwMzczQHN0dWRlbnQuaGNtdXRlLmVkdS52biIsImlhdCI6MTY2ODM0MTczOCwiZXhwIjoxNjcwOTMzNzM4fQ.6wfmN_legh9WzDDvQHxsSBIsocfYmP82JjGM-gbRrqQ
 
 POST http://localhost:5000/v1/topic
 Authorization: Bearer {{token}}
@@ -45,4 +45,9 @@ Content-Type: application/json
 
 ###
 DELETE http://localhost:5000/v1/topic/63651af3436a862a8c24fd50
+Authorization: Bearer {{token}}
+###
+GET http://localhost:5000/v1/topic-search
+?type=
+&value=Hung
 Authorization: Bearer {{token}}
