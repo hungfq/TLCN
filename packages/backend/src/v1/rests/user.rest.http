@@ -7,6 +7,11 @@ GET http://localhost:5000/v1/user
 Authorization: Bearer {{token}}
 ###
 
+GET http://localhost:5000/v1/user
+?roleId=636fb36d74302f3e88865872
+Authorization: Bearer {{token}}
+###
+
 GET http://localhost:5000/v1/user/636dbbc34489475518991d2a
 Authorization: Bearer {{token}}
 ###
