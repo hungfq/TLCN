@@ -10,7 +10,7 @@ exports.permit = (...permittedRoles) => async (request, response, next) => {
   if (isPermissionExist) {
     next();
   } else {
-    response.status(403).json({ message: 'Forbidden' });
+    response.status(403).json({ message: 'Permission denied' });
   }
   // next();
 };

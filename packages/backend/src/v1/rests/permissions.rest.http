@@ -1,19 +1,15 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjE5MTEwMzczQHN0dWRlbnQuaGNtdXRlLmVkdS52biIsImlhdCI6MTY2ODMxMDQxNywiZXhwIjoxNjY4Mzk2ODE3fQ.L6ay8SXzcLt2HDVXqPM5WmufaRAczwwH-iGCQLiv9A4
-
-GET http://localhost:5000/v1/permissions
-Authorization: Bearer {{token}}
+GET {{host}}/v1/permissions
+Authorization: Bearer {{jwt_token}}
 ###
 
 
 
 
-
-
-POST http://localhost:5000/v1/permissions
+POST {{host}}/v1/permissions
 Content-Type: application/json
 
 {
-    "name": "profile.edit"
+    "name": "major.update"
 }
 
 # topic     search create view list update delete
@@ -45,3 +41,7 @@ Content-Type: application/json
 # profile  view  edit
     # profile.view
     # profile.edit
+# major  list  create  update
+    # major.list
+    # major.create
+    # major.update

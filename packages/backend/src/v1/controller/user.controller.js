@@ -15,7 +15,8 @@ const findOne = async (req, res, next) => {
 
 const list = async (req, res, next) => {
   try {
-    const user = await userService.list();
+    const { roleId } = req.query;
+    const user = await userService.list(roleId);
     return res.status(200).send(user);
   } catch (err) {
     return next(err);

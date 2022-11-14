@@ -1,4 +1,4 @@
-# POST http://localhost:5000/v1/roles
+# POST {{host}}/v1/roles
 # Content-Type: application/json
 
 # {
@@ -8,16 +8,14 @@
 
 # ADMIN, TEACHER, STUDENT
 ###
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjE5MTEwMzczQHN0dWRlbnQuaGNtdXRlLmVkdS52biIsImlhdCI6MTY2ODMxMDQxNywiZXhwIjoxNjY4Mzk2ODE3fQ.L6ay8SXzcLt2HDVXqPM5WmufaRAczwwH-iGCQLiv9A4
+GET {{host}}/v1/roles
+Authorization: Bearer {{jwt_token}}
 ###
-GET http://localhost:5000/v1/roles
-Authorization: Bearer {{token}}
+GET {{host}}/v1/roles/636fb37074302f3e88865875/permissions
+Authorization: Bearer {{jwt_token}}
 ###
-GET http://localhost:5000/v1/roles/636fb37074302f3e88865875/permissions
-Authorization: Bearer {{token}}
-###
-POST http://localhost:5000/v1/roles/636fb37074302f3e88865875/permissions
-Authorization: Bearer {{token}}
+POST {{host}}/v1/roles/636fb37074302f3e88865875/permissions
+Authorization: Bearer {{jwt_token}}
 Content-Type: application/json 
 
 {
@@ -43,10 +41,13 @@ Content-Type: application/json
         "6371041ae117d439a8dcb3b9",
         "6371041ee117d439a8dcb3bc",
         "63710424e117d439a8dcb3bf",
-        "63710429e117d439a8dcb3c2"
+        "63710429e117d439a8dcb3c2",
+        "6371ca1addb79f5e94c4c7bf",
+        "6371ca20ddb79f5e94c4c7c2",
+        "6371ca23ddb79f5e94c4c7c5"
     ]
 }
 
 
 ###
-GET http://localhost:5000/test
+GET {{host}}/test

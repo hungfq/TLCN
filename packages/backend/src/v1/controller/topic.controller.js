@@ -5,9 +5,9 @@ const {
 const insertTopic = async (req, res, next) => {
   try {
     const {
-      title, description, limit, lecturerId,
+      title, description, limit, lecturerId, majorId,
     } = req.body;
-    const topic = await insert(title, description, limit, lecturerId);
+    const topic = await insert(title, description, limit, lecturerId, majorId);
     return res.status(201).send(topic);
   } catch (err) {
     return next(err);
@@ -26,8 +26,8 @@ const findOneTopic = async (req, res, next) => {
 
 const listTopic = async (req, res, next) => {
   try {
-    const { title, lecturerId } = req.query;
-    const topics = await list(title, lecturerId);
+    const { majorId, lecturerId } = req.query;
+    const topics = await list(majorId, lecturerId);
     return res.status(200).send(topics);
   } catch (err) {
     return next(err);
@@ -48,9 +48,9 @@ const updateTopic = async (req, res, next) => {
   try {
     const { id } = req.params;
     const {
-      title, description, limit, lecturerId,
+      title, description, limit, lecturerId, majorId,
     } = req.body;
-    await update(id, title, description, limit, lecturerId);
+    await update(id, title, description, limit, lecturerId, majorId);
     return res.status(200).send('success');
   } catch (err) {
     return next(err);
