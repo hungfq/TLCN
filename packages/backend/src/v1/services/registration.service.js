@@ -18,27 +18,27 @@ const list = async (topicId, studentId) => {
       .populate({ path: 'studentId', select: 'name _id' })
       .populate({
         path: 'topicId',
-        populate: {
-          path: 'lecturerId', select: 'name _id',
-        },
+        populate: [
+          { path: 'lecturerId', select: 'name _id' },
+          { path: 'majorId', select: 'name _id' }],
       });
   } else if (studentId) {
     listRegistration = await _Registration.find({ studentId })
       .populate({ path: 'studentId', select: 'name _id' })
       .populate({
         path: 'topicId',
-        populate: {
-          path: 'lecturerId', select: 'name _id',
-        },
+        populate: [
+          { path: 'lecturerId', select: 'name _id' },
+          { path: 'majorId', select: 'name _id' }],
       });
   } else {
     listRegistration = await _Registration.find({})
       .populate({ path: 'studentId', select: 'name _id' })
       .populate({
         path: 'topicId',
-        populate: {
-          path: 'lecturerId', select: 'name _id',
-        },
+        populate: [
+          { path: 'lecturerId', select: 'name _id' },
+          { path: 'majorId', select: 'name _id' }],
       });
   }
 
@@ -50,9 +50,9 @@ const findOne = async (topicId) => {
     .populate({ path: 'studentId', select: 'name _id' })
     .populate({
       path: 'topicId',
-      populate: {
-        path: 'lecturerId', select: 'name _id',
-      },
+      populate: [
+        { path: 'lecturerId', select: 'name _id' },
+        { path: 'majorId', select: 'name _id' }],
     });
 
   return listRegistration;

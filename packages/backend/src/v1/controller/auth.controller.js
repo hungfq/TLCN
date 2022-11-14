@@ -58,7 +58,8 @@ const loginWithGoogle = async (req, res, next) => {
         { message: 'The email not exist in organization' },
       );
     }
-    const user = await _User.findOne({ email });
+    const user = await _User.findOne({ email })
+      .populate({ path: 'roleId', select: 'name _id' });
     const token = jwt.sign({ email }, secretKey, {
       expiresIn: '720h',
     });
