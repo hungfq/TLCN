@@ -16,7 +16,7 @@ new Promise((resolve) => {
   async.parallel(
     [
       (callback) => {
-        _Role.find({}, { _id: 0 })
+        _Role.find({})
           .exec((err, _id) => {
             callback(null, _id);
           });
@@ -43,6 +43,7 @@ new Promise((resolve) => {
       });
     }
   }
+  console.log(items);
   resolve(items);
 })).then((items) => {
   seeder.connect('mongodb://localhost:27017/db-cnpmm-test', () => {
