@@ -1,10 +1,8 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjE5MTEwMzczQHN0dWRlbnQuaGNtdXRlLmVkdS52biIsImlhdCI6MTY2ODMxMDQxNywiZXhwIjoxNjY4Mzk2ODE3fQ.L6ay8SXzcLt2HDVXqPM5WmufaRAczwwH-iGCQLiv9A4
-
-GET http://localhost:5000/v1/register
-Authorization: Bearer {{token}}
+GET {{host}}/v1/register
+Authorization: Bearer {{jwt_token}}
 ###
-POST http://localhost:5000/v1/register HTTP/1.1
-Authorization: Bearer {{token}}
+POST {{host}}/v1/register HTTP/1.1
+Authorization: Bearer {{jwt_token}}
 Content-Type: application/json
 
 {
@@ -13,29 +11,29 @@ Content-Type: application/json
     
     
 ###
-DELETE http://localhost:5000/v1/register/636f10e8b619327e48ad6766
-Authorization: Bearer {{token}}
+DELETE {{host}}/v1/register/636f10e8b619327e48ad6766
+Authorization: Bearer {{jwt_token}}
 ###
 
 
 
-GET http://localhost:5000/v1/registration
-Authorization: Bearer {{token}}
+GET {{host}}/v1/registration
+Authorization: Bearer {{jwt_token}}
 ###
 
 
-GET http://localhost:5000/v1/registration
+GET {{host}}/v1/registration
 ?topic_id=636dbd15af1e9b5b60c401f5
-Authorization: Bearer {{token}}
+Authorization: Bearer {{jwt_token}}
 ###
 
-GET http://localhost:5000/v1/registration
+GET {{host}}/v1/registration
 ?student_id=636fd51a841a040f5cece78f
-Authorization: Bearer {{token}}
+Authorization: Bearer {{jwt_token}}
 ###
 
-POST http://localhost:5000/v1/registration
-Authorization: Bearer {{token}}
+POST {{host}}/v1/registration
+Authorization: Bearer {{jwt_token}}
 Content-Type: application/json
 
 {
@@ -46,8 +44,8 @@ Content-Type: application/json
 ###
 
 
-PUT http://localhost:5000/v1/registration/636e448afe0c2c275cd1745d
-Authorization: Bearer {{token}}
+PUT {{host}}/v1/registration/636e448afe0c2c275cd1745d
+Authorization: Bearer {{jwt_token}}
 Content-Type: application/json
 
 {
@@ -58,5 +56,5 @@ Content-Type: application/json
 ###
 
 
-DELETE http://localhost:5000/v1/registration/636f0e3011f241435c9757c6
-Authorization: Bearer {{token}}
+DELETE {{host}}/v1/registration/636f0e3011f241435c9757c6
+Authorization: Bearer {{jwt_token}}

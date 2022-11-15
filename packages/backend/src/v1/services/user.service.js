@@ -10,9 +10,15 @@ const insert = async (firstName, lastName, sex, email) => {
   return user;
 };
 
-const list = async () => {
-  const listUser = await _User.find({})
-    .populate({ path: 'roleId', select: 'name _id' });
+const list = async (roleId) => {
+  let listUser;
+  if (roleId) {
+    listUser = await _User.find({ roleId })
+      .populate({ path: 'roleId', select: 'name _id' });
+  } else {
+    listUser = await _User.find({})
+      .populate({ path: 'roleId', select: 'name _id' });
+  }
   return listUser;
 };
 

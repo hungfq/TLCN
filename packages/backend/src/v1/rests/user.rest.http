@@ -1,18 +1,21 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjE5MTEwMzczQHN0dWRlbnQuaGNtdXRlLmVkdS52biIsImlhdCI6MTY2ODMxMDQxNywiZXhwIjoxNjY4Mzk2ODE3fQ.L6ay8SXzcLt2HDVXqPM5WmufaRAczwwH-iGCQLiv9A4
-
-GET http://localhost:5000/check-status
+GET {{host}}/check-status
 ###
 
-GET http://localhost:5000/v1/user
-Authorization: Bearer {{token}}
+GET {{host}}/v1/user
+Authorization: Bearer {{jwt_token}}
 ###
 
-GET http://localhost:5000/v1/user/636dbbc34489475518991d2a
-Authorization: Bearer {{token}}
+GET {{host}}/v1/user
+?roleId=636fb36d74302f3e88865872
+Authorization: Bearer {{jwt_token}}
 ###
 
-PUT http://localhost:5000/v1/user/636dbbc34489475518991d2a
-Authorization: Bearer {{token}}
+GET {{host}}/v1/user/636fd51a841a040f5cece78f
+Authorization: Bearer {{jwt_token}}
+###
+
+PUT {{host}}/v1/user/636dbbc34489475518991d2a
+Authorization: Bearer {{jwt_token}}
 Content-Type: application/json
 
 {
@@ -24,11 +27,11 @@ Content-Type: application/json
   "role": "STUDENT"
 }
 ###
-GET http://localhost:5000/v1/profile
-Authorization: Bearer {{token}}
+GET {{host}}/v1/profile
+Authorization: Bearer {{jwt_token}}
 ###
-POST http://localhost:5000/v1/profile
-Authorization: Bearer {{token}}
+POST {{host}}/v1/profile
+Authorization: Bearer {{jwt_token}}
 Content-Type: application/json
 
 {

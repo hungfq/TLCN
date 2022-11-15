@@ -6,6 +6,7 @@ const roleRoutes = require('./routes/role.route');
 const permissionsRoutes = require('./routes/permission.route');
 const userRoutes = require('./routes/user.route');
 const topicRoutes = require('./routes/topic.route');
+const majorRoutes = require('./routes/major.route');
 const authRoutes = require('./routes/auth.route');
 const registrationRoutes = require('./routes/registration.route');
 
@@ -30,6 +31,7 @@ roleRoutes(app);
 permissionsRoutes(app);
 userRoutes(app);
 topicRoutes(app);
+majorRoutes(app);
 authRoutes(app);
 registrationRoutes(app);
 

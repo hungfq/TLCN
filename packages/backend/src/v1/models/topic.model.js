@@ -11,6 +11,10 @@ const TopicSchema = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: 'User',
   },
+  majorId: {
+    type: Schema.Types.ObjectId,
+    ref: 'Major',
+  },
 });
 
 module.exports = mongoose.model('Topic', TopicSchema);

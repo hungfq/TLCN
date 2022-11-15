@@ -1,53 +1,49 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjE5MTEwMzczQHN0dWRlbnQuaGNtdXRlLmVkdS52biIsImlhdCI6MTY2ODM0MTczOCwiZXhwIjoxNjcwOTMzNzM4fQ.6wfmN_legh9WzDDvQHxsSBIsocfYmP82JjGM-gbRrqQ
-
-POST http://localhost:5000/v1/topic
-Authorization: Bearer {{token}}
+POST {{host}}/v1/topic
+Authorization: Bearer {{jwt_token}}
 Content-Type: application/json
 
 {
-  "title": "Xây dựng trang web quản lý đề tài khoa CNTT",
+  "title": "DDDD",
   "description": "Sử dụng NodeJS VueJS MongoDB",
   "limit": 3,
-  "lecturerId": "636dbc12af1e9b5b60c401f2"
+  "lecturerId": "636e4aa0e92f347ecc973f88",
+  "majorId": "6371ca81ddb79f5e94c4c870"
 }
 ###
 
-GET http://localhost:5000/v1/topic
-Authorization: Bearer {{token}}
+GET {{host}}/v1/topic
+Authorization: Bearer {{jwt_token}}
 ###
-GET http://localhost:5000/v1/topic
-?title=web
-Authorization: Bearer {{token}}
+GET {{host}}/v1/topic
+?majorId=6371ca81ddb79f5e94c4c870
+Authorization: Bearer {{jwt_token}}
 ###
-GET http://localhost:5000/v1/topic
-?lecturerId=636dbc12af1e9b5b60c401f2
-Authorization: Bearer {{token}}
+GET {{host}}/v1/topic
+?majorId=
+&lecturerId=6370dd90ed2c291d84384e02
+Authorization: Bearer {{jwt_token}}
 ###
-GET http://localhost:5000/v1/topic
-?title=web
-&lecturerId=636dbc12af1e9b5b60c401f2
-Authorization: Bearer {{token}}
-###
-GET http://localhost:5000/v1/topic/636dcc7234d38c6dec494e7c
-Authorization: Bearer {{token}}
+GET {{host}}/v1/topic/6371ec7ac47cb65954470851
+Authorization: Bearer {{jwt_token}}
 ###
 
-PUT http://localhost:5000/v1/topic/636e567fd96a673a70082cab
-Authorization: Bearer {{token}}
+PUT {{host}}/v1/topic/636dbd15af1e9b5b60c401f5
+Authorization: Bearer {{jwt_token}}
 Content-Type: application/json
 
 {
-  "title": "Xây dựng trang web quản lý đề tài khoa CNTT",
+  "title": "AAAA",
   "description": "Sử dụng NodeJS VueJS MongoDB",
   "limit": 3,
-  "lecturerId": "636dbc12af1e9b5b60c401f2"
+  "lecturerId": "636e4aa0e92f347ecc973f88",
+  "majorId": "6371ca81ddb79f5e94c4c870"
 }
 
 ###
-DELETE http://localhost:5000/v1/topic/63651af3436a862a8c24fd50
-Authorization: Bearer {{token}}
+DELETE {{host}}/v1/topic/63651af3436a862a8c24fd50
+Authorization: Bearer {{jwt_token}}
 ###
-GET http://localhost:5000/v1/topic-search
+GET {{host}}/v1/topic-search
 ?type=
 &value=Hung
-Authorization: Bearer {{token}}
+Authorization: Bearer {{jwt_token}}

@@ -7,10 +7,10 @@ exports.permit = (...permittedRoles) => async (request, response, next) => {
   //   (x) => x.permissionId.name === permittedRoles[0],
   // );
 
-  // if (isPermissionExist) {
-  //   next();
-  // } else {
-  //   response.status(403).json({ message: 'Forbidden' });
-  // }
-  next();
+  if (isPermissionExist) {
+    next();
+  } else {
+    response.status(403).json({ message: 'Forbidden' });
+  }
+  // next();
 };
