@@ -11,7 +11,7 @@ const { permit } = roleMiddleware;
 const router = (app) => {
   app.post('/v1/topic', isAuth, permit('topic.create'), insertTopic);
   app.get('/v1/topic/:id', isAuth, permit('topic.view'), findOneTopic);
-  app.get('/v1/topic', isAuth, permit('topic.list'), listTopic);
+  app.get('/v1/topic', listTopic); // public api in homepage
   app.get('/v1/topic-search', isAuth, permit('topic.search'), searchTopic);
   app.put('/v1/topic/:id', isAuth, permit('topic.update'), updateTopic);
   app.delete('/v1/topic/:id', isAuth, permit('topic.delete'), deleteTopic);
