@@ -1,7 +1,15 @@
 <!-- eslint-disable max-len -->
 <template>
-  <div class="overflow-x-auto relative shadow-md sm:rounded-lg m-4">
-    <table class="w-full text-sm text-left text-gray-500">
+  <div
+    class="overflow-x-auto shadow-md sm:rounded-lg mx-4 mt-4 h-[700px]"
+  >
+    <table
+      class="
+    w-full
+    text-sm
+    text-left
+    text-gray-500"
+    >
       <thead class="text-xs text-gray-700 uppercase bg-gray-300">
         <tr>
           <th
@@ -44,7 +52,7 @@
             {{ topic.title }}
           </th>
           <td class="py-4 px-6">
-            {{ topic.lecturerId.name }}
+            {{ displayNameTeacher(lectureId) }}
           </td>
           <td class="py-4 px-6">
             {{ `${topic.current} / ${topic.limit}` }}
@@ -175,6 +183,10 @@ export default {
       this.currentDescriptionTopic = '';
       close();
       this.showErrorModal = false;
+    },
+    displayNameTeacher (teacher) {
+      if (teacher && teacher.name) return teacher.name;
+      return '';
     },
   },
 };

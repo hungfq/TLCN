@@ -8,7 +8,7 @@
     />
     <div class="flex flex-col w-full">
       <HeaderBar :show-search="(select ==='register')" />
-      <div class=" h-full bg-white m-2 rounded-xl">
+      <div class=" h-[780px] bg-white m-2 rounded-xl">
         <TableDKMH
           v-if="select === 'register'"
           :list-topic="listTopic"

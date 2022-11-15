@@ -23,4 +23,33 @@ export default class UserApi {
     });
     return res.data;
   }
+
+  static async getAllUser (token) {
+    const res = await axios.get('/user', {
+      headers: {
+        authorization: `bearer ${token}`,
+      },
+    });
+    return res.data;
+  }
+
+  static async getUserById (token, id) {
+    const res = await axios.get(`/user/${id}`, {
+      headers: {
+        authorization: `bearer ${token}`,
+      },
+    });
+    return res.data;
+  }
+
+  static async updateUserById (token, id, sex, name, email, code) {
+    const res = await axios.put(`/user/${id}`, {
+      sex, name, email, code,
+    }, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  }
 }

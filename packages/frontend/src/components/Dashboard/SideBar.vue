@@ -1,6 +1,6 @@
 <!-- eslint-disable max-len -->
 <template>
-  <div class="rounded-xl flex flex-col bg-white px-2 shadow-2xl h-screen w-[350px] m-2">
+  <div class="rounded-xl flex flex-col bg-white px-2 shadow-2xl h-[1000px] w-[350px] m-2">
     <img
       class="m-4"
       src="https://fit.hcmute.edu.vn/Resources/Images/SubDomain/fit/logo-cntt2021.png"
