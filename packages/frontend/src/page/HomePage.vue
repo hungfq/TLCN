@@ -8,19 +8,20 @@
     <BannerInfo class="col-span-4" />
     <BoardTopic
       class="col-span-4"
-      :name-major="'Chuyên ngành công nghệ phần mềm'"
+      :name-major="'Công nghệ phần mềm'"
       :url-image="imageUrlCNPM"
     />
     <BoardTopic
       class="col-span-4"
-      :name-major="'Chuyên ngành hệ thống thông tin'"
+      :name-major="'Hệ thống thông tin'"
       :url-image="imageUrlHTTT"
     />
     <BoardTopic
       class="col-span-4"
-      :name-major="'Chuyên ngành mạng và an ninh mạng'"
+      :name-major="'Mạng và an ninh mạng'"
       :url-image="imageUrlATTT"
     />
+    <!-- <div v-for="item in mapTopic"> {{item.majorName}}  {{item.listTopic}} {{item.image}}</div> -->
   </div>
 </template>
 
@@ -31,6 +32,8 @@ import TabBar from '../components/Home/TabBar.vue';
 import BannerFrame from '../components/Home/BannerFrame.vue';
 import BannerInfo from '../components/Home/BannerInfo.vue';
 import BoardTopic from '../components/Home/BoardTopic.vue';
+import MajorApi from '../utils/api/major';
+import TopicApi from '../utils/api/topic';
 
 const imageUrlCNPM = new URL('../assets/images/Khoa_CNPM.png', import.meta.url).href;
 const imageUrlHTTT = new URL('../assets/images/Khoa_HTTT.jpg', import.meta.url).href;
@@ -52,6 +55,8 @@ export default {
       imageUrlCNPM,
       imageUrlHTTT,
       imageUrlATTT,
+      listMajor: [],
+      mapTopic: [],
     };
   },
   computed: {
@@ -59,6 +64,30 @@ export default {
       isAuthenticated: (state) => state.auth.isAuthenticated,
       userInfo: (state) => state.ui.auth.userinfo,
     }),
+    ...mapGetters('auth', [
+      'userId', 'userEmail', 'userRole', 'token',
+    ]),
+  },
+  watch: {
+    // Note: only simple paths. Expressions are not supported.
+  },
+  async mounted () {
+    try {
+      const mapTopic = [];
+      const listMajor = await MajorApi.listAllMajor(this.token);
+      listMajor.forEach(async (major) => {
+        let image = this.imageUrlCNPM;
+        if (major.name === 'Hệ thống Thông tin') image = this.imageUrlHTTT;
+        else if (major.name === 'Công nghệ Phần mềm') image = this.imageUrlCNPM;
+        else if (major.name === 'Mạng và An ninh mạng') image = this.imageUrlATTT;
+        const listTopic = await TopicApi.listAllTopicsWithMajor(this.token, major._id);
+        mapTopic.push({ majorName: major.name, listTopic });
+      });
+      this.mapTopic = mapTopic;
+      this.listMajor = listMajor;
+    } catch (e) {
+      console.log(e);
+    }
   },
   methods: {
   },

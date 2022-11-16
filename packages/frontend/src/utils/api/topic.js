@@ -21,4 +21,13 @@ export default class TopicApi {
     });
     return res.data;
   }
+
+  static async listAllTopicsWithMajor(token, majorId) {
+    const res = await axios.get(`/topic?majorId=${majorId}`, {
+      headers: {
+        authorization: `bearer ${token}`,
+      },
+    });
+    return res.data;
+  }
 }

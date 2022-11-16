@@ -12,6 +12,7 @@
     <SearchBar
       v-if="showSearch"
       class="w-[400px]  mt-16 mr-10 ml-auto"
+      @onClickSearch="handleSearch"
     />
   </div>
 </template>
@@ -41,6 +42,9 @@ export default {
   computed: {
   },
   methods: {
+    handleSearch (value) {
+      this.$emit('search-header', { value, type: '' });
+    },
   },
 };
 </script>

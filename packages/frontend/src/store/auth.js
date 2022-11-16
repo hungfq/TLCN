@@ -21,12 +21,12 @@ const getters = {
   isAuthenticated: (state) => state.isAuthenticated,
   userInfo: (state) => state.userInfo,
   token: (state) => state.userInfo.token,
-  userRole: (state) => state.userInfo.role,
+  userRole: (state) => state.userInfo.roleId.name,
   userName: (state) => state.userInfo.name,
 };
 
 const actions = {
-  async signIn ({ commit, dispatch, rootState }, payload) {
+  async signIn({ commit, dispatch, rootState }, payload) {
     try {
       const { access_token } = payload;
       const res = await signInWithGoogle(access_token);
@@ -47,11 +47,11 @@ const actions = {
     }
   },
 
-  async signOut ({ commit }) {
+  async signOut({ commit }) {
     commit('unsetAuthenticated');
     window.location.href = `${window.location.origin}/`;
   },
-  async fetchInfo ({ commit }, token) {
+  async fetchInfo({ commit }, token) {
     const userInfo = await UserApi.getUserInfo(token);
     commit('setUserInfo', userInfo);
   },
