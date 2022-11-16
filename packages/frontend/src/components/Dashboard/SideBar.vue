@@ -1,3 +1,4 @@
+<!-- eslint-disable no-nested-ternary -->
 <!-- eslint-disable max-len -->
 <template>
   <div class="rounded-xl flex flex-col bg-white px-2 shadow-2xl h-[1000px] w-[350px] m-2">
@@ -151,11 +152,11 @@ export default {
   props: {
     select: {
       type: String,
-      default: 'register',
+      default: '',
     },
     role: {
       type: String,
-      default: 'STUDENT',
+      default: '',
     },
   },
   data () {
@@ -190,6 +191,13 @@ export default {
     isManageTopicAdmin () {
       return this.select === 'manage_topic_admin';
     },
+  },
+  mounted () {
+    const selected = this.select || ((!this.select && this.role === 'STUDENT') ? 'register'
+      : (!this.select && this.role === 'TEACHER') ? 'manage_topic_teacher'
+        : (!this.select && this.role === 'ADMIN') ? 'manage_topic_admin'
+          : '');
+    this.handleClick(selected);
   },
   methods: {
     handleClick (value) {

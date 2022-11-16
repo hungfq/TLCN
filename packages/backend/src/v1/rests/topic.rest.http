@@ -44,6 +44,6 @@ DELETE {{host}}/v1/topic/63651af3436a862a8c24fd50
 Authorization: Bearer {{jwt_token}}
 ###
 GET {{host}}/v1/topic-search
-?type=
-&value=Hung
+?type=title
+&value=CNTT
 Authorization: Bearer {{jwt_token}}

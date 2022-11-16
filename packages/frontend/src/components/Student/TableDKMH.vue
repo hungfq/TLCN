@@ -28,6 +28,12 @@
             scope="col"
             class="py-3 px-6"
           >
+            Chuyên ngành
+          </th>
+          <th
+            scope="col"
+            class="py-3 px-6"
+          >
             Số lượng
           </th>
           <th
@@ -52,7 +58,19 @@
             {{ topic.title }}
           </th>
           <td class="py-4 px-6">
-            {{ displayNameTeacher(lectureId) }}
+            <div
+              class="font-bold cursor-pointer"
+              @click="handleShowInfoTeacher(topic.lecturerId._id)"
+            >
+              {{ topic.lecturerId.name }}
+            </div>
+          </td>
+          <td class="py-4 px-6">
+            <div
+              class="font-bolds"
+            >
+              {{ topic.majorId.name }}
+            </div>
           </td>
           <td class="py-4 px-6">
             {{ `${topic.current} / ${topic.limit}` }}
@@ -93,6 +111,13 @@
     :message="messageError"
     @close-error-modal="closeErrorModal"
   />
+  <InfoUserModal
+    v-model="showInfoTeacher"
+    :name="currentTeacherInfo.name"
+    :email="currentTeacherInfo.email"
+    :sex="currentTeacherInfo.sex"
+    @close-info-user-modal="closeInfoUserModal"
+  />
 </template>
 <script>
 import { mapState, mapGetters } from 'vuex';
@@ -100,6 +125,8 @@ import ConfirmModal from '../Modal/ConfirmModal.vue';
 import InfoModal from '../Modal/InfoModal.vue';
 import ErrorModal from '../Modal/ErrorModal.vue';
 import RegisterApi from '../../utils/api/register';
+import InfoUserModal from '../Modal/InfoUserModal.vue';
+import UserApi from '../../utils/api/user';
 
 export default {
   name: 'TableDKMH',
@@ -107,6 +134,7 @@ export default {
     ConfirmModal,
     InfoModal,
     ErrorModal,
+    InfoUserModal,
   },
   props: {
     listTopic: Array,
@@ -117,11 +145,13 @@ export default {
       show: false,
       showInfoModal: false,
       showErrorModal: false,
+      showInfoTeacher: false,
       currentTopicId: '',
       currentTopicName: '',
       currentTeacher: '',
       currentDescriptionTopic: '',
       messageError: '',
+      currentTeacherInfo: {},
     };
   },
   computed: {
@@ -166,6 +196,15 @@ export default {
       this.currentDescriptionTopic = description;
       this.showInfoModal = true;
     },
+    async handleShowInfoTeacher (id) {
+      try {
+        this.currentTeacherInfo = await UserApi.getUserById(this.token, id);
+        this.showInfoTeacher = true;
+      } catch (e) {
+        this.messageError = 'Đã có lỗi xảy ra vui lòng xử lý lại';
+        this.showErrorModal = true;
+      }
+    },
     closeInfoModal (close) {
       this.currentTopicId = '';
       this.currentTopicName = '';
@@ -183,6 +222,11 @@ export default {
       this.currentDescriptionTopic = '';
       close();
       this.showErrorModal = false;
+    },
+    closeInfoUserModal (close) {
+      this.currentTeacherInfo = { name: '', email: '', sex: '' };
+      close();
+      this.showInfoTeacher = false;
     },
     displayNameTeacher (teacher) {
       if (teacher && teacher.name) return teacher.name;

@@ -7,8 +7,11 @@
       @changeSection="handleChange"
     />
     <div class="flex flex-col w-full">
-      <HeaderBar :show-search="(select ==='register')" />
-      <div class=" h-[780px] bg-white m-2 rounded-xl">
+      <HeaderBar
+        :show-search="(select ==='register')"
+        @search-header="handleSearchTopic"
+      />
+      <div class=" h-full bg-white m-2 rounded-xl">
         <TableDKMH
           v-if="select === 'register'"
           :list-topic="listTopic"
@@ -71,7 +74,7 @@ export default {
   },
   data () {
     return {
-      select: 'register',
+      select: null,
       listTopic: [],
       listTopicSearch: [],
       showConfirmRegister: false,
@@ -94,7 +97,8 @@ export default {
       this.select = value;
     },
     async handleSearchTopic (data) {
-      this.listTopicSearch = await TopicApi.listTopicWithName(this.token, data.value) || [];
+      this.listTopicSearch = await TopicApi.listTopicWithName(this.token, data.value, data.type) || [];
+      this.select = 'search';
     },
     async fetchData () {
       try {
