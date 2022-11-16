@@ -1,5 +1,5 @@
 GET {{host}}/v1/permissions
-Authorization: Bearer {{jwt_token}}
+authorization: Bearer {{jwt_token}}
 ###
 
 

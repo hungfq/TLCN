@@ -27,6 +27,7 @@ async function verifyToken(token) {
 }
 
 async function validateEmail(email, hd) {
+  console.log('hellpo');
   let role = null;
   const roles = await roleService.list();
   if (listEmailAdmins.has(email)) role = roles.find((x) => x.name === 'ADMIN')._id;

@@ -34,7 +34,7 @@ const permissionsData = [{
 }];
 
 // connect mongodb
-seeder.connect('mongodb://localhost:27017/db-cnpmm-test', () => {
+seeder.connect('mongodb://localhost:27017/db-cnpmm', () => {
   seeder.loadModels([
     '../../models/permission.model', // load mongoose model
   ]);
