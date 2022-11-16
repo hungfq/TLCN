@@ -94,7 +94,7 @@ export default {
       this.select = value;
     },
     async handleSearchTopic (data) {
-      this.listTopicSearch = await TopicApi.listTopicWithName(this.token, data.value) || [];
+      this.listTopicSearch = await TopicApi.listTopicWithName(this.token, data.value, data.type) || [];
     },
     async fetchData () {
       try {
