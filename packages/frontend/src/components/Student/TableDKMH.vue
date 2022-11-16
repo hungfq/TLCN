@@ -1,7 +1,15 @@
 <!-- eslint-disable max-len -->
 <template>
-  <div class="overflow-x-auto relative shadow-md sm:rounded-lg m-4">
-    <table class="w-full text-sm text-left text-gray-500">
+  <div
+    class="overflow-x-auto shadow-md sm:rounded-lg mx-4 mt-4 h-[700px]"
+  >
+    <table
+      class="
+    w-full
+    text-sm
+    text-left
+    text-gray-500"
+    >
       <thead class="text-xs text-gray-700 uppercase bg-gray-300">
         <tr>
           <th
@@ -219,6 +227,10 @@ export default {
       this.currentTeacherInfo = { name: '', email: '', sex: '' };
       close();
       this.showInfoTeacher = false;
+    },
+    displayNameTeacher (teacher) {
+      if (teacher && teacher.name) return teacher.name;
+      return '';
     },
   },
 };

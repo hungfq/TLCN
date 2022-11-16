@@ -11,7 +11,7 @@
 GET {{host}}/v1/roles
 Authorization: Bearer {{jwt_token}}
 ###
-GET {{host}}/v1/roles/636fb37074302f3e88865875/permissions
+GET {{host}}/v1/roles/6373a6f0c2f09339289d3430/permissions
 Authorization: Bearer {{jwt_token}}
 ###
 POST {{host}}/v1/roles/636fb37074302f3e88865875/permissions

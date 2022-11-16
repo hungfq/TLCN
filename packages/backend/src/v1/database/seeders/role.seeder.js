@@ -12,7 +12,7 @@ const rolesData = [{
 }];
 
 // connect mongodb
-seeder.connect('mongodb://localhost:27017/db-cnpmm-test', () => {
+seeder.connect('mongodb://localhost:27017/db-cnpmm', () => {
   seeder.loadModels([
     '../../models/role.model', // load mongoose model
   ]);

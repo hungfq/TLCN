@@ -32,4 +32,44 @@ export default class RegisterApi {
     });
     return res.data;
   }
+
+  static async listAllRegistration (token) {
+    const res = await axios.get('/registration', {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  }
+
+  static async createRegistration (token, topicId, studentId, group) {
+    const res = await axios.post('/registration', {
+      topicId, studentId, group,
+    }, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  }
+
+  static async updateRegistration (token, registerId, topicId, studentId, group) {
+    const res = await axios.put(`/registration/${registerId}`, {
+      topicId, studentId, group,
+    }, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  }
+
+  static async deleteRegistration (token, registerId) {
+    const res = await axios.get(`/registration/${registerId}`, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  }
 }
