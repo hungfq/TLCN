@@ -1,49 +1,49 @@
 POST {{host}}/v1/topic
-Authorization: Bearer {{jwt_token}}
+Authorization: Bearer {{student_token}}
 Content-Type: application/json
 
 {
-  "title": "DDDD",
-  "description": "Sử dụng NodeJS VueJS MongoDB",
-  "limit": 3,
-  "lecturerId": "636e4aa0e92f347ecc973f88",
-  "majorId": "6371ca81ddb79f5e94c4c870"
+    "code": "CNPM-1",
+    "title": "Xây dựng web bán vàng mã",
+    "description": "Sử dụng .NET",
+    "limit": "2",
+    "deadline": "2022-10-25",
+    "major": "CNPM",
+    "lecturerId": null,
+    "students": []
 }
 ###
-
-GET {{host}}/v1/topic
-Authorization: Bearer {{jwt_token}}
-###
-GET {{host}}/v1/topic
-?majorId=6371ca81ddb79f5e94c4c870
-Authorization: Bearer {{jwt_token}}
-###
-GET {{host}}/v1/topic
-?majorId=
-&lecturerId=6370dd90ed2c291d84384e02
-Authorization: Bearer {{jwt_token}}
-###
-GET {{host}}/v1/topic/6371ec7ac47cb65954470851
-Authorization: Bearer {{jwt_token}}
+GET {{host}}/v1/topic/637645ddf4fd555c64b73d39
+Authorization: Bearer {{student_token}}
 ###
 
-PUT {{host}}/v1/topic/636dbd15af1e9b5b60c401f5
-Authorization: Bearer {{jwt_token}}
+PUT {{host}}/v1/topic/637645ddf4fd555c64b73d39
+Authorization: Bearer {{student_token}}
 Content-Type: application/json
 
 {
-  "title": "AAAA",
-  "description": "Sử dụng NodeJS VueJS MongoDB",
-  "limit": 3,
-  "lecturerId": "636e4aa0e92f347ecc973f88",
-  "majorId": "6371ca81ddb79f5e94c4c870"
+    "code": "CNPM-11",
+    "title": "Xây dựng web bán vàng mã",
+    "description": "Sử dụng .NET",
+    "limit": "2",
+    "deadline": "2022-10-25",
+    "major": "CNPM",
+    "lecturerId": "6375b66924ace35d440f51ed",
+    "students": ["19110373"]
 }
 
 ###
-DELETE {{host}}/v1/topic/63651af3436a862a8c24fd50
-Authorization: Bearer {{jwt_token}}
+DELETE {{host}}/v1/topic/6376323e623a8c2474155e88
+Authorization: Bearer {{student_token}}
 ###
 GET {{host}}/v1/topic-search
-?type=title
-&value=CNTT
-Authorization: Bearer {{jwt_token}}
+?type=lecturer
+&value=HUNG
+Authorization: Bearer {{student_token}}
+###
+
+GET {{host}}/v1/topic
+###
+GET {{host}}/v1/topic
+?lecturerId=6375b66924ace35d440f51ed
+###

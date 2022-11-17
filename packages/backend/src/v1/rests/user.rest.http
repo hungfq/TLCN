@@ -29,7 +29,7 @@ Authorization: Bearer {{student_token}}
 ###
 
 PUT {{host}}/v1/user/19110373
-Authorization: Bearer {{jwt_token}}
+Authorization: Bearer {{student_token}}
 Content-Type: application/json
 
 {

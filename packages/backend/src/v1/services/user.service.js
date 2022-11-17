@@ -101,6 +101,12 @@ const listUserByType = async (type) => {
   return user;
 };
 
+const getStudentByCodes = async (students) => {
+  const studentList = _Student.find({ code: { $in: students } })
+    .select('code name email');
+  return studentList;
+};
+
 module.exports = {
   list,
   insert,
@@ -112,4 +118,5 @@ module.exports = {
   findOneByCode,
   listUserByType,
   updateOneByCode,
+  getStudentByCodes,
 };
