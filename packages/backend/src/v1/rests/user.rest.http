@@ -1,53 +1,39 @@
 GET {{host}}/check-status
 ###
 
-GET {{host}}/v1/user
-Authorization: Bearer {{jwt_token}}
-###
-
-GET {{host}}/v1/user
-?roleId=636fb36d74302f3e88865872
-Authorization: Bearer {{jwt_token}}
-###
-
-GET {{host}}/v1/user/636fd51a841a040f5cece78f
-Authorization: Bearer {{jwt_token}}
-###
-
-PUT {{host}}/v1/user/636dbbc34489475518991d2a
-Authorization: Bearer {{jwt_token}}
-Content-Type: application/json
-
-{
-  "sex": "female",
-  "name": "Pham Quang Hung",
-  "email": "19110373@student.hcmute.edu.vn",
-  "code": "19110373@student.hcmute.edu.vn",
-  "picture": "https://lh3.googleusercontent.com/a/ALm5wu0Dfvn_Z7jfrXtPc456CxYUZzRb4CB5ImSezi3A=s96-c",
-  "role": "STUDENT"
-}
-###
 GET {{host}}/v1/profile
-Authorization: Bearer {{jwt_token}}
-###
-POST {{host}}/v1/profile
-Authorization: Bearer {{jwt_token}}
-Content-Type: application/json
-
-{
-  "sex": "female",
-  "name": "Pham Quang Hung",
-  "code": "19110373"
-}
+Authorization: Bearer {{student_token}}
 ###
 
-POST {{host}}/v1/users
-# Authorization: Bearer {{jwt_token}}
+POST {{host}}/v1/user
+Authorization: Bearer {{jwt_token}}
 Content-Type: application/json
 
 {
     "type": "STUDENT",
     "code": "19110373",
+    "name": "Pham Quang Hung",
+    "email": "19110373@student.hcmute.edu.vn",
+    "gender": "male",
+    "picture": null
+}
+###
+GET {{host}}/v1/user/19110373
+?type=STUDENT
+Authorization: Bearer {{student_token}}
+###
+
+GET {{host}}/v1/user
+?type=STUDENT
+Authorization: Bearer {{student_token}}
+###
+
+PUT {{host}}/v1/user/19110373
+Authorization: Bearer {{jwt_token}}
+Content-Type: application/json
+
+{
+    "type": "STUDENT",
     "name": "Pham Quang Hung",
     "email": "19110373@student.hcmute.edu.vn",
     "gender": "male",

@@ -8,6 +8,7 @@ const TopicSchema = new mongoose.Schema({
   description: { type: String },
   limit: { type: Number },
   deadline: { type: Date },
+  major: { type: String },
   lecturerId: {
     type: Schema.Types.ObjectId,
     ref: 'Lecturer',
