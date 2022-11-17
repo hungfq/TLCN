@@ -13,7 +13,7 @@ const TopicSchema = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: 'Lecturer',
   },
-  studentIds: { type: Array },
+  students: { type: Array },
 });
 
 module.exports = mongoose.model('Topic', TopicSchema);

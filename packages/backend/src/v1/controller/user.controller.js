@@ -20,11 +20,11 @@ const addOneUser = async (req, res, next) => {
       type, code, name, email, gender, picture,
     } = req.body;
     if (!constant.roles.includes(type)) {
-      return res.status(422).send('type error');
+      return res.status(422).send('Type error');
     }
     let user = await userService.findOneByCode(type, code);
     if (user) {
-      return res.status(400).send('user already exist');
+      return res.status(400).send('User already exist');
     }
     user = await userService.addOneUser(type, code, name, email, gender, picture);
     return res.status(201).send(user);
@@ -42,7 +42,7 @@ const findOneByCode = async (req, res, next) => {
     }
     const user = await userService.findOneByCode(type, code);
     if (!user) {
-      return res.status(404).send('user not found');
+      return res.status(404).send('Not found');
     }
     return res.status(200).send(user);
   } catch (err) {
@@ -59,12 +59,12 @@ const updateOneByCode = async (req, res, next) => {
     if (!constant.roles.includes(type)) {
       return res.status(422).send('type error');
     }
-    let user = await userService.findOneByCode(type, code);
+    const user = await userService.findOneByCode(type, code);
     if (!user) {
-      return res.status(404).send('user not found');
+      return res.status(404).send('Not found');
     }
-    user = await userService.updateOneByCode(type, code, name, email, gender, picture);
-    return res.status(200).send(user);
+    await userService.updateOneByCode(type, code, name, email, gender, picture);
+    return res.status(200).send('Successfully');
   } catch (err) {
     return next(err);
   }
@@ -74,7 +74,7 @@ const listUserByType = async (req, res, next) => {
   try {
     const { type } = req.query;
     if (!constant.roles.includes(type)) {
-      return res.status(422).send('type error');
+      return res.status(422).send('Type error');
     }
     const user = await userService.listUserByType(type);
     return res.status(200).send(user);
