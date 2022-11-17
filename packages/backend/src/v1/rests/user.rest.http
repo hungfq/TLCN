@@ -39,3 +39,17 @@ Content-Type: application/json
   "name": "Pham Quang Hung",
   "code": "19110373"
 }
+###
+
+POST {{host}}/v1/users
+# Authorization: Bearer {{jwt_token}}
+Content-Type: application/json
+
+{
+    "type": "STUDENT",
+    "code": "19110373",
+    "name": "Pham Quang Hung",
+    "email": "19110373@student.hcmute.edu.vn",
+    "gender": "male",
+    "picture": null
+}

@@ -1,4 +1,7 @@
 const _User = require('../models/user.model');
+const _Admin = require('../models/admin.model');
+const _Lecturer = require('../models/lecturer.model');
+const _Student = require('../models/student.model');
 
 const insert = async (firstName, lastName, sex, email) => {
   const user = await _User.create({
@@ -44,6 +47,42 @@ const editProfile = async (id, name, code, sex) => {
   });
 };
 
+function getRoleFromType(type) {
+  let role = null;
+  switch (type) {
+    case 'ADMIN':
+      role = _Admin;
+      break;
+    case 'LECTURER':
+      role = _Lecturer;
+      break;
+    case 'STUDENT':
+      role = _Student;
+      break;
+    default:
+      role = null;
+  }
+  return role;
+}
+
+const findOneUser = async (type, code) => {
+  const User = getRoleFromType(type);
+
+  const user = await User.findOne({ code });
+
+  return user;
+};
+
+const addOneUser = async (type, code, name, email, gender, picture) => {
+  const User = getRoleFromType(type);
+
+  const user = await User.create({
+    code, name, email, gender, picture,
+  });
+
+  return user;
+};
+
 module.exports = {
   list,
   insert,
@@ -51,4 +90,6 @@ module.exports = {
   update,
   getUser,
   editProfile,
+  findOneUser,
+  addOneUser,
 };

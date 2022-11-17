@@ -4,6 +4,7 @@ const {
   update,
   viewProfile,
   editProfile,
+  addOneUser,
 } = require('../controller/user.controller');
 
 const authMiddleware = require('../middlewares/auth.middlewares');
@@ -25,6 +26,7 @@ const router = (app) => {
 
   app.get('/v1/profile', isAuth, permit('profile.view'), viewProfile);
   app.post('/v1/profile', isAuth, permit('profile.edit'), editProfile);
+  app.post('/v1/users', addOneUser); // only admin
 };
 
 module.exports = router;
