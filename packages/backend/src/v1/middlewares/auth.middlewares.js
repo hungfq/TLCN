@@ -10,11 +10,12 @@ const secretKey = process.env.JWT_SECRET_KEY;
 async function validateEmail(email) {
   let user = null;
   user = await _Admin.findOne({ email });
-  if (user) return { user, role: 'ADMIN' };
+  if (user) return { ...user._doc, role: 'ADMIN' };
   user = await _Lecturer.findOne({ email });
-  if (user) return { user, role: 'LECTURER' };
+  if (user) return { ...user._doc, role: 'LECTURER' };
   user = await _Student.findOne({ email });
-  return { ...user._doc, role: 'STUDENT' };
+  if (user) return { ...user._doc, role: 'STUDENT' };
+  return { user, role: null };
 }
 
 exports.isAuth = async (req, res, next) => {

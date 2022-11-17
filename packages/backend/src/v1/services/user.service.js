@@ -107,6 +107,18 @@ const getStudentByCodes = async (students) => {
   return studentList;
 };
 
+const findOneWithOnlyId = async (_id) => {
+  let user = null;
+  user = await _Admin.findOne({ _id });
+  if (user) return { ...user._doc, role: 'ADMIN' };
+  user = await _Lecturer.findOne({ _id });
+  if (user) return { ...user._doc, role: 'LECTURER' };
+  user = await _Student.findOne({ _id });
+  if (user) return { ...user._doc, role: 'STUDENT' };
+
+  return user;
+};
+
 module.exports = {
   list,
   insert,
@@ -119,4 +131,5 @@ module.exports = {
   listUserByType,
   updateOneByCode,
   getStudentByCodes,
+  findOneWithOnlyId,
 };

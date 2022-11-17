@@ -1,6 +1,8 @@
+/* eslint-disable max-len */
 const {
   insertTopic, listTopic, updateOneTopic, deleteOneTopic,
   findOneTopic, searchTopic, updateTopicStudent, updateTopicLecturer,
+  addProposalTopic, listProposalTopic, approveProposalTopic, removeProposalTopic,
 } = require('../controller/topic.controller');
 
 const authMiddleware = require('../middlewares/auth.middlewares');
@@ -18,6 +20,11 @@ const router = (app) => {
   app.put('/v1/topic-student/:id', isAuth, updateTopicStudent);
   app.put('/v1/topic-lecturer/:id', isAuth, updateTopicLecturer);
   app.get('/v1/topic', listTopic); // public api in homepage
+
+  app.post('/v1/topic-proposal', isAuth, addProposalTopic);
+  app.get('/v1/topic-proposal', isAuth, listProposalTopic);
+  app.post('/v1/topic-proposal/approve/:id', isAuth, approveProposalTopic);
+  app.delete('/v1/topic-proposal/:id', isAuth, removeProposalTopic);
 };
 
 module.exports = router;
