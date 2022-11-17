@@ -2,6 +2,7 @@
 /* eslint-disable max-len */
 
 const userService = require('../services/user.service');
+const contanst = require('../contanst');
 
 const findOne = async (req, res, next) => {
   try {
@@ -59,10 +60,30 @@ const editProfile = async (req, res, next) => {
   }
 };
 
+const addOneUser = async (req, res, next) => {
+  try {
+    const {
+      type, code, name, email, gender, picture,
+    } = req.body;
+    if (!contanst.roles.includes(type)) {
+      return res.status(422).send('type error');
+    }
+    let user = await userService.findOneUser(type, code);
+    if (user) {
+      return res.status(400).send('user already exist');
+    }
+    user = await userService.addOneUser(type, code, name, email, gender, picture);
+    return res.status(201).send(user);
+  } catch (err) {
+    return next(err);
+  }
+};
+
 module.exports = {
   findOne,
   list,
   update,
   viewProfile,
   editProfile,
+  addOneUser,
 };
