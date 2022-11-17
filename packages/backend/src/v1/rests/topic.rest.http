@@ -47,3 +47,44 @@ GET {{host}}/v1/topic
 GET {{host}}/v1/topic
 ?lecturerId=6375b66924ace35d440f51ed
 ###
+
+PUT {{host}}/v1/topic-student/637645ddf4fd555c64b73d39
+Authorization: Bearer {{student_token}}
+Content-Type: application/json
+
+{
+    "students": ["19110373"]
+}
+###
+PUT {{host}}/v1/topic-lecturer/637645ddf4fd555c64b73d39
+Authorization: Bearer {{student_token}}
+Content-Type: application/json
+
+{
+    "lecturerId": null
+}
+###
+
+
+POST {{host}}/v1/topic-proposal
+Authorization: Bearer {{student_token}}
+Content-Type: application/json
+
+{
+    "title": "Web học tiếng anh",
+    "description": "Sử dụng HTML",
+    "lecturerId": "6375b66924ace35d440f51ed"
+}
+###
+
+GET {{host}}/v1/topic-proposal
+Authorization: Bearer {{student_token}}
+###
+
+POST {{host}}/v1/topic-proposal/approve/637665b67000643778649cb6
+Authorization: Bearer {{student_token}}
+###
+
+DELETE  {{host}}/v1/topic-proposal/6376686927773b68d829e7b7
+Authorization: Bearer {{student_token}}
+

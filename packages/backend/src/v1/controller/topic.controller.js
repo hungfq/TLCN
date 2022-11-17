@@ -77,6 +77,95 @@ const searchTopic = async (req, res, next) => {
   }
 };
 
+const updateTopicStudent = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { students } = req.body;
+    const topic = await topicService.findOne(id);
+    if (!topic) {
+      return res.status(404).send('Not found');
+    }
+    await topicService.updateStudents(id, students);
+    return res.status(200).send('Successfully');
+  } catch (err) {
+    return next(err);
+  }
+};
+
+const updateTopicLecturer = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { lecturerId } = req.body;
+    const topic = await topicService.findOne(id);
+    if (!topic) {
+      return res.status(404).send('Not found');
+    }
+    await topicService.updateLecturer(id, lecturerId);
+    return res.status(200).send('Successfully');
+  } catch (err) {
+    return next(err);
+  }
+};
+
+const addProposalTopic = async (req, res, next) => {
+  try {
+    const {
+      title, description, lecturerId,
+    } = req.body;
+    if (lecturerId) {
+      console.log(`TODO: send notification to ${lecturerId}`);
+    }
+    const createdBy = req.user._id;
+    const topic = await topicService.addProposalTopic(title, description, lecturerId, createdBy);
+    return res.status(201).send(topic);
+  } catch (err) {
+    return next(err);
+  }
+};
+
+const approveProposalTopic = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const topicProposal = await topicService.findOneProposalTopic(id);
+    await topicService.createOne(null, topicProposal.title, topicProposal.description, 1, null, null, req.user._id, []);
+
+    await topicService.deleteOneProposalTopic(id);
+
+    console.log(`TODO: send notification to ${topicProposal.createdBy}`);
+
+    return res.status(200).send('Successfully');
+  } catch (err) {
+    return next(err);
+  }
+};
+const removeProposalTopic = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const topic = await topicService.findOneProposalTopic(id);
+    if (!topic) {
+      return res.status(404).send('Not found');
+    }
+
+    await topicService.deleteOneProposalTopic(id);
+
+    console.log(`TODO: send notification to ${topic.createdBy}`);
+
+    return res.status(200).send('Successfully');
+  } catch (err) {
+    return next(err);
+  }
+};
+const listProposalTopic = async (req, res, next) => {
+  try {
+    const topic = await topicService.listProposalTopic();
+    return res.status(200).send(topic);
+  } catch (err) {
+    return next(err);
+  }
+};
+
 module.exports = {
   insertTopic,
   findOneTopic,
@@ -84,4 +173,11 @@ module.exports = {
   searchTopic,
   updateOneTopic,
   deleteOneTopic,
+  updateTopicStudent,
+  updateTopicLecturer,
+
+  addProposalTopic,
+  approveProposalTopic,
+  removeProposalTopic,
+  listProposalTopic,
 };

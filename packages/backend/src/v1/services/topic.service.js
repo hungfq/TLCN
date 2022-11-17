@@ -3,7 +3,9 @@
 const _ = require('lodash');
 
 const _Topic = require('../models/topic.model');
+const _TopicProposal = require('../models/topic_proposal.model');
 const _Lecturer = require('../models/lecturer.model');
+const userService = require('./user.service');
 
 const createOne = async (code, title, description, limit, deadline, major, lecturerId, students) => {
   const topic = await _Topic.create({
@@ -32,7 +34,7 @@ const updateOne = async (_id, code, title, description, limit, deadline, major, 
 };
 
 const removeOne = async (id) => {
-  await _Topic.remove({ _id: id });
+  await _Topic.deleteOne({ _id: id });
 };
 
 const search = async (value, type) => {
@@ -85,6 +87,46 @@ const list = async (lecturerId) => {
   return results;
 };
 
+const updateStudents = async (_id, students) => {
+  await _Topic.updateOne({ _id }, { students });
+};
+
+const updateLecturer = async (_id, lecturerId) => {
+  await _Topic.updateOne({ _id }, { lecturerId });
+};
+
+const addProposalTopic = async (title, description, lecturerId, createdBy) => {
+  const topic = await _TopicProposal.create({
+    title,
+    description,
+    lecturerId,
+    createdBy,
+  });
+  return topic;
+};
+
+const findOneProposalTopic = async (_id) => {
+  const topic = await _TopicProposal.findOne({ _id });
+  return topic;
+};
+
+const deleteOneProposalTopic = async (_id) => {
+  await _TopicProposal.deleteOne({ _id });
+};
+
+const listProposalTopic = async () => {
+  const listTopic = await _TopicProposal.find({})
+    .populate({ path: 'lecturerId', select: 'name _id' });
+
+  const results = await Promise.all(
+    listTopic.map(async (topic) => {
+      const createdBy = await userService.findOneWithOnlyId(topic.createdBy);
+      return { ...topic._doc, createdBy: { _id: createdBy._id, name: createdBy.name } };
+    }),
+  );
+  return results;
+};
+
 module.exports = {
   createOne,
   findOne,
@@ -92,4 +134,11 @@ module.exports = {
   list,
   search,
   removeOne,
+  updateStudents,
+  updateLecturer,
+
+  addProposalTopic,
+  findOneProposalTopic,
+  deleteOneProposalTopic,
+  listProposalTopic,
 };
