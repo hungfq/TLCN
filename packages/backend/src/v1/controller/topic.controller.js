@@ -77,6 +77,36 @@ const searchTopic = async (req, res, next) => {
   }
 };
 
+const updateTopicStudent = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { students } = req.body;
+    const topic = await topicService.findOne(id);
+    if (!topic) {
+      return res.status(404).send('Not found');
+    }
+    await topicService.updateStudents(id, students);
+    return res.status(200).send('Successfully');
+  } catch (err) {
+    return next(err);
+  }
+};
+
+const updateTopicLecturer = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { lecturerId } = req.body;
+    const topic = await topicService.findOne(id);
+    if (!topic) {
+      return res.status(404).send('Not found');
+    }
+    await topicService.updateLecturer(id, lecturerId);
+    return res.status(200).send('Successfully');
+  } catch (err) {
+    return next(err);
+  }
+};
+
 module.exports = {
   insertTopic,
   findOneTopic,
@@ -84,4 +114,6 @@ module.exports = {
   searchTopic,
   updateOneTopic,
   deleteOneTopic,
+  updateTopicStudent,
+  updateTopicLecturer,
 };

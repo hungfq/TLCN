@@ -47,3 +47,20 @@ GET {{host}}/v1/topic
 GET {{host}}/v1/topic
 ?lecturerId=6375b66924ace35d440f51ed
 ###
+
+PUT {{host}}/v1/topic-student/637645ddf4fd555c64b73d39
+Authorization: Bearer {{student_token}}
+Content-Type: application/json
+
+{
+    "students": ["19110373"]
+}
+###
+PUT {{host}}/v1/topic-lecturer/637645ddf4fd555c64b73d39
+Authorization: Bearer {{student_token}}
+Content-Type: application/json
+
+{
+    "lecturerId": null
+}
+###

@@ -85,6 +85,14 @@ const list = async (lecturerId) => {
   return results;
 };
 
+const updateStudents = async (_id, students) => {
+  await _Topic.updateOne({ _id }, { students });
+};
+
+const updateLecturer = async (_id, lecturerId) => {
+  await _Topic.updateOne({ _id }, { lecturerId });
+};
+
 module.exports = {
   createOne,
   findOne,
@@ -92,4 +100,6 @@ module.exports = {
   list,
   search,
   removeOne,
+  updateStudents,
+  updateLecturer,
 };
