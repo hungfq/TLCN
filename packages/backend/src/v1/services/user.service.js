@@ -65,7 +65,17 @@ function getRoleFromType(type) {
   return role;
 }
 
-const findOneUser = async (type, code) => {
+const addOneUser = async (type, code, name, email, gender, picture) => {
+  const User = getRoleFromType(type);
+
+  const user = await User.create({
+    code, name, email, gender, picture,
+  });
+
+  return user;
+};
+
+const findOneByCode = async (type, code) => {
   const User = getRoleFromType(type);
 
   const user = await User.findOne({ code });
@@ -73,12 +83,20 @@ const findOneUser = async (type, code) => {
   return user;
 };
 
-const addOneUser = async (type, code, name, email, gender, picture) => {
+const updateOneByCode = async (type, code, name, email, gender, picture) => {
   const User = getRoleFromType(type);
 
-  const user = await User.create({
-    code, name, email, gender, picture,
+  const user = await User.updateOne({ code }, {
+    name, email, gender, picture,
   });
+
+  return user;
+};
+
+const listUserByType = async (type) => {
+  const User = getRoleFromType(type);
+
+  const user = await User.find({});
 
   return user;
 };
@@ -90,6 +108,8 @@ module.exports = {
   update,
   getUser,
   editProfile,
-  findOneUser,
   addOneUser,
+  findOneByCode,
+  listUserByType,
+  updateOneByCode,
 };

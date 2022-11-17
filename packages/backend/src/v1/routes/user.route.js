@@ -1,10 +1,10 @@
 const {
-  list,
-  findOne,
-  update,
   viewProfile,
-  editProfile,
   addOneUser,
+  listUserByType,
+  findOneByCode,
+
+  updateOneByCode,
 } = require('../controller/user.controller');
 
 const authMiddleware = require('../middlewares/auth.middlewares');
@@ -20,13 +20,12 @@ const router = (app) => {
       message: 'api ok',
     });
   });
-  app.get('/v1/user', isAuth, permit('user.list'), list);
-  app.get('/v1/user/:id', isAuth, permit('user.view'), findOne);
-  app.put('/v1/user/:id', isAuth, permit('user.update'), update);
 
+  app.post('/v1/user', addOneUser); // only admin
+  app.get('/v1/user/:code', isAuth, findOneByCode);
+  app.get('/v1/user/', isAuth, listUserByType);
+  app.put('/v1/user/:code', updateOneByCode);
   app.get('/v1/profile', isAuth, permit('profile.view'), viewProfile);
-  app.post('/v1/profile', isAuth, permit('profile.edit'), editProfile);
-  app.post('/v1/users', addOneUser); // only admin
 };
 
 module.exports = router;
