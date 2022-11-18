@@ -95,6 +95,17 @@ const updateLecturer = async (_id, lecturerId) => {
   await _Topic.updateOne({ _id }, { lecturerId });
 };
 
+const upsertOne = async (code, title, description, limit, deadline, major, lecturerId) => {
+  const query = { code };
+  const upsert = {
+    $set: {
+      code, title, description, limit, deadline, major, lecturerId, students: [],
+    },
+  };
+  const options = { upsert: true };
+  await _Topic.updateOne(query, upsert, options);
+};
+
 const addProposalTopic = async (title, description, lecturerId, createdBy) => {
   const topic = await _TopicProposal.create({
     title,
@@ -136,6 +147,7 @@ module.exports = {
   removeOne,
   updateStudents,
   updateLecturer,
+  upsertOne,
 
   addProposalTopic,
   findOneProposalTopic,

@@ -1,7 +1,30 @@
 /* eslint-disable max-len */
 const topicService = require('../services/topic.service');
 const userService = require('../services/user.service');
+const fileUtils = require('../utils/file');
 
+const importTopics = async (req, res, next) => {
+  try {
+    const jsonData = fileUtils.excelToJson(req.file.path);
+
+    jsonData.forEach(async (topic) => {
+      const lecturer = await userService.findOneByCode('LECTURER', topic.lecturerCode);
+      await topicService.upsertOne(
+        topic.code,
+        topic.title,
+        topic.description,
+        topic.limit,
+        topic.deadline,
+        topic.major,
+        lecturer._id,
+      );
+    });
+
+    return res.status(201).send('Successfully');
+  } catch (err) {
+    return next(err);
+  }
+};
 const insertTopic = async (req, res, next) => {
   try {
     const {
@@ -167,6 +190,7 @@ const listProposalTopic = async (req, res, next) => {
 };
 
 module.exports = {
+  importTopics,
   insertTopic,
   findOneTopic,
   listTopic,

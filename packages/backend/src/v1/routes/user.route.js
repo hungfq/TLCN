@@ -25,8 +25,8 @@ const router = (app) => {
   });
 
   app.post('/v1/user', isAuth, addOneUser); // only admin
-  app.get('/v1/user/:code', isAuth, findOneByCode);
   app.get('/v1/user/', isAuth, listUserByType);
+  app.get('/v1/user/:code', isAuth, findOneByCode);
   app.put('/v1/user/:code', isAuth, updateOneByCode);
   app.get('/v1/profile', isAuth, viewProfile);
 
