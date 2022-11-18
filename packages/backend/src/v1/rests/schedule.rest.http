@@ -25,22 +25,33 @@ GET {{host}}/v1/schedule
 &endDate=2022-09-09
 Authorization: Bearer {{student_token}}
 ###
+GET {{host}}/v1/schedule/637747fb996d402840fb92d4
+Authorization: Bearer {{student_token}}
+###
 
 POST {{host}}/v1/schedule/637747fb996d402840fb92d4/student
 Authorization: Bearer {{student_token}}
 Content-Type: multipart/form-data
 #   POSTMAN
-
 
 ###
 GET {{host}}/v1/schedule/637747fb996d402840fb92d4/student
 Authorization: Bearer {{student_token}}
 ###
 
-POST {{host}}/v1/schedule/637747fb996d402840fb92d4/student
+POST {{host}}/v1/schedule/637747fb996d402840fb92d4/topic
 Authorization: Bearer {{student_token}}
 Content-Type: multipart/form-data
 #   POSTMAN
+
 ###
 GET {{host}}/v1/schedule/637747fb996d402840fb92d4/topic
 Authorization: Bearer {{student_token}}
+###
+
+POST {{host}}/v1/schedule/637747fb996d402840fb92d4/topic/63775f736f5435fe0c17bcd6/register
+Authorization: Bearer {{student_token}}
+###
+DELETE {{host}}/v1/schedule/637747fb996d402840fb92d4/topic/63775f736f5435fe0c17bcd6/register
+Authorization: Bearer {{student_token}}
+

@@ -48,7 +48,7 @@ GET {{host}}/v1/topic
 ?lecturerId=6375b66924ace35d440f51ed
 ###
 
-PUT {{host}}/v1/topic-student/63773f8b6f5435fe0c17a447
+PUT {{host}}/v1/topic-student/63775f736f5435fe0c17bcd6
 Authorization: Bearer {{student_token}}
 Content-Type: application/json
 
