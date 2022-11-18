@@ -1,7 +1,13 @@
+/* eslint-disable consistent-return */
 /* eslint-disable max-len */
 const _Schedule = require('../models/schedule.model');
 const _Student = require('../models/student.model');
 const _Topic = require('../models/topic.model');
+
+const findOne = async (_id) => {
+  const schedule = _Schedule.findOne({ _id });
+  return schedule;
+};
 
 const createOne = async (name, description, startDate, endDate) => {
   const schedule = await _Schedule.create({
@@ -63,7 +69,20 @@ const listTopics = async (_id) => {
   return topicList;
 };
 
+const checkStudentInTopic = async (user, schedule) => {
+  let flag = true;
+
+  const topicList = await _Topic.find({ code: { $in: schedule.topics } });
+  topicList.forEach((topic) => {
+    if (topic.students.includes(user.code)) {
+      flag = false;
+    }
+  });
+  return flag;
+};
+
 module.exports = {
+  findOne,
   createOne,
   updateOne,
   listBetweenTime,
@@ -71,4 +90,5 @@ module.exports = {
   listStudents,
   updateTopics,
   listTopics,
+  checkStudentInTopic,
 };
