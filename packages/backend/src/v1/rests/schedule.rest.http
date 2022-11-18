@@ -1,0 +1,46 @@
+POST {{host}}/v1/schedule
+Authorization: Bearer {{student_token}}
+Content-Type: application/json
+
+{
+    "name":"TLCN 2022",
+    "description": "Dành cho ngành KTDL",
+    "startDate":"2022-08-15",
+    "endDate":"2022-09-05"
+}
+###
+PUT {{host}}/v1/schedule/637747fb996d402840fb92d4
+Authorization: Bearer {{student_token}}
+Content-Type: application/json
+
+{
+    "name":"TLCN 2222",
+    "description": "ABC",
+    "startDate":"2022-08-15",
+    "endDate":"2022-09-05"
+}
+###
+GET {{host}}/v1/schedule
+?startDate=2022-08-10
+&endDate=2022-09-09
+Authorization: Bearer {{student_token}}
+###
+
+POST {{host}}/v1/schedule/637747fb996d402840fb92d4/student
+Authorization: Bearer {{student_token}}
+Content-Type: multipart/form-data
+#   POSTMAN
+
+
+###
+GET {{host}}/v1/schedule/637747fb996d402840fb92d4/student
+Authorization: Bearer {{student_token}}
+###
+
+POST {{host}}/v1/schedule/637747fb996d402840fb92d4/student
+Authorization: Bearer {{student_token}}
+Content-Type: multipart/form-data
+#   POSTMAN
+###
+GET {{host}}/v1/schedule/637747fb996d402840fb92d4/topic
+Authorization: Bearer {{student_token}}

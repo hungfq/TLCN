@@ -84,9 +84,7 @@ const upsertOne = async (type, code, name, email, gender) => {
     },
   };
   const options = { upsert: true };
-  const user = await User.updateOne(query, upsert, options);
-
-  return user;
+  await User.updateOne(query, upsert, options);
 };
 
 module.exports = {

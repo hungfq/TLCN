@@ -2,8 +2,9 @@ const mongoose = require('mongoose');
 
 const ScheduleSchema = new mongoose.Schema({
   name: { type: String },
-  email: { type: String },
-  studentList: { type: Array },
+  description: { type: String },
+  students: { type: Array },
+  topics: { type: Array },
   startDate: { type: Date },
   endDate: { type: Date },
 });

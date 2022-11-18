@@ -1,6 +1,8 @@
 /* eslint-disable max-len */
+const fs = require('fs');
+const { upload } = require('../utils/file');
 const {
-  insertTopic, listTopic, updateOneTopic, deleteOneTopic,
+  importTopics, insertTopic, listTopic, updateOneTopic, deleteOneTopic,
   findOneTopic, searchTopic, updateTopicStudent, updateTopicLecturer,
   addProposalTopic, listProposalTopic, approveProposalTopic, removeProposalTopic,
 } = require('../controller/topic.controller');
@@ -12,6 +14,7 @@ const { isAuth } = authMiddleware;
 // const { permit } = roleMiddleware;
 
 const router = (app) => {
+  app.post('/v1/topic-import/', upload.single('xlsx'), importTopics);
   app.post('/v1/topic', isAuth, insertTopic);
   app.get('/v1/topic/:id', isAuth, findOneTopic);
   app.put('/v1/topic/:id', isAuth, updateOneTopic);
@@ -25,6 +28,15 @@ const router = (app) => {
   app.get('/v1/topic-proposal', isAuth, listProposalTopic);
   app.post('/v1/topic-proposal/approve/:id', isAuth, approveProposalTopic);
   app.delete('/v1/topic-proposal/:id', isAuth, removeProposalTopic);
+
+  app.get('/template/Topic', (req, res) => {
+    const file = fs.createReadStream('public/template/TopicTemplate.xlsx');
+    const stat = fs.statSync('public/template/TopicTemplate.xlsx');
+    res.setHeader('Content-Length', stat.size);
+    res.setHeader('Content-Type', 'application/xml');
+    res.setHeader('Content-Disposition', 'attachment; filename=Topic.xlsx');
+    file.pipe(res);
+  });
 };
 
 module.exports = router;
