@@ -8,5 +8,13 @@ Content-Type: application/json
 
 GET {{host}}/template/User
 ###
+GET {{host}}/template/Topic
+###
 POST {{host}}/v1/user-import/
 Content-Type: multipart/form-data
+###
+GET {{host}}/v1/notification
+Authorization: Bearer {{lecturer_token}}
+###
+POST {{host}}/v1/notification/6377a5bfccbf0e49208a4615/read
+Authorization: Bearer {{lecturer_token}}

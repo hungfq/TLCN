@@ -48,6 +48,17 @@ const updateOneByCode = async (type, code, name, email, gender, picture) => {
   return user;
 };
 
+const addNotificationByType = async (type, _id, notificationId) => {
+  const User = getRoleFromType(type);
+
+  const user = await User.findOne({ _id });
+  let notificationIds = [...user.notificationIds];
+  notificationIds = [notificationId, ...notificationIds];
+  await User.updateOne({ _id }, { notificationIds });
+
+  return user;
+};
+
 const listUserByType = async (type) => {
   const User = getRoleFromType(type);
 
@@ -92,6 +103,7 @@ module.exports = {
   findOneByCode,
   listUserByType,
   updateOneByCode,
+  addNotificationByType,
   getStudentByCodes,
   findOneWithOnlyId,
   upsertOne,

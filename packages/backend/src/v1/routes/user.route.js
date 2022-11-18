@@ -10,7 +10,7 @@ const {
 
 const { upload } = require('../utils/file');
 
-const authMiddleware = require('../middlewares/auth.middlewares');
+const authMiddleware = require('../middlewares/auth.middleware');
 // const roleMiddleware = require('../middlewares/role.middlewares');
 
 const { isAuth } = authMiddleware;
