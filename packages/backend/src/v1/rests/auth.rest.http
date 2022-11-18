@@ -4,3 +4,9 @@ Content-Type: application/json
 {
     "access_token":"ya29.a0AeTM1idPxA1QYHTZUuO104ODpDms8f1YpXTtNvnk62VNEdV0zguOxk6Pyv-hSdXU1zjWOwJxItAr4R_voahUTUUB-O6q4hjVNB8HYpvxjuNoWhqLwdzIRKzI9KfUY3mRgJsAWDsfN38cWs0fhFNK-6bpSMRNBQaCgYKAUESARESFQHWtWOmO2NNMh4bN8KZdAIIoEGZeA0165"
 }
+###
+
+GET {{host}}/template/User
+###
+POST {{host}}/v1/user-import/
+Content-Type: multipart/form-data

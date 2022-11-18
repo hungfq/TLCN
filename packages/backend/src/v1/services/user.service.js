@@ -119,6 +119,21 @@ const findOneWithOnlyId = async (_id) => {
   return user;
 };
 
+const upsertOne = async (type, code, name, email, gender) => {
+  const User = getRoleFromType(type);
+
+  const query = { code };
+  const upsert = {
+    $set: {
+      code, name, email, gender, notificationIds: [], picture: null,
+    },
+  };
+  const options = { upsert: true };
+  const user = await User.updateOne(query, upsert, options);
+
+  return user;
+};
+
 module.exports = {
   list,
   insert,
@@ -132,4 +147,5 @@ module.exports = {
   updateOneByCode,
   getStudentByCodes,
   findOneWithOnlyId,
+  upsertOne,
 };
