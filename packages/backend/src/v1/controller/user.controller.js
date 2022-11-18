@@ -1,6 +1,6 @@
-/* eslint-disable no-console */
 /* eslint-disable max-len */
 
+const fileUtils = require('../utils/file');
 const userService = require('../services/user.service');
 const constant = require('../constant');
 
@@ -83,10 +83,27 @@ const listUserByType = async (req, res, next) => {
   }
 };
 
+const importUser = async (req, res, next) => {
+  try {
+    const { type } = req.body;
+    if (!constant.roles.includes(type)) {
+      return res.status(422).send('Type error');
+    }
+    const jsonData = fileUtils.excelToJson(req.file.path);
+    jsonData.forEach(async (user) => {
+      await userService.upsertOne(type, user.code, user.name, user.email, user.gender);
+    });
+    return res.status(201).send('Successfully');
+  } catch (err) {
+    return next(err);
+  }
+};
+
 module.exports = {
   viewProfile,
   addOneUser,
   findOneByCode,
   listUserByType,
   updateOneByCode,
+  importUser,
 };
