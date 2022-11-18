@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 const topicService = require('../services/topic.service');
 const userService = require('../services/user.service');
+const notificationService = require('../services/notification.service');
 const fileUtils = require('../utils/file');
 
 const importTopics = async (req, res, next) => {
@@ -136,6 +137,13 @@ const addProposalTopic = async (req, res, next) => {
       title, description, lecturerId,
     } = req.body;
     if (lecturerId) {
+      const notification = await notificationService.addNotification(
+        'TOPIC PROPOSAL',
+        'You are suggested in the proposal topic',
+        req.user._id,
+        [lecturerId],
+      );
+      await userService.addNotificationByType('LECTURER', lecturerId, notification._id);
       console.log(`TODO: send notification to ${lecturerId}`);
     }
     const createdBy = req.user._id;

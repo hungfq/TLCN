@@ -7,7 +7,7 @@ const {
   addProposalTopic, listProposalTopic, approveProposalTopic, removeProposalTopic,
 } = require('../controller/topic.controller');
 
-const authMiddleware = require('../middlewares/auth.middlewares');
+const authMiddleware = require('../middlewares/auth.middleware');
 // const roleMiddleware = require('../middlewares/role.middlewares');
 
 const { isAuth } = authMiddleware;

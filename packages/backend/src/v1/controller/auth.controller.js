@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const _Admin = require('../models/admin.model');
 const _Lecturer = require('../models/lecturer.model');
 const _Student = require('../models/student.model');
+const notifyService = require('../services/notification.service');
 
 const client = new OAuth2Client();
 const secretKey = process.env.JWT_SECRET_KEY;
@@ -49,6 +50,27 @@ const loginWithGoogle = async (req, res, next) => {
   }
 };
 
+const getNotification = async (req, res, next) => {
+  try {
+    const notify = await notifyService.getMultiNotify(req.user.notificationIds);
+    return res.status(200).send(notify);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const readNotification = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    await notifyService.readNotify(id);
+    return res.status(200).send('Successfully');
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   loginWithGoogle,
+  getNotification,
+  readNotification,
 };
