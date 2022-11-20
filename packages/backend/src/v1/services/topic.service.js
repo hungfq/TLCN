@@ -5,6 +5,7 @@ const _ = require('lodash');
 const _Topic = require('../models/topic.model');
 const _TopicProposal = require('../models/topic_proposal.model');
 const _Lecturer = require('../models/lecturer.model');
+const _Student = require('../models/student.model');
 const userService = require('./user.service');
 
 const createOne = async (code, title, description, limit, deadline, major, lecturerId, students) => {
@@ -170,6 +171,12 @@ const listProposalTopic = async () => {
   return results;
 };
 
+const removeStudentInTopic = async (studentId, topicId) => {
+  const topicOld = await _Topic.findById(topicId);
+  const students = topicOld.students.filter(student => student._id.toString() !== studentId.toString());
+  await updateStudents(topicId, students);
+}
+
 module.exports = {
   createOne,
   findOne,
@@ -180,9 +187,10 @@ module.exports = {
   updateStudents,
   updateLecturer,
   upsertOne,
-
+  removeStudentInTopic,
   addProposalTopic,
   findOneProposalTopic,
   deleteOneProposalTopic,
   listProposalTopic,
+  searchAndSort,
 };
