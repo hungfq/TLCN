@@ -69,6 +69,38 @@ const search = async (value, type) => {
   return results;
 };
 
+const searchAndSort = async (value, type, sortField, sortType ) => {
+  let listTopic;
+  let listLecturer;
+  let listLecturerId;
+
+  switch (type) {
+    case 'title':
+      listTopic = await _Topic.find({ title: { $regex: `.*${value}.*` } })
+        .populate({ path: 'lecturerId', select: 'name _id' }).sort([[sortField, sortType]]);;
+      break;
+    case 'lecturer':
+      listLecturer = await _Lecturer.find({ name: { $regex: `.*${value}.*` } });
+      listLecturerId = listLecturer.map((lecturer) => lecturer._id);
+      listTopic = await _Topic.find({ lecturerId: { $in: listLecturerId } })
+        .populate({ path: 'lecturerId', select: 'name _id' }).sort([[sortField, sortType]]);
+      break;
+    default:
+      const listTopic1 = await _Topic.find({ title: { $regex: `.*${value}.*` } })
+        .populate({ path: 'lecturerId', select: 'name _id' }).sort([[sortField, sortType]]);
+      listLecturer = await _Lecturer.find({ name: { $regex: `.*${value}.*` } });
+      listLecturerId = listLecturer.map((Lecturer) => Lecturer._id);
+      const listTopic2 = await _Topic.find({ lecturerId: { $in: listLecturerId } })
+        .populate({ path: 'lecturerId', select: 'name _id' }).sort([[sortField, sortType]]);
+      listTopic = _.merge(listTopic1, listTopic2);
+  }
+  const results = listTopic.map((topic) => {
+    const count = topic.students.length;
+    return { ...topic._doc, current: count };
+  });
+  return results;
+};
+
 const list = async (lecturerId) => {
   let listTopic;
   if (lecturerId) {
