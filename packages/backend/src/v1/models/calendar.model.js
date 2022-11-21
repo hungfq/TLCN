@@ -7,7 +7,7 @@ const CalendarSchema = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: 'Topic',
   },
-  code: { type: String },
+  description: { type: String },
   startTime: { type: Date },
   endTime: { type: Date },
   comment: { type: Date },
