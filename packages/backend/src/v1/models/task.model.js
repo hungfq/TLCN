@@ -10,15 +10,15 @@ const TaskSchema = new mongoose.Schema({
   code: { type: String },
   title: { type: String },
   description: { type: String },
-  status: { 
+  status: {
     type: String,
-    enum: ['TODO','PENDING', 'IN_PROCESS', 'DONE'],
+    enum: ['TODO', 'PENDING', 'IN_PROCESS', 'DONE'],
     default: 'PENDING',
   },
-  process: { 
+  process: {
     type: String,
-    enum: ['APPROVED','NOT_APPROVE'],
-    default : 'NOT_APPROVE',
+    enum: ['APPROVED', 'NOT_APPROVE'],
+    default: 'NOT_APPROVE',
   },
   startTime: { type: Date },
   endTime: { type: Date },

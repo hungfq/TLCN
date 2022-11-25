@@ -5,9 +5,9 @@ const createComment = async (message, time, createdBy) => {
     message,
     time,
     createdBy,
-  })
+  });
   return comment;
-}
+};
 module.exports = {
-  createComment
+  createComment,
 };
