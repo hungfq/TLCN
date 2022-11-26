@@ -9,12 +9,13 @@
         <!-- Modal header -->
         <div class="flex justify-between items-start p-4 rounded-t border-b dark:border-gray-600">
           <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-            Đã có lỗi xảy ra
+            Đăng nhập tài khoản
           </h3>
           <button
             type="button"
             class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
             data-modal-toggle="defaultModal"
+            @click="close"
           >
             <svg
               aria-hidden="true"
@@ -32,20 +33,33 @@
         </div>
         <!-- Modal body -->
         <div class="p-6 space-y-6">
-          <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-            Thông báo lỗi: {{ message }}
-          </p>
-          <!-- Modal footer -->
-          <div class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600">
-            <button
-              data-modal-toggle="defaultModal"
-              type="button"
-              class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-              @click="$emit('closeErrorModal',close)"
-            >
-              OK
-            </button>
+          <div class="font-medium">
+            Đăng nhập với vai trò là:
           </div>
+          <select
+            v-model="role"
+            class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+            @change="onChangeTeacher"
+          >
+            <option
+              v-for="option in roles"
+              :key="`key-${option.name}`"
+              :value="option.value"
+            >
+              {{ option.name }}
+            </option>
+          </select>
+        </div>
+        <!-- Modal footer -->
+        <div class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600">
+          <button
+            data-modal-toggle="defaultModal"
+            type="button"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            @click="$emit('login',close,role)"
+          >
+            Đăng nhập
+          </button>
         </div>
       </div>
     </div>
@@ -53,10 +67,26 @@
 </template>
 <script>
 export default {
-  name: 'ErrorModal',
+  name: 'LoginModal',
   inheritAttrs: false,
-  props: {
-    message: '',
+  data () {
+    return {
+      roles: [
+        {
+          name: 'Sinh viên',
+          value: 'STUDENT',
+        },
+        {
+          name: 'Giảng viên',
+          value: 'TEACHER',
+        },
+        {
+          name: 'Admin',
+          value: 'ADMIN',
+        },
+      ],
+      role: 'STUDENT',
+    };
   },
 };
 </script>

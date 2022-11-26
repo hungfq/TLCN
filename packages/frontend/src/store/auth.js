@@ -26,10 +26,12 @@ const getters = {
 };
 
 const actions = {
-  async signIn({ commit, dispatch, rootState }, payload) {
+  async signIn ({ commit, dispatch, rootState }, payload) {
     try {
-      const { access_token } = payload;
-      const res = await signInWithGoogle(access_token);
+      const { access_token, type } = payload;
+      console.log('🚀 ~ file: auth.js ~ line 32 ~ signIn ~ type', type);
+      console.log(type);
+      const res = await signInWithGoogle(access_token, type);
       if (res.status === 200) {
         const { data } = res;
         const { userInfo, accessToken } = data;
@@ -47,11 +49,11 @@ const actions = {
     }
   },
 
-  async signOut({ commit }) {
+  async signOut ({ commit }) {
     commit('unsetAuthenticated');
     window.location.href = `${window.location.origin}/`;
   },
-  async fetchInfo({ commit }, token) {
+  async fetchInfo ({ commit }, token) {
     const userInfo = await UserApi.getUserInfo(token);
     commit('setUserInfo', userInfo);
   },

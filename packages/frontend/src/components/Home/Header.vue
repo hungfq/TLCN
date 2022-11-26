@@ -15,13 +15,13 @@
       <HeaderButton :name-button="'Tư vấn'" />
       <HeaderButton :name-button="'TT-Tin học'" />
       <HeaderButton :name-button="'Giới thiệu'" />
-      <LoginButton @click="Login" />
-      <!-- <GoogleLogin :callback="callback" /> -->
-      <!-- <button @click="logout">
-        Logout
-      </button> -->
+      <LoginButton @click="showLoginModal= true" />
     </div>
   </div>
+  <LoginModalVue
+    v-model="showLoginModal"
+    @login="login"
+  />
 </template>
 
 <script>
@@ -29,27 +29,30 @@ import { decodeCredential, googleLogout, googleTokenLogin } from 'vue3-google-lo
 import { signInWithGoogle } from '../../utils/api/auth';
 import HeaderButton from './HeaderButton.vue';
 import LoginButton from './LoginButton.vue';
+import LoginModalVue from '../Modal/LoginModal.vue';
 
 export default {
   name: 'HeaderBar',
   components: {
     HeaderButton,
     LoginButton,
+    LoginModalVue,
   },
   props: {
   },
   data () {
     return {
+      showLoginModal: false,
     };
   },
   computed: {
   },
   methods: {
-    async Login () {
+    async login (close, typeLogin) {
+      close();
       try {
         const payload = await googleTokenLogin();
-        await this.$store.dispatch('auth/signIn', payload);
-        this.$router.push('/dashboard');
+        await this.$store.dispatch('auth/signIn', { ...payload, type: typeLogin });
       } catch (err) {
         console.log(err.message);
       }

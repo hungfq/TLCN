@@ -89,52 +89,14 @@
       </tbody>
     </table>
   </div>
-  <ConfirmModal
-    v-model="show"
-    @confirm="confirm"
-    @cancel="cancel"
-  >
-    <template #title>
-      Xác nhận đăng ký đề tài
-    </template>
-    <div>Ban sẽ đăng ký đề tài {{ currentTopicName }} của giáo viên {{ currentTeacher }}</div>
-  </ConfirmModal>
-  <InfoModal
-    v-model="showInfoModal"
-    :title="currentTopicName"
-    :teacher-name="currentTeacher"
-    :description="currentDescriptionTopic"
-    @close-info-modal="closeInfoModal"
-  />
-  <ErrorModal
-    v-model="showErrorModal"
-    :message="messageError"
-    @close-error-modal="closeErrorModal"
-  />
-  <InfoUserModal
-    v-model="showInfoTeacher"
-    :name="currentTeacherInfo.name"
-    :email="currentTeacherInfo.email"
-    :sex="currentTeacherInfo.sex"
-    @close-info-user-modal="closeInfoUserModal"
-  />
 </template>
 <script>
 import { mapState, mapGetters } from 'vuex';
-import ConfirmModal from '../Modal/ConfirmModal.vue';
-import InfoModal from '../Modal/InfoModal.vue';
-import ErrorModal from '../Modal/ErrorModal.vue';
-import RegisterApi from '../../utils/api/register';
-import InfoUserModal from '../Modal/InfoUserModal.vue';
 import UserApi from '../../utils/api/user';
 
 export default {
   name: 'TableDKMH',
   components: {
-    ConfirmModal,
-    InfoModal,
-    ErrorModal,
-    InfoUserModal,
   },
   props: {
     listTopic: Array,

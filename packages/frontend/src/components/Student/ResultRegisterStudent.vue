@@ -57,42 +57,14 @@
       </tbody>
     </table>
   </div>
-  <ConfirmModal
-    v-model="show"
-    @confirm="confirm"
-    @cancel="cancel"
-  >
-    <template #title>
-      Xác nhận đăng ký đề tài
-    </template>
-    <div>Ban sẽ xóa đề tài {{ currentTopicName }} của giáo viên {{ currentTeacher }}</div>
-  </ConfirmModal>
-  <InfoModal
-    v-model="showInfoModal"
-    :title="currentTopicName"
-    :teacher-name="currentTeacher"
-    :description="currentDescriptionTopic"
-    @close-info-modal="closeInfoModal"
-  />
-  <ErrorModal
-    v-model="showErrorModal"
-    :message="messageError"
-    @close-error-modal="closeErrorModal"
-  />
 </template>
 <script>
 import { mapState, mapGetters } from 'vuex';
-import ConfirmModal from '../Modal/ConfirmModal.vue';
-import InfoModal from '../Modal/InfoModal.vue';
-import ErrorModal from '../Modal/ErrorModal.vue';
 import RegisterApi from '../../utils/api/register';
 
 export default {
   name: 'ResultRegisterStudent',
   components: {
-    ConfirmModal,
-    InfoModal,
-    ErrorModal,
   },
   props: {
     listRegisterTopic: Array,
