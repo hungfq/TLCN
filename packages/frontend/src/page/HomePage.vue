@@ -62,10 +62,6 @@ export default {
       const mapTopic = [];
       const listMajor = await MajorApi.listAllMajor(this.token);
       listMajor.forEach(async (major) => {
-        let image = this.imageUrlCNPM;
-        if (major.name === 'Hệ thống Thông tin') image = this.imageUrlHTTT;
-        else if (major.name === 'Công nghệ Phần mềm') image = this.imageUrlCNPM;
-        else if (major.name === 'Mạng và An ninh mạng') image = this.imageUrlATTT;
         const listTopic = await TopicApi.listAllTopicsWithMajor(this.token, major._id);
         mapTopic.push({ majorName: major.name, listTopic });
       });

@@ -28,9 +28,6 @@
           :list-register-topic="listRegisterByUser"
           @cancel-register="fetchData"
         />
-        <ManageUserAdmin v-if="select === 'manage_user_admin'" />
-        <ManageTopicAdmin v-if="select === 'manage_topic_admin'" />
-        <ManageRegisterAdmin v-if="select === 'manage_register_admin'" />
         <ManageRegisterTeacher v-if="select === 'manage_register_teacher'" />
         <ManageTopicTeacher v-if="select === 'manage_topic_teacher'" />
       </div>
@@ -47,9 +44,6 @@ import TableDKMH from '../components/Student/TableDKMH.vue';
 import ProfileInfo from '../components/Dashboard/ProfileInfo.vue';
 import SearchTopic from '../components/Student/SearchTopic.vue';
 import ResultRegisterStudent from '../components/Student/ResultRegisterStudent.vue';
-import ManageUserAdmin from '../components/Admin/ManageUserAdmin.vue';
-import ManageTopicAdmin from '../components/Admin/ManageTopicAdmin.vue';
-import ManageRegisterAdmin from '../components/Admin/ManageRegisterAdmin.vue';
 import ManageTopicTeacher from '../components/Teacher/ManageTopicTeacher.vue';
 import ManageRegisterTeacher from '../components/Teacher/ManageRegisterTeacher.vue';
 import TopicApi from '../utils/api/topic';
@@ -63,9 +57,6 @@ export default {
     TableDKMH,
     ProfileInfo,
     SearchTopic,
-    ManageUserAdmin,
-    ManageTopicAdmin,
-    ManageRegisterAdmin,
     ManageTopicTeacher,
     ManageRegisterTeacher,
     ResultRegisterStudent,

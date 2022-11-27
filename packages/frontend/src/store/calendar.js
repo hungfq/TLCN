@@ -53,7 +53,7 @@ const mutations = {
     state.isAuthenticated = true;
   },
   unsetAuthenticated: (state) => {
-    state.userInfo = emptyUserInfo;
+    state.userInfo = emptyCalendar;
     state.isAuthenticated = false;
   },
 };
