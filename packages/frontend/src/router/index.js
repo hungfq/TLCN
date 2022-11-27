@@ -11,7 +11,7 @@ const routes = [
   },
   {
     path: '/admin',
-    name: 'Admin',
+    name: 'admin.default',
     component: AdminPage,
   },
   {

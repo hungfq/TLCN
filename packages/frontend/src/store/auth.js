@@ -29,16 +29,12 @@ const actions = {
   async signIn ({ commit, dispatch, rootState }, payload) {
     try {
       const { access_token, type } = payload;
-      console.log('🚀 ~ file: auth.js ~ line 32 ~ signIn ~ type', type);
-      console.log(type);
       const res = await signInWithGoogle(access_token, type);
       if (res.status === 200) {
         const { data } = res;
-        const { userInfo, accessToken } = data;
-        console.log(userInfo);
-        commit('setAuthenticated', { ...userInfo, token: accessToken });
+        const { userInfo, accessToken, role } = data;
+        commit('setAuthenticated', { ...userInfo, role, token: accessToken });
       } else {
-        console.log(e);
         // handle ui display error in UI
         console.log('Error in login');
       }

@@ -2,6 +2,8 @@ import Vuex from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
 import { sync } from 'vuex-router-sync';
 import auth from './auth';
+import student from './student';
+import url from './url';
 import router from '../router';
 
 /**
@@ -12,6 +14,12 @@ const vuexLocal = createPersistedState({
     'auth.userInfo',
     'auth.isAuthenticated',
     'auth',
+    'url.page',
+    'url.module',
+    'url.section',
+    'url.id',
+    'student',
+    'student.listStudents',
   ],
 
   getState: (key, storage) => {
@@ -24,11 +32,12 @@ const vuexLocal = createPersistedState({
       ...state,
     }));
   },
+  storage: window.sessionStorage,
 });
 
 const store = new Vuex.Store({
   modules: {
-    auth,
+    auth, student, url,
   },
   plugins: [vuexLocal],
 });

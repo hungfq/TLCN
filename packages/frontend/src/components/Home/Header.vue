@@ -53,6 +53,13 @@ export default {
       try {
         const payload = await googleTokenLogin();
         await this.$store.dispatch('auth/signIn', { ...payload, type: typeLogin });
+        if (typeLogin === 'ADMIN') {
+          this.$router.push('/admin');
+        } else if (typeLogin === 'STUDENT') {
+          this.$router.push('/student');
+        } else if (typeLogin === 'LECTURER') {
+          this.$router.push('/lecturer');
+        }
       } catch (err) {
         console.log(err.message);
       }

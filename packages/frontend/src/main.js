@@ -2,6 +2,7 @@ import { createApp } from 'vue';
 import './style.css';
 import vue3GoogleLogin from 'vue3-google-login';
 import { vfmPlugin } from 'vue-final-modal';
+import Toaster from '@meforma/vue-toaster';
 import App from './App.vue';
 import router from './router/index';
 import store from './store/index';
@@ -13,6 +14,8 @@ app.use(vue3GoogleLogin, {
 });
 app.use(router);
 app.use(store);
+app.use(Toaster);
+
 app.mount('#app');
 
 app.use(vfmPlugin({

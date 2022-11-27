@@ -9,7 +9,7 @@
         <!-- Modal header -->
         <div class="flex justify-between items-start p-4 rounded-t border-b ">
           <h3 class="text-xl font-semibold text-gray-900 ">
-            Đăng nhập tài khoản
+            Thông báo lỗi
           </h3>
           <button
             type="button"
@@ -34,21 +34,8 @@
         <!-- Modal body -->
         <div class="p-6 space-y-6">
           <div class="font-medium">
-            Đăng nhập với vai trò là:
+            {{ message }}
           </div>
-          <select
-            v-model="role"
-            class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-            @change="onChangeTeacher"
-          >
-            <option
-              v-for="option in roles"
-              :key="`key-${option.name}`"
-              :value="option.value"
-            >
-              {{ option.name }}
-            </option>
-          </select>
         </div>
         <!-- Modal footer -->
         <div class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200  ">
@@ -56,9 +43,9 @@
             data-modal-toggle="defaultModal"
             type="button"
             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            @click="$emit('login',close,role)"
+            @click="$emit('closeError', close)"
           >
-            Đăng nhập
+            OK
           </button>
         </div>
       </div>
@@ -67,26 +54,10 @@
 </template>
 <script>
 export default {
-  name: 'LoginModal',
+  name: 'ErrorModal',
   inheritAttrs: false,
-  data () {
-    return {
-      roles: [
-        {
-          name: 'Sinh viên',
-          value: 'STUDENT',
-        },
-        {
-          name: 'Giảng viên',
-          value: 'LECTURER',
-        },
-        {
-          name: 'Admin',
-          value: 'ADMIN',
-        },
-      ],
-      role: 'STUDENT',
-    };
+  props: {
+    message: '',
   },
 };
 </script>
