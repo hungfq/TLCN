@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable max-len */
 /* eslint-disable consistent-return */
 /* eslint-disable camelcase */
 const { OAuth2Client } = require('google-auth-library');
@@ -19,12 +21,10 @@ async function verifyToken(token) {
 }
 
 async function validateEmail(email, role) {
-  console.log('🚀 ~ file: auth.controller.js ~ line 22 ~ validateEmail ~ email', email);
   let user = null;
   if (role === 'STUDENT') user = await _Student.findOne({ email });
   else if (role === 'LECTURER') user = await _Lecturer.findOne({ email });
   else if (role === 'ADMIN') user = await _Admin.findOne({ email });
-  console.log('🚀 ~ file: auth.controller.js ~ line 27 ~ validateEmail ~ user', user);
 
   return { user, role };
 }
@@ -32,15 +32,12 @@ async function validateEmail(email, role) {
 const loginWithGoogle = async (req, res, next) => {
   try {
     const { access_token, type } = req.body;
-    console.log('🚀 ~ file: auth.controller.js ~ line 32 ~ loginWithGoogle ~ req.body', req.body);
-    console.log('🚀 ~ file: auth.controller.js ~ line 32 ~ loginWithGoogle ~ type', type);
     const userInfo = await verifyToken(access_token);
     if (!userInfo || !userInfo.email) {
       return res.status(401).send({ message: 'Not valid data' });
     }
     const { email } = userInfo;
     const { user, role } = await validateEmail(email, type);
-    console.log('🚀 ~ file: auth.controller.js ~ line 38 ~ loginWithGoogle ~ user', user);
     if (!user) {
       return res.status(401).send({ message: 'The email is not exist' });
     }
@@ -48,7 +45,6 @@ const loginWithGoogle = async (req, res, next) => {
       expiresIn: '720h',
     });
 
-    console.log('🚀 ~ file: auth.controller.js ~ line 46 ~ loginWithGoogle ~ { userInfo: user, role, accessToken: token }', { userInfo: user, role, accessToken: token });
     return res.status(200).send({ userInfo: user, role, accessToken: token });
   } catch (err) {
     next(err);
