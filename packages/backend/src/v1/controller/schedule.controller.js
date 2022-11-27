@@ -15,6 +15,7 @@ const createOne = async (req, res, next) => {
     return next(err);
   }
 };
+
 const findOne = async (req, res, next) => {
   try {
     const { id } = req.params;

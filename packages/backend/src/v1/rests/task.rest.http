@@ -1,0 +1,89 @@
+GET {{host}}/v1/task?topicId=637645ddf4fd555c64b73d39
+Authorization: Bearer {{student_token}}
+###
+
+POST {{host}}/v1/task
+Authorization: Bearer {{student_token}}
+Content-Type: application/json
+
+{
+    "topicId": "637645ddf4fd555c64b73d39",
+    "code": "MM-11",
+    "title": "Create Use case diagram",
+    "description": "",
+    "status": "TODO",
+    "process": "NOT_APPROVE",
+    "startTime": "",
+    "endTime": "",
+    "createdBy": "6375b66924ace35d440f51ed",
+    "assignTo": null
+}
+###
+
+GET {{host}}/v1/task/638301df6c6ad645905980b8
+Authorization: Bearer {{student_token}}
+###
+
+PUT {{host}}/v1/task-progress/638301df6c6ad645905980b8
+Authorization: Bearer {{student_token}}
+Content-Type: application/json
+
+{
+    "process": "APPROVED"
+}
+###
+
+PUT {{host}}/v1/task-status/638301df6c6ad645905980b8
+Authorization: Bearer {{student_token}}
+Content-Type: application/json
+
+{
+    "status": "PENDING"
+}
+###
+PUT {{host}}/v1/task-assign/638301df6c6ad645905980b8
+Authorization: Bearer {{student_token}}
+Content-Type: application/json
+
+{
+    "assignTo": "6375b7bc24ace35d440f51f4"
+}
+###
+PUT {{host}}/v1/task-start-time/638301df6c6ad645905980b8
+Authorization: Bearer {{student_token}}
+Content-Type: application/json
+
+{
+    "startTime": "2022-11-20"
+}
+###
+PUT {{host}}/v1/task-end-time/638301df6c6ad645905980b8
+Authorization: Bearer {{student_token}}
+Content-Type: application/json
+
+{
+    "endTime": "2022-11-20"
+}
+###
+PUT {{host}}/v1/task-info/638301df6c6ad645905980b8
+Authorization: Bearer {{student_token}}
+Content-Type: application/json
+
+{
+    "title": "new title",
+    "code": "new code",
+    "description": "new description"
+}
+###
+
+POST {{host}}/v1/task-comment/638301df6c6ad645905980b8
+Authorization: Bearer {{student_token}}
+Content-Type: application/json
+
+{
+    "message": "hello"
+}
+###
+
+DELETE {{host}}/v1/task/638301df6c6ad645905980b8
+Authorization: Bearer {{student_token}}

@@ -1,13 +1,18 @@
 const _Comment = require('../models/comment.model');
 
-const createComment = async (message, time, createdBy) => {
+const createComment = async (message, createdBy) => {
   const comment = await _Comment.create({
     message,
-    time,
     createdBy,
   });
   return comment;
 };
+
+const deleteMany = async (ids) => {
+  await _Comment.deleteMany({ _id: { $in: ids } });
+};
+
 module.exports = {
   createComment,
+  deleteMany,
 };

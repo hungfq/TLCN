@@ -7,6 +7,7 @@ const authRoutes = require('./routes/auth.route');
 const userRoutes = require('./routes/user.route');
 const scheduleRoutes = require('./routes/schedule.route');
 const topicRoutes = require('./routes/topic.route');
+const taskRoutes = require('./routes/task.route');
 
 const app = express();
 
@@ -29,6 +30,7 @@ authRoutes(app);
 userRoutes(app);
 scheduleRoutes(app);
 topicRoutes(app);
+taskRoutes(app);
 
 // handle error controller
 // need exactly 4 params for express to recognize
