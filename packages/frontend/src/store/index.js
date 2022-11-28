@@ -3,6 +3,7 @@ import createPersistedState from 'vuex-persistedstate';
 import { sync } from 'vuex-router-sync';
 import auth from './auth';
 import student from './student';
+import lecturer from './lecturer';
 import url from './url';
 import router from '../router';
 
@@ -20,6 +21,8 @@ const vuexLocal = createPersistedState({
     'url.id',
     'student',
     'student.listStudents',
+    'lecturer',
+    'lecturer.listLecturer',
   ],
 
   getState: (key, storage) => {
@@ -37,7 +40,7 @@ const vuexLocal = createPersistedState({
 
 const store = new Vuex.Store({
   modules: {
-    auth, student, url,
+    auth, student, url, lecturer,
   },
   plugins: [vuexLocal],
 });

@@ -10,8 +10,14 @@
       <div class="flex grow flex-col">
         <HeaderBarVue :username="userName" />
         <div class="bg-white mx-4 border rounded h-full">
-          <ManageStudentAdminVue v-if="section === 'student-list'" />
-          <FormUserVue v-if="section === 'student-update'|| section === 'student-import' || section === 'student-view'" />
+          <template v-if="module === 'student'">
+            <ManageStudentAdminVue v-if="section === 'student-list'" />
+            <FormUserVue v-if="section === 'student-update'|| section === 'student-import' || section === 'student-view'" />
+          </template>
+          <template v-if="module === 'lecturer'">
+            <ManageLecturerAdminVue v-if="section === 'lecturer-list'" />
+            <FormUserVue v-if="section === 'lecturer-update'|| section === 'lecturer-import' || section === 'lecturer-view'" />
+          </template>
         </div>
       </div>
     </div>
@@ -30,6 +36,7 @@ import LeftMiniBarVue from '../components/Admin/LeftMiniBar.vue';
 import ManageBarVue from '../components/Admin/ManageBar.vue';
 import HeaderBarVue from '../components/Admin/HeaderBar.vue';
 import ManageStudentAdminVue from '../components/Admin/ManageStudentAdmin.vue';
+import ManageLecturerAdminVue from '../components/Admin/ManageLecturerAdmin.vue';
 import FormUserVue from '../components/Admin/FormUser.vue';
 
 export default {
@@ -41,6 +48,7 @@ export default {
     HeaderBarVue,
     ManageStudentAdminVue,
     FormUserVue,
+    ManageLecturerAdminVue,
   },
   props: {
   },

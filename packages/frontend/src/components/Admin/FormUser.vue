@@ -50,7 +50,7 @@
                   <input
                     v-model="email"
                     :disabled="isView"
-                    type="text"
+                    type="email"
                     class="mt-1 px-2 block w-full rounded-md bg-gray-100 py-2 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   >
                 </div>
@@ -122,13 +122,13 @@ export default {
       'token',
     ]),
     isSave () {
-      return this.section === 'student-import';
+      return this.section === 'student-import' || this.section === 'lecturer-import';
     },
     isUpdate () {
-      return this.section === 'student-update';
+      return this.section === 'student-update' || this.section === 'lecturer-update';
     },
     isView () {
-      return this.section === 'student-view';
+      return this.section === 'student-view' || this.section === 'lecturer-view';
     },
   },
   mounted () {
@@ -143,11 +143,25 @@ export default {
         this.email = student.email;
         this.gender = student.gender;
       }
+    } else if (section === 'lecturer-update' || section === 'lecturer-view') {
+      const { id } = this.$store.state.url;
+      const { listLecturer } = this.$store.state.lecturer;
+      const lecturer = listLecturer.find((s) => s._id.toString() === id.toString());
+      if (lecturer) {
+        this.name = lecturer.name;
+        this.code = lecturer.code;
+        this.email = lecturer.email;
+        this.gender = lecturer.gender;
+      }
     }
   },
   methods: {
     rollBack () {
-      this.$store.dispatch('url/updateSection', 'student-list');
+      if (this.module === 'student') {
+        this.$store.dispatch('url/updateSection', 'student-list');
+      } else if (this.module === 'lecturer') {
+        this.$store.dispatch('url/updateSection', 'lecturer-list');
+      }
     },
     handleAddUserAdmin () {
       const value = {
@@ -155,15 +169,27 @@ export default {
       };
       try {
         if (this.isUpdate) {
-          this.$store.dispatch('student/updateStudent', {
-            token: this.token, value,
-          });
-          this.$toast.success('Đã cập nhật một sinh viên thành công!');
+          if (this.module === 'student') {
+            this.$store.dispatch('student/updateStudent', {
+              token: this.token, value,
+            });
+          } else if (this.module === 'lecturer') {
+            this.$store.dispatch('lecturer/updateLecturer', {
+              token: this.token, value,
+            });
+          }
+          this.$toast.success('Đã cập nhật một thành công!');
         } else if (this.isSave) {
-          this.$store.dispatch('student/addStudent', {
-            token: this.token, value,
-          });
-          this.$toast.success('Đã thêm một sinh viên thành công!');
+          if (this.module === 'student') {
+            this.$store.dispatch('student/addStudent', {
+              token: this.token, value,
+            });
+          } else if (this.module === 'lecturer') {
+            this.$store.dispatch('lecturer/addLecturer', {
+              token: this.token, value,
+            });
+          }
+          this.$toast.success('Đã thêm một thành công!');
         }
         this.rollBack();
       } catch (e) {
