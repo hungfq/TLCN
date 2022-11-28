@@ -1,0 +1,116 @@
+<template>
+  <div class="flex">
+    <div
+      class=" rounded ml-auto mr-4 my-2 bg-blue-800 text-white font-sans font-semibold py-2 px-4 cursor-pointer"
+      @click="$store.dispatch('url/updateSection', 'admin-import')"
+    >
+      Thêm
+    </div>
+    <form @submit.prevent="upload">
+      <input
+        ref="uploadBtn"
+        type="file"
+        accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      >
+      <button type="submit">
+        Tải lên tệp excel
+      </button>
+    </form>
+  </div>
+  <div class="shadow-md sm:rounded-lg m-4">
+    <table class="w-full text-sm text-left text-gray-500">
+      <thead class="text-xs text-gray-700 uppercase bg-gray-300">
+        <tr>
+          <th
+            scope="col"
+            class="py-3 px-6"
+          >
+            Tên
+          </th>
+          <th
+            scope="col"
+            class="py-3 px-6"
+          >
+            Email
+          </th>
+          <th
+            scope="col"
+            class="py-3 px-6"
+          >
+            <span class="sr-only">Edit</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          v-for="user in listAdmins"
+          :key="`user-${user._id}`"
+          class="bg-slate-300 hover:bg-gray-50 "
+        >
+          <th
+            :key="`user-${user._id}`"
+            scope="row"
+            class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap "
+          >
+            {{ user.name }}
+          </th>
+          <td class="py-4 px-6">
+            <div class="font-bold cursor-pointer">
+              {{ user.email }}
+            </div>
+          </td>
+          <td class="py-4 px-6 text-right">
+            <a
+              class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
+              @click="handleUpdateAdmin(user._id)"
+            >Sửa</a>
+            <a
+              class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
+              @click="handleShowAdmin(user._id)"
+            >Xem chi tiết</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</template>
+
+<script>
+import { mapState, mapGetters } from 'vuex';
+
+export default {
+  name: 'ManageAdmin',
+  components: {
+
+  },
+  data () {
+    return {
+
+    };
+  },
+  computed: {
+    ...mapState({
+      isAuthenticated: ({ auth: { isAuthenticated } }) => isAuthenticated,
+    }),
+    ...mapGetters('auth', [
+      'userId', 'userEmail', 'userRole', 'token',
+    ]),
+    ...mapGetters('admin', [
+      'adminId', 'adminEmail', 'admin', 'listAdmins',
+    ]),
+  },
+  mounted () {
+    this.$store.dispatch('admin/fetchListAdmins', this.token);
+  },
+  methods: {
+    handleUpdateAdmin (id) {
+      this.$store.dispatch('url/updateSection', 'admin-update');
+      this.$store.dispatch('url/updateId', id);
+    },
+    handleShowAdmin (id) {
+      this.$store.dispatch('url/updateSection', 'admin-view');
+      this.$store.dispatch('url/updateId', id);
+    },
+  },
+};
+</script>

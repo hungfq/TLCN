@@ -18,6 +18,10 @@
             <ManageLecturerAdminVue v-if="section === 'lecturer-list'" />
             <FormUserVue v-if="section === 'lecturer-update'|| section === 'lecturer-import' || section === 'lecturer-view'" />
           </template>
+          <template v-if="module === 'admin'">
+            <ManageAdminVue v-if="section === 'admin-list'" />
+            <FormUserVue v-if="section === 'admin-update'|| section === 'admin-import' || section === 'admin-view'" />
+          </template>
         </div>
       </div>
     </div>
@@ -37,6 +41,7 @@ import ManageBarVue from '../components/Admin/ManageBar.vue';
 import HeaderBarVue from '../components/Admin/HeaderBar.vue';
 import ManageStudentAdminVue from '../components/Admin/ManageStudentAdmin.vue';
 import ManageLecturerAdminVue from '../components/Admin/ManageLecturerAdmin.vue';
+import ManageAdminVue from '../components/Admin/ManageAdmin.vue';
 import FormUserVue from '../components/Admin/FormUser.vue';
 
 export default {
@@ -49,6 +54,7 @@ export default {
     ManageStudentAdminVue,
     FormUserVue,
     ManageLecturerAdminVue,
+    ManageAdminVue,
   },
   props: {
   },

@@ -94,6 +94,7 @@
 </template>
 
 <script>
+
 import { mapState, mapGetters } from 'vuex';
 
 export default {
@@ -122,13 +123,13 @@ export default {
       'token',
     ]),
     isSave () {
-      return this.section === 'student-import' || this.section === 'lecturer-import';
+      return this.section === 'student-import' || this.section === 'lecturer-import' || this.section === 'admin-import';
     },
     isUpdate () {
-      return this.section === 'student-update' || this.section === 'lecturer-update';
+      return this.section === 'student-update' || this.section === 'lecturer-update' || this.section === 'admin-update';
     },
     isView () {
-      return this.section === 'student-view' || this.section === 'lecturer-view';
+      return this.section === 'student-view' || this.section === 'lecturer-view' || this.section === 'admin-view';
     },
   },
   mounted () {
@@ -153,15 +154,21 @@ export default {
         this.email = lecturer.email;
         this.gender = lecturer.gender;
       }
+    } else if (section === 'admin-update' || section === 'admin-view') {
+      const { id } = this.$store.state.url;
+      const { listAdmins } = this.$store.state.admin;
+      const admin = listAdmins.find((s) => s._id.toString() === id.toString());
+      if (admin) {
+        this.name = admin.name;
+        this.code = admin.code;
+        this.email = admin.email;
+        this.gender = admin.gender;
+      }
     }
   },
   methods: {
     rollBack () {
-      if (this.module === 'student') {
-        this.$store.dispatch('url/updateSection', 'student-list');
-      } else if (this.module === 'lecturer') {
-        this.$store.dispatch('url/updateSection', 'lecturer-list');
-      }
+      this.$store.dispatch('url/updateSection', `${this.module}-list`);
     },
     handleAddUserAdmin () {
       const value = {
@@ -177,6 +184,10 @@ export default {
             this.$store.dispatch('lecturer/updateLecturer', {
               token: this.token, value,
             });
+          } else if (this.module === 'admin') {
+            this.$store.dispatch('admin/updateAdmin', {
+              token: this.token, value,
+            });
           }
           this.$toast.success('Đã cập nhật một thành công!');
         } else if (this.isSave) {
@@ -186,6 +197,10 @@ export default {
             });
           } else if (this.module === 'lecturer') {
             this.$store.dispatch('lecturer/addLecturer', {
+              token: this.token, value,
+            });
+          } else if (this.module === 'admin') {
+            this.$store.dispatch('admin/addAdmin', {
               token: this.token, value,
             });
           }
