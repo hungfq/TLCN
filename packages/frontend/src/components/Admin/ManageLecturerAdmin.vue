@@ -6,7 +6,10 @@
     >
       Thêm giảng viên
     </div>
-    <form class="flex items-center justify-center" @submit.prevent="upload">
+    <form
+      class="flex items-center justify-center"
+      @submit.prevent="upload"
+    >
       <input
         ref="uploadBtn"
         type="file"
@@ -114,9 +117,18 @@ export default {
     upload () {
       const { files } = this.$refs.uploadBtn;
 
-      this.$store.dispatch('lecturer/importLecturer', { token: this.token, xlsx: files[0] });
+      if (files.length > 0) {
+        this.$store.dispatch('lecturer/importLecturer', { token: this.token, xlsx: files[0] })
+          .then((data) => {
+            if (data.status === 201) {
+              this.$toast.success('Đã nhập thành công!');
+            }
+          });
 
-      this.$refs.uploadBtn.value = '';
+        this.$refs.uploadBtn.value = '';
+      } else {
+        this.$toast.error('File không tồn tại');
+      }
     },
   },
 };

@@ -67,6 +67,6 @@ export default class LectureApi {
         },
       },
     );
-    return res.data;
+    return res;
   }
 }

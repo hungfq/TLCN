@@ -67,6 +67,6 @@ export default class AdminApi {
         },
       },
     );
-    return res.data;
+    return res;
   }
 }

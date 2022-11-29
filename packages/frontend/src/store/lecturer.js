@@ -35,8 +35,9 @@ const actions = {
   async importLecturer ({ dispatch }, payload) {
     try {
       const { token, xlsx } = payload;
-      await LectureApi.importLecturer(token, xlsx);
+      const data = await LectureApi.importLecturer(token, xlsx);
       dispatch('fetchListLecturer', token);
+      return data;
     } catch (e) {
       throw new Error(e.message);
     }

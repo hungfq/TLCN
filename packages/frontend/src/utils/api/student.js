@@ -67,6 +67,6 @@ export default class StudentApi {
         },
       },
     );
-    return res.data;
+    return res;
   }
 }
