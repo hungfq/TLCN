@@ -24,6 +24,7 @@
           </template>
           <template v-if="module === 'topic'">
             <ManageTopicAdminVue v-if="section === 'topic-list'" />
+            <FormTopicVue v-if="section === 'topic-update'|| section === 'topic-import' || section === 'topic-view'" />
           </template>
         </div>
       </div>
@@ -47,6 +48,7 @@ import ManageLecturerAdminVue from '../components/Admin/ManageLecturerAdmin.vue'
 import ManageAdminVue from '../components/Admin/ManageAdmin.vue';
 import ManageTopicAdminVue from '../components/Admin/ManageTopicAdmin.vue';
 import FormUserVue from '../components/Admin/FormUser.vue';
+import FormTopicVue from '../components/Admin/FormTopic.vue';
 
 export default {
   name: 'AdminPage',
@@ -60,6 +62,7 @@ export default {
     ManageLecturerAdminVue,
     ManageAdminVue,
     ManageTopicAdminVue,
+    FormTopicVue,
   },
   props: {
   },

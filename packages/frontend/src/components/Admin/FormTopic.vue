@@ -12,69 +12,66 @@
       <!-- Modal header -->
       <div class="flex justify-between items-start p-4 rounded-t border-b">
         <h3 class="text-xl font-semibold text-gray-900">
-          Thông tin người dùng
+          Thông tin đề tài
         </h3>
       </div>
-      <!-- Modal body -->
-      <div class="mt-5">
-        <div>
-          <div class="overflow-hidden shadow sm:rounded-md">
-            <div class="bg-white px-4 py-5 sm:p-6">
-              <div class="grid grid-cols-6 gap-6">
-                <div class="col-span-6 sm:col-span-4">
-                  <label
-                    class="block text-sm font-medium text-gray-700"
-                  >Họ và tên</label>
-                  <input
-                    v-model="name"
-                    :disabled="isView"
-                    type="text"
-                    class="mt-1 px-2 block w-full rounded-md py-2 bg-gray-100 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                  >
-                </div>
-                <div class="col-span-6 sm:col-span-4">
-                  <label
-                    class="block text-sm font-medium text-gray-700"
-                  >Mã số</label>
-                  <input
-                    v-model="code"
-                    :disabled="isView || isUpdate"
-                    type="text"
-                    class="mt-1 px-2 block w-full rounded-md py-2 bg-gray-100 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                  >
-                </div>
-                <div class="col-span-6 sm:col-span-4">
-                  <label
-                    class="block text-sm font-medium text-gray-700"
-                  >Email</label>
-                  <input
-                    v-model="email"
-                    :disabled="isView"
-                    type="email"
-                    class="mt-1 px-2 block w-full rounded-md bg-gray-100 py-2 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                  >
-                </div>
-
-                <div class="col-span-6 sm:col-span-3">
-                  <label
-                    class="block text-sm font-medium text-gray-700"
-                  >Giới tính</label>
-                  <select
-                    v-model="gender"
-                    :disabled="isView"
-                    class="mt-1 block w-full rounded-md bg-gray-100 border border-gray-300 py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                  >
-                    <option
-                      v-for="option in options"
-                      :key="`key-${option.value}`"
-                      :value="option.value"
-                    >
-                      {{ option.text }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-            </div>
+      <div class="ml-5 grid grid-cols-2">
+        <FormKit
+          type="text"
+          name="title"
+          label="Tiêu đề"
+          help="Vd: Xây dụng web thương mại điện tử e-shop"
+          validation="required"
+        />
+        <FormKit
+          name="code"
+          type="text"
+          label="Mã đề tài"
+          validation="required"
+        />
+        <FormKit
+          name="description"
+          type="textarea"
+          label="Mô tả"
+          help="Ghi các thông tin chi tiết tại đây"
+          validation="required"
+        />
+        <FormKit
+          name="limit"
+          type="number"
+          label="Số thành viên"
+          validation="required"
+        />
+        <FormKit
+          name="deadline"
+          type="date"
+          label="Thời hạn hoàn thành"
+          validation="required"
+        />
+        <div class="w-3/4">
+          <span class="font-bold text-sm">
+            Giáo viên hướng dẫn
+          </span>
+          <div class="mt-1">
+            <Multiselect
+              v-model="value2"
+              :options="listLecturers"
+            />
+          </div>
+        </div>
+        <div class="my-2-1 w-3/4">
+          <span class="font-bold text-sm py-4 my-4">
+            Sinh viên đăng kí
+          </span>
+          <div class="mt-1">
+            <Multiselect
+              v-model="value"
+              mode="tags"
+              :close-on-select="false"
+              :searchable="true"
+              :create-option="true"
+              :options="listStudents"
+            />
           </div>
         </div>
       </div>
@@ -94,25 +91,42 @@
 </template>
 
 <script>
-
+import { FormKitSchema } from '@formkit/vue';
+import Multiselect from '@vueform/multiselect';
+import { getValidationMessages } from '@formkit/validation';
 import { mapState, mapGetters } from 'vuex';
 
 export default {
-  name: 'FormUser',
+  name: 'FormTopic',
   components: {
+    Multiselect,
   },
   props: {
   },
   data () {
     return {
+      title: '',
       code: '',
-      name: '',
-      gender: '',
-      email: '',
-      options: [
-        { text: 'Nam', value: 'male' },
-        { text: 'Nữ', value: 'female' },
+      description: '',
+      limit: '',
+      deadline: '',
+      lecturerId: '',
+      studentIds: [],
+      data: '',
+      value: null,
+      value2: null,
+      listStudents: [
+        'student1',
+        'student2',
+        'student3',
+        'student4',
       ],
+      listLecturers: [
+        'lecturer1',
+        'lecturer2',
+        'lecturer3',
+      ],
+      messages: '',
     };
   },
   computed: {
@@ -180,10 +194,24 @@ export default {
         this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
       }
     },
+    handleSubmit () {
+      console.log('header');
+    },
+    handleChange () {
+      console.log(this.value);
+    },
+    showErrors (node) {
+      const validations = getValidationMessages(node);
+      validations.forEach((inputMessages) => {
+        messages.value = messages.value.concat(
+          inputMessages.map((message) => message.value),
+        );
+      });
+    },
   },
 };
 </script>
 
-<style lang="scss" scoped>
+<style src="@vueform/multiselect/themes/default.css">
 
 </style>
