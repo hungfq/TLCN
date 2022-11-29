@@ -51,4 +51,22 @@ export default class LectureApi {
     });
     return res.data;
   }
+
+  static async importLecturer (token, xlsx) {
+    const formData = new FormData();
+
+    formData.append('xlsx', xlsx);
+    formData.append('type', 'LECTURER');
+    const res = await axios.post(
+      '/user-import',
+      formData,
+      {
+        headers: {
+          authorization: `bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      },
+    );
+    return res.data;
+  }
 }

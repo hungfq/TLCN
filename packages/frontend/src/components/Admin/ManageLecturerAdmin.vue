@@ -6,7 +6,7 @@
     >
       Thêm giảng viên
     </div>
-    <form @submit.prevent="upload">
+    <form class="flex items-center justify-center" @submit.prevent="upload">
       <input
         ref="uploadBtn"
         type="file"
@@ -112,13 +112,11 @@ export default {
       this.$store.dispatch('url/updateId', id);
     },
     upload () {
-      const { files } = this.$refs.uploadBtn.files;
-      const formData = new FormData();
+      const { files } = this.$refs.uploadBtn;
 
-      // if you want to upload multiple files at once loop
-      // through the array of files
-      formData.append('attachment', files[0]);
-      console.log(formData);
+      this.$store.dispatch('lecturer/importLecturer', { token: this.token, xlsx: files[0] });
+
+      this.$refs.uploadBtn.value = '';
     },
   },
 };

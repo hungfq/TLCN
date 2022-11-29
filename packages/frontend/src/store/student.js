@@ -37,6 +37,15 @@ const actions = {
     const listStudents = await StudentApi.listAllStudent(token);
     commit('setListStudent', listStudents);
   },
+  async importStudent ({ dispatch }, payload) {
+    try {
+      const { token, xlsx } = payload;
+      await StudentApi.importStudent(token, xlsx);
+      dispatch('fetchListStudent', token);
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  },
 };
 
 const mutations = {

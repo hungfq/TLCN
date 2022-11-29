@@ -32,6 +32,15 @@ const actions = {
     await LectureApi.updateLecturer(token, value);
     dispatch('fetchListLecturer', token);
   },
+  async importLecturer ({ dispatch }, payload) {
+    try {
+      const { token, xlsx } = payload;
+      await LectureApi.importLecturer(token, xlsx);
+      dispatch('fetchListLecturer', token);
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  },
 };
 
 const mutations = {

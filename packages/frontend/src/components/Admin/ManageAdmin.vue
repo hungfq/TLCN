@@ -6,7 +6,7 @@
     >
       Thêm
     </div>
-    <form @submit.prevent="upload">
+    <form class="flex items-center justify-center" @submit.prevent="upload">
       <input
         ref="uploadBtn"
         type="file"
@@ -110,6 +110,13 @@ export default {
     handleShowAdmin (id) {
       this.$store.dispatch('url/updateSection', 'admin-view');
       this.$store.dispatch('url/updateId', id);
+    },
+    upload () {
+      const { files } = this.$refs.uploadBtn;
+
+      this.$store.dispatch('admin/importAdmin', { token: this.token, xlsx: files[0] });
+
+      this.$refs.uploadBtn.value = '';
     },
   },
 };
