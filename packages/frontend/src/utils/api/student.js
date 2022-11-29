@@ -51,4 +51,22 @@ export default class StudentApi {
     });
     return res.data;
   }
+
+  static async importStudent (token, xlsx) {
+    const formData = new FormData();
+
+    formData.append('xlsx', xlsx);
+    formData.append('type', 'STUDENT');
+    const res = await axios.post(
+      '/user-import',
+      formData,
+      {
+        headers: {
+          authorization: `bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      },
+    );
+    return res;
+  }
 }

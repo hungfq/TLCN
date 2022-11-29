@@ -6,7 +6,10 @@
     >
       Thêm
     </div>
-    <form @submit.prevent="upload">
+    <form
+      class="flex items-center justify-center"
+      @submit.prevent="upload"
+    >
       <input
         ref="uploadBtn"
         type="file"
@@ -110,6 +113,22 @@ export default {
     handleShowAdmin (id) {
       this.$store.dispatch('url/updateSection', 'admin-view');
       this.$store.dispatch('url/updateId', id);
+    },
+    upload () {
+      const { files } = this.$refs.uploadBtn;
+
+      if (files.length > 0) {
+        this.$store.dispatch('admin/importAdmin', { token: this.token, xlsx: files[0] })
+          .then((data) => {
+            if (data.status === 201) {
+              this.$toast.success('Đã nhập thành công!');
+            }
+          });
+
+        this.$refs.uploadBtn.value = '';
+      } else {
+        this.$toast.error('File không tồn tại');
+      }
     },
   },
 };

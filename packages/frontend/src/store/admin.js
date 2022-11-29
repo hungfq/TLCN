@@ -32,6 +32,16 @@ const actions = {
     await AdminApi.updateAdmin(token, value);
     dispatch('fetchListAdmins', token);
   },
+  async importAdmin ({ dispatch }, payload) {
+    try {
+      const { token, xlsx } = payload;
+      const data = await AdminApi.importAdmin(token, xlsx);
+      dispatch('fetchListAdmins', token);
+      return data;
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  },
 };
 
 const mutations = {
