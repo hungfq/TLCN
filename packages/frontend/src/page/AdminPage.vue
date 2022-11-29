@@ -22,6 +22,9 @@
             <ManageAdminVue v-if="section === 'admin-list'" />
             <FormUserVue v-if="section === 'admin-update'|| section === 'admin-import' || section === 'admin-view'" />
           </template>
+          <template v-if="module === 'topic'">
+            <ManageTopicAdminVue v-if="section === 'topic-list'" />
+          </template>
         </div>
       </div>
     </div>
@@ -42,6 +45,7 @@ import HeaderBarVue from '../components/Admin/HeaderBar.vue';
 import ManageStudentAdminVue from '../components/Admin/ManageStudentAdmin.vue';
 import ManageLecturerAdminVue from '../components/Admin/ManageLecturerAdmin.vue';
 import ManageAdminVue from '../components/Admin/ManageAdmin.vue';
+import ManageTopicAdminVue from '../components/Admin/ManageTopicAdmin.vue';
 import FormUserVue from '../components/Admin/FormUser.vue';
 
 export default {
@@ -55,6 +59,7 @@ export default {
     FormUserVue,
     ManageLecturerAdminVue,
     ManageAdminVue,
+    ManageTopicAdminVue,
   },
   props: {
   },

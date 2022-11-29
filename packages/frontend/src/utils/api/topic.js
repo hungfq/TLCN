@@ -4,7 +4,7 @@ const apiDest = 'http://localhost:5000/v1';
 axios.defaults.baseURL = apiDest;
 
 export default class TopicApi {
-  static async listAllTopics(token) {
+  static async listAllTopics (token) {
     const res = await axios.get('/topic', {
       headers: {
         authorization: `bearer ${token}`,
@@ -13,7 +13,7 @@ export default class TopicApi {
     return res.data;
   }
 
-  static async listTopicWithName(token, value, type) {
+  static async listTopicWithName (token, value, type) {
     const res = await axios.get(`/topic-search?value=${value}&type=${type}`, {
       headers: {
         authorization: `bearer ${token}`,
@@ -21,7 +21,7 @@ export default class TopicApi {
     });
     return res.data;
   }
-  
+
   static async listTopicById (token, id) {
     const res = await axios.get(`/topic/${id}`, {
       headers: {
@@ -31,7 +31,7 @@ export default class TopicApi {
     return res.data;
   }
 
-  static async listAllTopicsWithMajor(token, majorId) {
+  static async listAllTopicsWithMajor (token, majorId) {
     const res = await axios.get(`/topic?majorId=${majorId}`, {
       headers: {
         authorization: `bearer ${token}`,
