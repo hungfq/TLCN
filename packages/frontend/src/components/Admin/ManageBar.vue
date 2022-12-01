@@ -50,6 +50,12 @@
         >
           Quản lý đề tài
         </a>
+        <a
+          :class="[ isSchedule ? 'flex p-2 items-center w-full space-x-2 text-white bg-indigo-600 rounded-lg' : 'flex p-2   items-center space-x-2 text-indigo-600 transition-colors rounded-lg group hover:bg-indigo-600 hover:text-white']"
+          @click="updateModule('schedule')"
+        >
+          Quản lý đề tài
+        </a>
       </div>
     </nav>
   </div>
@@ -83,6 +89,9 @@ export default {
     },
     isTopic () {
       return this.module === 'topic';
+    },
+    isSchedule () {
+      return this.module === 'schedule';
     },
   },
   mounted () {

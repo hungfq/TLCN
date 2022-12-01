@@ -26,6 +26,9 @@
             <ManageTopicAdminVue v-if="section === 'topic-list'" />
             <FormTopicVue v-if="section === 'topic-update'|| section === 'topic-import' || section === 'topic-view'" />
           </template>
+          <template v-if="module === 'schedule'">
+            <ManageScheduleAdminVue v-if="section === 'schedule-list'" />
+          </template>
         </div>
       </div>
     </div>
@@ -47,6 +50,7 @@ import ManageStudentAdminVue from '../components/Admin/ManageStudentAdmin.vue';
 import ManageLecturerAdminVue from '../components/Admin/ManageLecturerAdmin.vue';
 import ManageAdminVue from '../components/Admin/ManageAdmin.vue';
 import ManageTopicAdminVue from '../components/Admin/ManageTopicAdmin.vue';
+import ManageScheduleAdminVue from '../components/Admin/ManageScheduleAdmin.vue';
 import FormUserVue from '../components/Admin/FormUser.vue';
 import FormTopicVue from '../components/Admin/FormTopic.vue';
 
@@ -63,6 +67,7 @@ export default {
     ManageAdminVue,
     ManageTopicAdminVue,
     FormTopicVue,
+    ManageScheduleAdminVue,
   },
   props: {
   },
@@ -82,11 +87,6 @@ export default {
     ...mapGetters('url', [
       'page', 'module', 'section', 'id',
     ]),
-    typeForm () {
-      if (this.section === 'student-update') return 'update';
-      if (this.section === 'student-import') return 'import';
-      return 'view';
-    },
   },
   async mounted () {
     if (!this.isAuthenticated) {

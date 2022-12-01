@@ -7,6 +7,7 @@ import lecturer from './lecturer';
 import admin from './admin';
 import url from './url';
 import topic from './topic';
+import schedule from './schedule';
 import router from '../router';
 
 /**
@@ -29,6 +30,8 @@ const vuexLocal = createPersistedState({
     'admin.listAdmins',
     'topic',
     'topic.listTopics',
+    'schedule',
+    'schedule.listSchedules',
   ],
 
   getState: (key, storage) => {
@@ -46,7 +49,7 @@ const vuexLocal = createPersistedState({
 
 const store = new Vuex.Store({
   modules: {
-    auth, student, url, lecturer, admin, topic,
+    auth, student, url, lecturer, admin, topic, schedule,
   },
   plugins: [vuexLocal],
 });
