@@ -67,10 +67,8 @@ export default class TopicApi {
     return res.data;
   }
 
-  static async createTopic (token, title, description, limit, lecturerId, majorId) {
-    const res = await axios.post('/topic', {
-      title, description, limit, lecturerId, majorId,
-    }, {
+  static async createTopic (token, value) {
+    const res = await axios.post('/topic', value, {
       headers: {
         authorization: `Bearer ${token}`,
       },
@@ -78,10 +76,8 @@ export default class TopicApi {
     return res.data;
   }
 
-  static async updateTopicById (token, id, title, description, limit, lecturerId, majorId) {
-    const res = await axios.put(`/topic/${id}`, {
-      title, description, limit, lecturerId, majorId,
-    }, {
+  static async updateTopicById (token, value) {
+    const res = await axios.put(`/topic/${value._id}`, value, {
       headers: {
         authorization: `Bearer ${token}`,
       },
@@ -90,7 +86,7 @@ export default class TopicApi {
   }
 
   static async deleteTopicById (token, id) {
-    const res = await axios.get(`/topic/${id}`, {
+    const res = await axios.delete(`/topic/${id}`, {
       headers: {
         authorization: `bearer ${token}`,
       },

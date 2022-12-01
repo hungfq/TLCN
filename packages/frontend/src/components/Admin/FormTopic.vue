@@ -17,36 +17,54 @@
       </div>
       <div class="ml-5 grid grid-cols-2">
         <FormKit
+          v-model="title"
           type="text"
           name="title"
           label="Tiêu đề"
           help="Vd: Xây dụng web thương mại điện tử e-shop"
           validation="required"
+          :disabled="isView"
         />
         <FormKit
+          v-model="code"
           name="code"
           type="text"
           label="Mã đề tài"
           validation="required"
+          :disabled="isView"
         />
         <FormKit
+          v-model="description"
           name="description"
           type="textarea"
           label="Mô tả"
           help="Ghi các thông tin chi tiết tại đây"
           validation="required"
+          :disabled="isView"
         />
         <FormKit
+          v-model="limit"
           name="limit"
           type="number"
           label="Số thành viên"
           validation="required"
+          :disabled="isView"
         />
         <FormKit
+          v-model="major"
+          name="major"
+          type="text"
+          label="Chuyên ngành"
+          validation="required"
+          :disabled="isView"
+        />
+        <FormKit
+          v-model="deadline"
           name="deadline"
           type="date"
           label="Thời hạn hoàn thành"
           validation="required"
+          :disabled="isView"
         />
         <div class="w-3/4">
           <span class="font-bold text-sm">
@@ -54,8 +72,10 @@
           </span>
           <div class="mt-1">
             <Multiselect
-              v-model="value2"
+              v-model="lecturerId"
               :options="listLecturers"
+              :close-on-select="false"
+              :disabled="isView"
             />
           </div>
         </div>
@@ -65,12 +85,13 @@
           </span>
           <div class="mt-1">
             <Multiselect
-              v-model="value"
+              v-model="studentIds"
               mode="tags"
               :close-on-select="false"
               :searchable="true"
               :create-option="true"
               :options="listStudents"
+              :disabled="isView"
             />
           </div>
         </div>
@@ -80,8 +101,8 @@
         <button
           v-if="!isView"
           type="button"
-          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 bg-gray-100 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          @click="handleAddUserAdmin"
+          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4  focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          @click="handleAddTopicAdmin"
         >
           {{ isSave ? 'Lưu' : 'Cập nhật' }}
         </button>
@@ -91,7 +112,6 @@
 </template>
 
 <script>
-import { FormKitSchema } from '@formkit/vue';
 import Multiselect from '@vueform/multiselect';
 import { getValidationMessages } from '@formkit/validation';
 import { mapState, mapGetters } from 'vuex';
@@ -111,10 +131,8 @@ export default {
       limit: '',
       deadline: '',
       lecturerId: '',
+      major: '',
       studentIds: [],
-      data: '',
-      value: null,
-      value2: null,
       listStudents: [
         'student1',
         'student2',
@@ -146,67 +164,81 @@ export default {
       return this.section === 'topic-view';
     },
   },
-  mounted () {
-
+  async mounted () {
+    await this.$store.dispatch('lecturer/fetchListLecturer', this.token);
+    await this.$store.dispatch('student/fetchListStudent', this.token);
+    const lecturers = this.$store.state.lecturer.listLecturer;
+    const students = this.$store.state.student.listStudents;
+    this.listLecturers = lecturers.map((lecturer) => {
+      let l = {
+        value: lecturer._id,
+        label: lecturer.name,
+      };
+      if (this.isView) {
+        l = { ...l, disabled: true };
+      }
+      return l;
+    });
+    this.listStudents = students.map((student) => {
+      let st = {
+        value: student._id,
+        label: student.name,
+      };
+      if (this.isView) {
+        st = { ...st, disabled: true };
+      }
+      return st;
+    });
+    if (this.isUpdate || this.isView) {
+      const { id } = this.$store.state.url;
+      const { listTopics } = this.$store.state.topic;
+      const topic = listTopics.find((s) => s._id.toString() === id.toString());
+      if (topic) {
+        this.title = topic.title;
+        this.code = topic.code;
+        this.description = topic.description;
+        this.limit = topic.limit;
+        if (topic.deadline) {
+          const date = new Date(topic.deadline);
+          const dateString = new Date(date.getTime() - (date.getTimezoneOffset() * 60000))
+            .toISOString()
+            .split('T')[0];
+          this.deadline = dateString;
+        }
+        if (topic.lecturerId) this.lecturerId = topic.lecturerId._id;
+        this.major = topic.major;
+        this.studentIds = topic.students;
+      }
+    }
   },
   methods: {
     rollBack () {
       this.$store.dispatch('url/updateSection', `${this.module}-list`);
     },
-    handleAddUserAdmin () {
+    async handleAddTopicAdmin () {
+      const { studentIds, lecturerId } = this;
       const value = {
-        code: this.code, name: this.name, email: this.email, gender: this.gender, type: 'STUDENT',
+        title: this.title,
+        description: this.description,
+        code: this.code,
+        limit: this.limit,
+        deadline: this.deadline,
+        major: this.major,
+        students: studentIds,
+        lecturerId,
       };
       try {
-        if (this.isUpdate) {
-          if (this.module === 'student') {
-            this.$store.dispatch('student/updateStudent', {
-              token: this.token, value,
-            });
-          } else if (this.module === 'lecturer') {
-            this.$store.dispatch('lecturer/updateLecturer', {
-              token: this.token, value,
-            });
-          } else if (this.module === 'admin') {
-            this.$store.dispatch('admin/updateAdmin', {
-              token: this.token, value,
-            });
-          }
-          this.$toast.success('Đã cập nhật một thành công!');
-        } else if (this.isSave) {
-          if (this.module === 'student') {
-            this.$store.dispatch('student/addStudent', {
-              token: this.token, value,
-            });
-          } else if (this.module === 'lecturer') {
-            this.$store.dispatch('lecturer/addLecturer', {
-              token: this.token, value,
-            });
-          } else if (this.module === 'admin') {
-            this.$store.dispatch('admin/addAdmin', {
-              token: this.token, value,
-            });
-          }
-          this.$toast.success('Đã thêm một thành công!');
+        if (this.isSave) {
+          await this.$store.dispatch('topic/addTopic', { token: this.token, value });
+        } else if (this.isUpdate) {
+          await this.$store.dispatch('topic/updateTopic', { token: this.token, value: { ...value, _id: this.id } });
         }
-        this.rollBack();
+        this.$toast.success('Đã cập nhật một thành công!');
       } catch (e) {
         this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
+      } finally {
+        this.rollBack();
       }
-    },
-    handleSubmit () {
-      console.log('header');
-    },
-    handleChange () {
-      console.log(this.value);
-    },
-    showErrors (node) {
-      const validations = getValidationMessages(node);
-      validations.forEach((inputMessages) => {
-        messages.value = messages.value.concat(
-          inputMessages.map((message) => message.value),
-        );
-      });
     },
   },
 };

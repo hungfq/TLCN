@@ -170,22 +170,22 @@ export default {
     rollBack () {
       this.$store.dispatch('url/updateSection', `${this.module}-list`);
     },
-    handleAddUserAdmin () {
+    async handleAddUserAdmin () {
       const value = {
         code: this.code, name: this.name, email: this.email, gender: this.gender, type: 'STUDENT',
       };
       try {
         if (this.isUpdate) {
           if (this.module === 'student') {
-            this.$store.dispatch('student/updateStudent', {
+            await this.$store.dispatch('student/updateStudent', {
               token: this.token, value,
             });
           } else if (this.module === 'lecturer') {
-            this.$store.dispatch('lecturer/updateLecturer', {
+            await this.$store.dispatch('lecturer/updateLecturer', {
               token: this.token, value,
             });
           } else if (this.module === 'admin') {
-            this.$store.dispatch('admin/updateAdmin', {
+            await this.$store.dispatch('admin/updateAdmin', {
               token: this.token, value,
             });
           }

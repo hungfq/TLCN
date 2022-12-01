@@ -69,7 +69,7 @@
     >
       <button
         class="transition-opacity rounded-lg opacity-80 hover:opacity-100 focus:outline-none focus:ring focus:ring-indigo-600 focus:ring-offset-white focus:ring-offset-2"
-        @click="isOpen = !isOpen; $nextTick(() => {isOpen ? $refs.userMenu.focus() : null})"
+        @click="miniAvatarShow = !miniAvatarShow"
       >
         <img
           class="w-10 h-10 rounded-lg shadow-md"
@@ -79,15 +79,11 @@
         <span class="sr-only">User menu</span>
       </button>
       <div
-        x-show="isOpen"
-        x-ref="userMenu"
-        tabindex="-1"
+        v-show="miniAvatarShow"
         class="absolute w-48 py-1 mt-2 origin-bottom-left bg-white rounded-md shadow-lg left-10 bottom-14 focus:outline-none"
         role="menu"
         aria-orientation="vertical"
         aria-label="user menu"
-        @click.away="isOpen = false"
-        @keydown.escape="isOpen = false"
       >
         <a
           href="#"
@@ -120,6 +116,7 @@ export default {
   },
   data () {
     return {
+      miniAvatarShow: true,
     };
   },
   computed: {

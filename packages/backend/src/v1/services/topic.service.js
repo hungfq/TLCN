@@ -70,7 +70,7 @@ const search = async (value, type) => {
   return results;
 };
 
-const searchAndSort = async (value, type, sortField, sortType ) => {
+const searchAndSort = async (value, type, sortField, sortType) => {
   let listTopic;
   let listLecturer;
   let listLecturerId;
@@ -78,7 +78,7 @@ const searchAndSort = async (value, type, sortField, sortType ) => {
   switch (type) {
     case 'title':
       listTopic = await _Topic.find({ title: { $regex: `.*${value}.*` } })
-        .populate({ path: 'lecturerId', select: 'name _id' }).sort([[sortField, sortType]]);;
+        .populate({ path: 'lecturerId', select: 'name _id' }).sort([[sortField, sortType]]);
       break;
     case 'lecturer':
       listLecturer = await _Lecturer.find({ name: { $regex: `.*${value}.*` } });
@@ -173,9 +173,9 @@ const listProposalTopic = async () => {
 
 const removeStudentInTopic = async (studentId, topicId) => {
   const topicOld = await _Topic.findById(topicId);
-  const students = topicOld.students.filter(student => student._id.toString() !== studentId.toString());
+  const students = topicOld.students.filter((student) => student._id.toString() !== studentId.toString());
   await updateStudents(topicId, students);
-}
+};
 
 module.exports = {
   createOne,

@@ -14,25 +14,29 @@ const actions = {
     commit('setListTopics', listTopics);
   },
 
-  // async addTopics ({ dispatch, commit }, payload) {
-  //   try {
-  //     const { token, value } = payload;
-  //     await TopicApi.addStudent(token, value);
-  //     dispatch('setListTopics', token);
-  //   } catch (e) {
-  //     throw new Error(e.message);
-  //   }
-  // },
-  // async updateStudent ({ dispatch, commit }, payload) {
-  //   const { token, value } = payload;
-  //   await StudentApi.updateStudent(token, value);
-  //   dispatch('fetchListStudent', token);
-  // },
-  // async removeStudent ({ commit }, value) {
-  //   const { token, id } = value;
-  //   const listStudents = await StudentApi.listAllStudent(token);
-  //   commit('setListStudent', listStudents);
-  // },
+  async addTopic ({ dispatch }, payload) {
+    try {
+      const { token, value } = payload;
+      await TopicApi.createTopic(token, value);
+      dispatch('fetchListTopics', token);
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  },
+  async updateTopic ({ dispatch, commit }, payload) {
+    try {
+      const { token, value } = payload;
+      await TopicApi.updateTopicById(token, value);
+      dispatch('fetchListTopics', token);
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  },
+  async removeTopic ({ dispatch, commit }, value) {
+    const { token, id } = value;
+    await TopicApi.deleteTopicById(token, id);
+    dispatch('fetchListTopics', token);
+  },
 };
 
 const mutations = {

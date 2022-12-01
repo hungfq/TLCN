@@ -62,11 +62,15 @@
           <td class="py-4 px-6 text-right">
             <a
               class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
-              @click="handleUpdateStudent(topic._id)"
+              @click="handleUpdateTopic(topic._id)"
             >Sửa</a>
             <a
               class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
-              @click="handleShowStudent(topic._id)"
+              @click="handleRemoveTopic(topic._id)"
+            >Xóa</a>
+            <a
+              class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
+              @click="handleShowTopic(topic._id)"
             >Xem chi tiết</a>
           </td>
         </tr>
@@ -98,6 +102,9 @@ export default {
     ...mapGetters('topic', [
       'listTopics',
     ]),
+    ...mapGetters('url', [
+      'page', 'module', 'section', 'id',
+    ]),
   },
   mounted () {
     this.$store.dispatch('topic/fetchListTopics', this.token);
@@ -111,9 +118,17 @@ export default {
       this.$store.dispatch('url/updateSection', `${this.module}-view`);
       this.$store.dispatch('url/updateId', id);
     },
-    handleRemoveTopic (id) {
-      this.$store.dispatch('url/updateSection', `${this.module}-view`);
-      this.$store.dispatch('url/updateId', id);
+    async handleRemoveTopic (id) {
+      try {
+        const value = {
+          id,
+          token: this.token,
+        };
+        await this.$store.dispatch('topic/removeTopic', value);
+        this.$toast.success('Đã xóa thành công!');
+      } catch (e) {
+        this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
+      }
     },
     displayLecturer (lecturer) {
       return lecturer ? lecturer.name : '';
