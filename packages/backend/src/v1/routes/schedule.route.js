@@ -10,6 +10,7 @@ const {
   listTopics,
   register,
   cancelRegister,
+  removeSchedule,
 } = require('../controller/schedule.controller');
 
 const { upload } = require('../utils/file');
@@ -25,6 +26,7 @@ const router = (app) => {
   app.get('/v1/schedule', isAuth, listSchedules);
   app.get('/v1/schedule/:id', isAuth, findOne);
   app.put('/v1/schedule/:id', isAuth, updateOne);
+  app.delete('/v1/schedule/:id', isAuth, removeSchedule);
   app.post('/v1/schedule/:id/student', upload.single('xlsx'), importStudents);
   app.get('/v1/schedule/:id/student', isAuth, listStudents);
   app.post('/v1/schedule/:id/topic', upload.single('xlsx'), importTopics);

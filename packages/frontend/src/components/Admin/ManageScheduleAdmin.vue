@@ -129,9 +129,17 @@ export default {
       this.$store.dispatch('url/updateSection', 'schedule-view');
       this.$store.dispatch('url/updateId', id);
     },
-    handleRemoveSchedule (id) {
-      this.$store.dispatch('url/updateSection', 'schedule-view');
-      this.$store.dispatch('url/updateId', id);
+    async handleRemoveSchedule (id) {
+      try {
+        const value = {
+          id,
+          token: this.token,
+        };
+        await this.$store.dispatch('schedule/removeSchedule', value);
+        this.$toast.success('Đã xóa thành công!');
+      } catch (e) {
+        this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
+      }
     },
     formatDay (oldDate) {
       try {

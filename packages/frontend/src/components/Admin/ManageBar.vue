@@ -54,7 +54,7 @@
           :class="[ isSchedule ? 'flex p-2 items-center w-full space-x-2 text-white bg-indigo-600 rounded-lg' : 'flex p-2   items-center space-x-2 text-indigo-600 transition-colors rounded-lg group hover:bg-indigo-600 hover:text-white']"
           @click="updateModule('schedule')"
         >
-          Quản lý đề tài
+          Quản lý đợt đăng ký
         </a>
       </div>
     </nav>

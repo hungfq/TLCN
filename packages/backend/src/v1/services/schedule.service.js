@@ -9,25 +9,36 @@ const findOne = async (_id) => {
   return schedule;
 };
 
-const createOne = async (name, description, startDate, endDate) => {
+const createOne = async (name, description, startDate, endDate, students, topics) => {
+  let listStudents = [];
+  let listTopics = [];
+  if (students) listStudents = students;
+  if (topics) listTopics = topics;
   const schedule = await _Schedule.create({
     name,
     description,
-    students: [],
-    topics: [],
     startDate,
     endDate,
+    students: listStudents,
+    topics: listTopics,
   });
   return schedule;
 };
 
-const updateOne = async (_id, name, description, startDate, endDate) => {
-  await _Schedule.updateOne({ _id }, {
+const removeSchedule = async (id) => {
+  await _Schedule.deleteOne({ _id: id });
+};
+
+const updateOne = async (_id, name, description, startDate, endDate, students, topics) => {
+  let value = {
     name,
     description,
     startDate,
     endDate,
-  });
+  };
+  if (students) value = { ...value, students };
+  if (topics) value = { ...value, topics };
+  await _Schedule.updateOne({ _id }, value);
 };
 
 const listBetweenTime = async (from, to) => {
@@ -91,4 +102,5 @@ module.exports = {
   updateTopics,
   listTopics,
   checkStudentInTopic,
+  removeSchedule,
 };

@@ -7,9 +7,9 @@ const fileUtils = require('../utils/file');
 const createOne = async (req, res, next) => {
   try {
     const {
-      name, description, startDate, endDate,
+      name, description, startDate, endDate, students, topics,
     } = req.body;
-    const schedule = await scheduleService.createOne(name, description, startDate, endDate);
+    const schedule = await scheduleService.createOne(name, description, startDate, endDate, students, topics);
     return res.status(201).send(schedule);
   } catch (err) {
     return next(err);
@@ -30,9 +30,9 @@ const updateOne = async (req, res, next) => {
   try {
     const { id } = req.params;
     const {
-      name, description, startDate, endDate,
+      name, description, startDate, endDate, students, topics,
     } = req.body;
-    await scheduleService.updateOne(id, name, description, startDate, endDate);
+    await scheduleService.updateOne(id, name, description, startDate, endDate, students, topics);
     return res.status(200).send('Successfully');
   } catch (err) {
     return next(err);
@@ -71,6 +71,15 @@ const listStudents = async (req, res, next) => {
     const { id } = req.params;
     const students = await scheduleService.listStudents(id);
     return res.status(200).send(students);
+  } catch (err) {
+    return next(err);
+  }
+};
+const removeSchedule = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    await scheduleService.removeSchedule(id);
+    return res.status(200).send('success');
   } catch (err) {
     return next(err);
   }
@@ -194,4 +203,5 @@ module.exports = {
   listTopics,
   register,
   cancelRegister,
+  removeSchedule,
 };

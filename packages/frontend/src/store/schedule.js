@@ -18,25 +18,25 @@ const actions = {
     }
   },
 
-  // async addStudent ({ dispatch, commit }, payload) {
-  //   try {
-  //     const { token, value } = payload;
-  //     await StudentApi.addStudent(token, value);
-  //     dispatch('fetchListStudent', token);
-  //   } catch (e) {
-  //     throw new Error(e.message);
-  //   }
-  // },
-  // async updateStudent ({ dispatch, commit }, payload) {
-  //   const { token, value } = payload;
-  //   await StudentApi.updateStudent(token, value);
-  //   dispatch('fetchListStudent', token);
-  // },
-  // async removeStudent ({ commit }, value) {
-  //   const { token, id } = value;
-  //   const listStudents = await StudentApi.listAllStudent(token);
-  //   commit('setListStudent', listStudents);
-  // },
+  async addSchedule ({ dispatch, commit }, payload) {
+    try {
+      const { token, value } = payload;
+      await ScheduleApi.addSchedule(token, value);
+      dispatch('fetchListSchedules', token);
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  },
+  async updateSchedule ({ dispatch, commit }, payload) {
+    const { token, value } = payload;
+    await ScheduleApi.updateSchedule(token, value);
+    dispatch('fetchListSchedules', token);
+  },
+  async removeSchedule ({ dispatch, commit }, value) {
+    const { token, id } = value;
+    await ScheduleApi.removeSchedule(token, id);
+    dispatch('fetchListSchedules', token);
+  },
 };
 
 const mutations = {
