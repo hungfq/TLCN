@@ -1,7 +1,7 @@
 <!-- eslint-disable max-len -->
 <template>
   <!-- component -->
-  <div v-if="isAuthenticated">
+  <div v-if="(isAuthenticated && userRole === 'ADMIN')">
     <div class="flex h-screen antialiased text-gray-900 bg-gray-100">
       <div class="flex flex-shrink-0 transition-all">
         <LeftMiniBarVue />
@@ -40,7 +40,7 @@
   </div>
   <ErrorModalVue
     v-model="showErrorModal"
-    :message="'Bạn chưa đăng nhập, vui lòng đăng nhập lại'"
+    :message="'Bạn không có quyền truy cập, vui lòng đăng nhập lại!'"
     @close-error="closeErrorModal"
   />
 </template>
@@ -96,7 +96,7 @@ export default {
     ]),
   },
   async mounted () {
-    if (!this.isAuthenticated) {
+    if (!this.isAuthenticated || this.userRole !== 'ADMIN') {
       this.showErrorModal = true;
     }
     const { page, module, section } = this.$store.state.url;

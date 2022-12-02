@@ -2,6 +2,7 @@ import TopicApi from '../utils/api/topic';
 
 const initState = {
   listTopics: [],
+  listTopicByLecturer: [],
 };
 
 const getters = {
@@ -12,6 +13,11 @@ const actions = {
   async fetchListTopics ({ commit }, token) {
     const listTopics = await TopicApi.listAllTopics(token);
     commit('setListTopics', listTopics);
+  },
+  async fetchListTopicByLectures ({ commit }, value) {
+    const { token, lecturerId } = value;
+    const listTopics = await TopicApi.listAllTopicsByLecturerId(token, lecturerId);
+    commit('setListTopicsByLecturer', listTopics);
   },
 
   async addTopic ({ dispatch }, payload) {
@@ -42,6 +48,9 @@ const actions = {
 const mutations = {
   setListTopics: (state, listTopics) => {
     state.listTopics = listTopics;
+  },
+  setListTopicsByLecturer: (state, listTopicByLecturer) => {
+    state.listTopicByLecturer = listTopicByLecturer;
   },
 };
 

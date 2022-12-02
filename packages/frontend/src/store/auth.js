@@ -21,7 +21,7 @@ const getters = {
   isAuthenticated: (state) => state.isAuthenticated,
   userInfo: (state) => state.userInfo,
   token: (state) => state.userInfo.token,
-  userRole: (state) => state.role,
+  userRole: (state) => state.userInfo.role,
   userName: (state) => state.userInfo.name,
 };
 

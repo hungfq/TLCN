@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomePage from '../page/HomePage.vue';
 import DashBoardPage from '../page/DashboardPage.vue';
 import AdminPage from '../page/AdminPage.vue';
+import LecturerPage from '../page/LecturerPage.vue';
 
 const routes = [
   {
@@ -13,6 +14,11 @@ const routes = [
     path: '/admin',
     name: 'admin.default',
     component: AdminPage,
+  },
+  {
+    path: '/lecturer',
+    name: 'lecturer.default',
+    component: LecturerPage,
   },
   {
     path: '/dashboard',
