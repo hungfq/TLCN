@@ -58,18 +58,7 @@ export default {
     // Note: only simple paths. Expressions are not supported.
   },
   async mounted () {
-    try {
-      const mapTopic = [];
-      const listMajor = await MajorApi.listAllMajor(this.token);
-      listMajor.forEach(async (major) => {
-        const listTopic = await TopicApi.listAllTopicsWithMajor(this.token, major._id);
-        mapTopic.push({ majorName: major.name, listTopic });
-      });
-      this.mapTopic = mapTopic;
-      this.listMajor = listMajor;
-    } catch (e) {
-      console.log(e);
-    }
+
   },
   methods: {
   },

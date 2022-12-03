@@ -2,6 +2,10 @@
 const bodyParser = require('body-parser');
 const express = require('express');
 const _ = require('lodash');
+const http = require('http');
+
+const { createSocket } = require('./socket');
+const { createRedis } = require('./redis');
 const AccessDenied = require('./utils/errors/AppError');
 const authRoutes = require('./routes/auth.route');
 const userRoutes = require('./routes/user.route');
@@ -10,6 +14,9 @@ const topicRoutes = require('./routes/topic.route');
 const taskRoutes = require('./routes/task.route');
 
 const app = express();
+const server = http.createServer(app);
+createSocket(server);
+createRedis();
 
 app.use(bodyParser.json());
 
@@ -50,4 +57,4 @@ app.use((err, req, res, next) => {
   }
 });
 
-module.exports = app;
+module.exports = server;

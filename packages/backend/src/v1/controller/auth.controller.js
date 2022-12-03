@@ -9,6 +9,8 @@ const _Lecturer = require('../models/lecturer.model');
 const _Student = require('../models/student.model');
 const notifyService = require('../services/notification.service');
 
+const { getIo } = require('../socket');
+
 const client = new OAuth2Client();
 const secretKey = process.env.JWT_SECRET_KEY;
 
@@ -70,8 +72,14 @@ const readNotification = async (req, res, next) => {
   }
 };
 
+const test = async (req, res) => {
+  await getIo().to().emit('notify', 'notify send by server');
+  return res.sendStatus(200);
+};
+
 module.exports = {
   loginWithGoogle,
   getNotification,
   readNotification,
+  test,
 };

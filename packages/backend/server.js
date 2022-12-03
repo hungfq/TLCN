@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const path = require('path');
 // Mapping the schemas in MongoDB into mongoose mode
 // require('./src/v1/models/user.model');
-const app = require('./src/v1/app');
+const server = require('./src/v1/app');
 
 const { PORT } = process.env;
 // eslint-disable-next-line import/no-dynamic-require
@@ -18,6 +18,6 @@ mongoose.connect(mongoUrl, { useNewUrlParser: true })
   .catch((err) => console.log(err));
 
 const port = PORT;
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`server started ${port}`);
 });

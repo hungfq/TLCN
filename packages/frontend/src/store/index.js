@@ -1,5 +1,6 @@
 import Vuex from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
+import io from 'socket.io-client';
 import { sync } from 'vuex-router-sync';
 import auth from './auth';
 import student from './student';
@@ -47,11 +48,27 @@ const vuexLocal = createPersistedState({
   storage: window.sessionStorage,
 });
 
+const createWebSocketPlugin = (socket) => (store) => {
+  store.$socket = socket;
+  socket.on('connect', () => {
+    socket.emit('id', null);
+  });
+
+  socket.on('notify', (payload) => {
+    console.log('🚀 ~ file: index.js:54 ~ socket.on ~ payload', payload);
+    // TODO: re-render notification
+  });
+};
+
+const socket = io('http://localhost:5000');
+
+const websocketPlugin = createWebSocketPlugin(socket);
+
 const store = new Vuex.Store({
   modules: {
     auth, student, url, lecturer, admin, topic, schedule,
   },
-  plugins: [vuexLocal],
+  plugins: [vuexLocal, websocketPlugin],
 });
 sync(store, router, { moduleName: 'routeModule' });
 export default store;
