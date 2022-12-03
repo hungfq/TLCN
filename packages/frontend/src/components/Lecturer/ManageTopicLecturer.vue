@@ -158,8 +158,8 @@ export default {
           ...t, studentInfo: listStudents, scheduleInfo,
         };
       });
-      // console.log("🚀 ~ file: ManageTopicLecturer.vue:163 ~ listTopicsLecturer ~ list", list)
-      return list;
+      const newList = list.filter((item) => item.lecturerId._id.toString() === this.userId.toString());
+      return newList;
     },
   },
   mounted () {
