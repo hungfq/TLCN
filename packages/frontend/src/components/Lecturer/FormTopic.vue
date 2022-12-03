@@ -31,7 +31,7 @@
           type="text"
           label="Mã đề tài"
           validation="required"
-          :disabled="isView"
+          :disabled="true"
         />
         <FormKit
           v-model="description"
@@ -75,7 +75,7 @@
               v-model="lecturerId"
               :options="listLecturers"
               :close-on-select="false"
-              :disabled="isView"
+              :disabled="true"
             />
           </div>
         </div>
@@ -91,7 +91,7 @@
               :searchable="true"
               :create-option="true"
               :options="listStudents"
-              :disabled="isView"
+              :disabled="true"
             />
           </div>
         </div>
