@@ -31,7 +31,19 @@
             scope="col"
             class="py-3 px-6"
           >
-            Tên giảng viên
+            Mã đề tài
+          </th>
+          <th
+            scope="col"
+            class="py-3 px-6"
+          >
+            Danh sách sinh viên
+          </th>
+          <th
+            scope="col"
+            class="py-3 px-6"
+          >
+            Đợt đăng ký
           </th>
           <th
             scope="col"
@@ -43,7 +55,7 @@
       </thead>
       <tbody>
         <tr
-          v-for="topic in listTopics"
+          v-for="topic in listTopicsLecturer"
           :key="`topic-${topic._id}`"
           class="bg-slate-300 hover:bg-gray-50 "
         >
@@ -54,11 +66,32 @@
           >
             {{ topic.title }}
           </th>
+          <th
+            :key="`topic-${topic._id}`"
+            scope="row"
+            class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap "
+          >
+            {{ topic.code }}
+          </th>
           <td class="py-4 px-6">
             <div class="font-bold cursor-pointer">
-              {{ displayLecturer(topic.lecturerId) }}
+              <li
+                v-for="student in topic.studentInfo"
+                :key="student.code"
+              >
+                {{ student.name }} - {{ student.code }}
+              </li>
             </div>
           </td>
+          <td class="py-4 px-6 text-right">
+            <th
+              scope="row"
+              class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap "
+            >
+              {{ topic.scheduleInfo ? topic.scheduleInfo.name : '' }}
+            </th>
+          </td>
+
           <td class="py-4 px-6 text-right">
             <a
               class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
@@ -101,9 +134,37 @@ export default {
     ...mapGetters('url', [
       'page', 'module', 'section', 'id',
     ]),
+    ...mapGetters('student', [
+      'studentId', 'studentEmail', 'student', 'listStudents',
+    ]),
+    ...mapGetters('schedule', [
+      'listSchedules',
+    ]),
+    listTopicsLecturer () {
+      const list = this.listTopics.map((t) => {
+        const listStudents = t.students.map((s) => this.listStudents.find((st) => st._id.toString() === s.toString()));
+        let scheduleInfoId = null;
+        let scheduleInfo = null;
+        this.listSchedules.forEach((s) => {
+          const she = s.topics.find((code) => code === t._id);
+          if (she) {
+            scheduleInfoId = s._id;
+          }
+        });
+        if (scheduleInfoId) {
+          scheduleInfo = this.listSchedules.find((s) => s._id.toString() === scheduleInfoId.toString());
+        }
+        return {
+          ...t, studentInfo: listStudents, scheduleInfo,
+        };
+      });
+      return list;
+    },
   },
   mounted () {
     this.$store.dispatch('topic/fetchListTopics', this.token);
+    this.$store.dispatch('student/fetchListStudent', this.token);
+    this.$store.dispatch('schedule/fetchListSchedules', this.token);
   },
   methods: {
     handleUpdateTopic (id) {
