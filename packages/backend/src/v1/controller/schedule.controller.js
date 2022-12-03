@@ -129,6 +129,35 @@ const listTopics = async (req, res, next) => {
   }
 };
 
+const listScheduleTopicLecturer = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const topics = await scheduleService.listScheduleTopicLecturer(id, req.user._id);
+
+    return res.status(200).send(topics);
+  } catch (err) {
+    return next(err);
+  }
+};
+
+const listTopicLecturer = async (req, res, next) => {
+  try {
+    const { id, lecturerId } = req.params;
+    const topics = await scheduleService.listTopicLecturer(id, lecturerId);
+
+    const result = await Promise.all(
+      topics.map(async (topic) => {
+        const { students } = topic;
+        const studentList = await userService.getStudentByCodes(students);
+        return { ...topic._doc, students: studentList };
+      }),
+    );
+    return res.status(200).send(result);
+  } catch (err) {
+    return next(err);
+  }
+};
+
 const register = async (req, res, next) => {
   try {
     const { id, topicId } = req.params;
@@ -201,6 +230,8 @@ module.exports = {
   listStudents,
   importTopics,
   listTopics,
+  listScheduleTopicLecturer,
+  listTopicLecturer,
   register,
   cancelRegister,
   removeSchedule,

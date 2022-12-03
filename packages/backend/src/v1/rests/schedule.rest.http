@@ -3,8 +3,8 @@ Authorization: Bearer {{student_token}}
 Content-Type: application/json
 
 {
-    "name":"TLCN 2022",
-    "description": "Dành cho ngành KTDL",
+    "name":"CNPMM 2022",
+    "description": "Đăng ký đề tài CNPMM",
     "startDate":"2022-08-15",
     "endDate":"2022-09-05"
 }
@@ -25,17 +25,17 @@ GET {{host}}/v1/schedule
 &endDate=2022-09-09
 Authorization: Bearer {{student_token}}
 ###
-GET {{host}}/v1/schedule/637747fb996d402840fb92d4
+GET {{host}}/v1/schedule/638ab9a345a87774343b2781
 Authorization: Bearer {{student_token}}
 ###
 
-POST {{host}}/v1/schedule/637747fb996d402840fb92d4/student
+POST {{host}}/v1/schedule/638ab9a345a87774343b2781/student
 Authorization: Bearer {{student_token}}
 Content-Type: multipart/form-data
 #   POSTMAN
 
 ###
-GET {{host}}/v1/schedule/637747fb996d402840fb92d4/student
+GET {{host}}/v1/schedule/638ab9a345a87774343b2781/student
 Authorization: Bearer {{student_token}}
 ###
 
@@ -45,11 +45,17 @@ Content-Type: multipart/form-data
 #   POSTMAN
 
 ###
-GET {{host}}/v1/schedule/637747fb996d402840fb92d4/topic
+GET {{host}}/v1/schedule/638ab9a345a87774343b2781/topic
 Authorization: Bearer {{student_token}}
 ###
+GET {{host}}/v1/schedule-topic-lecturer
+Authorization: Bearer {{lecturer_token}}
+###
+GET {{host}}/v1/schedule/638ab9a345a87774343b2781/topic-lecturer/6375b66924ace35d440f51ed
+Authorization: Bearer {{lecturer_token}}
+###
 
-POST {{host}}/v1/schedule/637747fb996d402840fb92d4/topic/63775f736f5435fe0c17bcd6/register
+POST {{host}}/v1/schedule/638ab9a345a87774343b2781/topic/638abab39041e734c995cfec/register
 Authorization: Bearer {{student_token}}
 ###
 DELETE {{host}}/v1/schedule/637747fb996d402840fb92d4/topic/63775f736f5435fe0c17bcd6/register
