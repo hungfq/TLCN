@@ -8,6 +8,8 @@ const {
   listStudents,
   importTopics,
   listTopics,
+  listScheduleTopicLecturer,
+  listTopicLecturer,
   register,
   cancelRegister,
   removeSchedule,
@@ -31,6 +33,8 @@ const router = (app) => {
   app.get('/v1/schedule/:id/student', isAuth, listStudents);
   app.post('/v1/schedule/:id/topic', upload.single('xlsx'), importTopics);
   app.get('/v1/schedule/:id/topic', isAuth, listTopics);
+  app.get('/v1/schedule-topic-lecturer', isAuth, listScheduleTopicLecturer); // only lecturer call
+  app.get('/v1/schedule/:id/topic-lecturer/:lecturerId', isAuth, listTopicLecturer);
 
   app.post('/v1/schedule/:id/topic/:topicId/register', isAuth, register);
   app.delete('/v1/schedule/:id/topic/:topicId/register', isAuth, cancelRegister);

@@ -3,6 +3,7 @@
 const _Schedule = require('../models/schedule.model');
 const _Student = require('../models/student.model');
 const _Topic = require('../models/topic.model');
+const userService = require('./user.service');
 
 const findOne = async (_id) => {
   const schedule = _Schedule.findOne({ _id });
@@ -80,6 +81,33 @@ const listTopics = async (_id) => {
   return topicList;
 };
 
+const listScheduleTopicLecturer = async (_id, lecturerId) => {
+  const schedule = await _Schedule.find({});
+  const topicList = await Promise.all(
+    schedule.map(async (k) => {
+      const temp = await _Topic.find({ code: { $in: k.topics }, lecturerId })
+        .populate({ path: 'lecturerId', select: 'name email _id' });
+      const result = await Promise.all(
+        temp.map(async (topic) => {
+          const { students } = topic;
+          const studentList = await userService.getStudentByCodes(students);
+          return { ...topic._doc, students: studentList };
+        }),
+      );
+      return { schedule: k.name, topics: result };
+    }),
+  );
+
+  return topicList;
+};
+
+const listTopicLecturer = async (_id, lecturerId) => {
+  const schedule = await _Schedule.findById(_id);
+  const topicList = await _Topic.find({ code: { $in: schedule.topics }, lecturerId })
+    .populate({ path: 'lecturerId', select: 'name email _id' });
+  return topicList;
+};
+
 const checkStudentInTopic = async (user, schedule) => {
   let flag = true;
 
@@ -101,6 +129,8 @@ module.exports = {
   listStudents,
   updateTopics,
   listTopics,
+  listScheduleTopicLecturer,
+  listTopicLecturer,
   checkStudentInTopic,
   removeSchedule,
 };

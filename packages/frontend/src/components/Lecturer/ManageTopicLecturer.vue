@@ -142,11 +142,11 @@ export default {
     ]),
     listTopicsLecturer () {
       const list = this.listTopics.map((t) => {
-        const listStudents = t.students.map((s) => this.listStudents.find((st) => st._id.toString() === s.toString()));
+        const listStudents = t.students.map((s) => this.listStudents.find((st) => st.code.toString() === s.toString()));
         let scheduleInfoId = null;
         let scheduleInfo = null;
         this.listSchedules.forEach((s) => {
-          const she = s.topics.find((code) => code === t._id);
+          const she = s.topics.find((code) => code === t.code);
           if (she) {
             scheduleInfoId = s._id;
           }
