@@ -2,9 +2,9 @@
   <div class="flex">
     <div
       class=" rounded ml-auto mr-4 my-2 bg-blue-800 text-white font-sans font-semibold py-2 px-4 cursor-pointer"
-      @click="$store.dispatch('url/updateSection', 'topic-import')"
+      @click="$store.dispatch('url/updateSection', 'topic_proposal-import')"
     >
-      Thêm đề tài
+      Thêm đề xuất đề tài
     </div>
     <form @submit.prevent="upload">
       <input
@@ -31,7 +31,7 @@
             scope="col"
             class="py-3 px-6"
           >
-            Tên giảng viên
+            Trạng thái
           </th>
           <th
             scope="col"
@@ -43,7 +43,7 @@
       </thead>
       <tbody>
         <tr
-          v-for="topic in listTopics"
+          v-for="topic in listTopicProposal"
           :key="`topic-${topic._id}`"
           class="bg-slate-300 hover:bg-gray-50 "
         >
@@ -54,11 +54,13 @@
           >
             {{ topic.title }}
           </th>
-          <td class="py-4 px-6">
-            <div class="font-bold cursor-pointer">
-              {{ displayLecturer(topic.lecturerId) }}
-            </div>
-          </td>
+          <th
+            scope="row"
+            class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap "
+          >
+            Đang chờ khoa duyệt ❌
+          </th>
+
           <td class="py-4 px-6 text-right">
             <a
               class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
@@ -95,15 +97,23 @@ export default {
     ...mapGetters('auth', [
       'userId', 'userEmail', 'userRole', 'token',
     ]),
-    ...mapGetters('topic', [
-      'listTopics',
+    ...mapGetters('student', [
+      'listStudents',
     ]),
     ...mapGetters('url', [
       'page', 'module', 'section', 'id',
     ]),
+    ...mapGetters('topic_proposal', [
+      'listTopicProposalCreated',
+    ]),
+    listTopicProposal () {
+      const listTopics = this.listTopicProposalCreated;
+      return listTopics;
+    },
   },
   mounted () {
-    this.$store.dispatch('topic/fetchListTopics', this.token);
+    this.$store.dispatch('topic_proposal/fetchListTopicProposalCreated', this.token);
+    this.$store.dispatch('student/fetchListStudent', this.token);
   },
   methods: {
     handleUpdateTopic (id) {

@@ -14,6 +14,10 @@
             <ManageTopicLecturerVue v-if="section === 'topic-list'" />
             <FormTopicVue v-if="section === 'topic-update' || section === 'topic-import' || section === 'topic-view'" />
           </template>
+          <template v-if="module === 'topic_proposal'">
+            <ManageTopicProposalLecturerVue v-if="section === 'topic_proposal-list'" />
+            <FormTopicProposalVue v-if="section === 'topic_proposal-update' || section === 'topic_proposal-import' || section === 'topic_proposal-view'" />
+          </template>
         </div>
       </div>
     </div>
@@ -32,7 +36,9 @@ import LeftMiniBarVue from '../components/Lecturer/LeftMiniBar.vue';
 import ManageBarLecturerVue from '../components/Lecturer/ManageBarLecturer.vue';
 import HeaderBarVue from '../components/Admin/HeaderBar.vue';
 import ManageTopicLecturerVue from '../components/Lecturer/ManageTopicLecturer.vue';
+import ManageTopicProposalLecturerVue from '../components/Lecturer/ManageTopicProposalLecturer.vue';
 import FormTopicVue from '../components/Lecturer/FormTopic.vue';
+import FormTopicProposalVue from '../components/Lecturer/FormTopicProposal.vue';
 
 export default {
   name: 'LecturerPage',
@@ -43,6 +49,8 @@ export default {
     HeaderBarVue,
     ManageTopicLecturerVue,
     FormTopicVue,
+    ManageTopicProposalLecturerVue,
+    FormTopicProposalVue,
   },
   props: {
   },

@@ -66,14 +66,15 @@ Content-Type: application/json
 ###
 
 
-POST {{host}}/v1/topic-proposal
-Authorization: Bearer {{student_token}}
+POST http://localhost:5000/v1/topic-proposal
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJhby5scUBob2xpc3RpY3MuaW8iLCJpYXQiOjE2NzAwNTI1MDAsImV4cCI6MTY3MjY0NDUwMH0.wtRmOIsm9K5GYSG3l1NyXrpss2FfChMO9_6El9dSrMI
 Content-Type: application/json
 
 {
     "title": "Web học tiếng anh",
     "description": "Sử dụng HTML",
-    "lecturerId": "6375b66924ace35d440f51ed"
+    "lecturerId": "63843856ea9f36a76ce39c55"
+
 }
 ###
 

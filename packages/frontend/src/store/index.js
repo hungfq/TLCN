@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import Vuex from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
 import { sync } from 'vuex-router-sync';
@@ -9,7 +10,7 @@ import url from './url';
 import topic from './topic';
 import schedule from './schedule';
 import router from '../router';
-
+import topic_proposal from './topic_proposal';
 /**
  * Disable persisted state when in embed mode!
  */
@@ -49,7 +50,7 @@ const vuexLocal = createPersistedState({
 
 const store = new Vuex.Store({
   modules: {
-    auth, student, url, lecturer, admin, topic, schedule,
+    auth, student, url, lecturer, admin, topic, schedule, topic_proposal,
   },
   plugins: [vuexLocal],
 });

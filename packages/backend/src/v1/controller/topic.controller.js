@@ -3,6 +3,8 @@ const topicService = require('../services/topic.service');
 const userService = require('../services/user.service');
 const notificationService = require('../services/notification.service');
 const fileUtils = require('../utils/file');
+const _TopicProposal = require('../models/topic_proposal.model');
+const _Lecturer = require('../models/lecturer.model');
 
 const importTopics = async (req, res, next) => {
   try {
@@ -133,9 +135,25 @@ const updateTopicLecturer = async (req, res, next) => {
 
 const addProposalTopic = async (req, res, next) => {
   try {
-    const {
-      title, description, lecturerId,
+    let {
+      // eslint-disable-next-line prefer-const
+      title, description, lecturerId, limit, students, status,
     } = req.body;
+    console.log('🚀 ~ file: topic.controller.js:142 ~ addProposalTopic ~ lecturerId', lecturerId);
+
+    if (!title) return res.status(400).send('Not valid title');
+    if (!description) description = '';
+    if (!lecturerId) return res.status(400).send('Not valid lecturerId');
+    // const lecturer = await _Lecturer.findById(lecturerId);
+    // if (!lecturer) return res.status(400).send('Not valid lecturerId');
+    if (!limit) limit = 0;
+    if (!students) students = [];
+    const createdBy = req.user._id;
+
+    const topic = await _TopicProposal.create({
+      title, description, lecturerId, limit, students, createdBy, status,
+    });
+    console.log('🚀 ~ file: topic.controller.js:155 ~ addProposalTopic ~ topic', topic);
     if (lecturerId) {
       const notification = await notificationService.addNotification(
         'TOPIC PROPOSAL',
@@ -146,8 +164,6 @@ const addProposalTopic = async (req, res, next) => {
       await userService.addNotificationByType('LECTURER', lecturerId, notification._id);
       console.log(`TODO: send notification to ${lecturerId}`);
     }
-    const createdBy = req.user._id;
-    const topic = await topicService.addProposalTopic(title, description, lecturerId, createdBy);
     return res.status(201).send(topic);
   } catch (err) {
     return next(err);
@@ -188,10 +204,36 @@ const removeProposalTopic = async (req, res, next) => {
     return next(err);
   }
 };
+
 const listProposalTopic = async (req, res, next) => {
   try {
     const topic = await topicService.listProposalTopic();
     return res.status(200).send(topic);
+  } catch (err) {
+    return next(err);
+  }
+};
+
+const listTopicReviewByLecturer = async (req, res, next) => {
+  try {
+    const lecturerId = req.user._id;
+    // TODO: need to refactor function isAuth in middleware
+    // const lecturer = await _Lecturer.findById(lecturerId);
+    // if (!lecturer) return res.status(401).send('Access Denied');
+    const listTopics = await _TopicProposal.find({ lecturerId, status: 'LECTURER' });
+    return res.status(200).send(listTopics);
+  } catch (err) {
+    return next(err);
+  }
+};
+const listTopicByCreatedId = async (req, res, next) => {
+  try {
+    const createdBy = req.user._id;
+    // TODO: need to refactor function isAuth in middleware
+    // const lecturer = await _Lecturer.findById(lecturerId);
+    // if (!lecturer) return res.status(401).send('Access Denied');
+    const listTopics = await _TopicProposal.find({ createdBy });
+    return res.status(200).send(listTopics);
   } catch (err) {
     return next(err);
   }
@@ -212,4 +254,6 @@ module.exports = {
   approveProposalTopic,
   removeProposalTopic,
   listProposalTopic,
+  listTopicReviewByLecturer,
+  listTopicByCreatedId,
 };
