@@ -9,6 +9,13 @@ const TopicProposalSchema = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: 'Lecturer',
   },
+  limit: { type: Number, default: 0 },
+  students: { type: Array },
+  status: {
+    type: String,
+    enum: ['LECTURER', 'ADMIN'],
+    default: 'LECTURER',
+  },
   createdBy: { type: Schema.Types.ObjectId },
 });
 
