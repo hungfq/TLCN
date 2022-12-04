@@ -58,6 +58,6 @@ Authorization: Bearer {{lecturer_token}}
 POST {{host}}/v1/schedule/638ab9a345a87774343b2781/topic/638abab39041e734c995cfec/register
 Authorization: Bearer {{student_token}}
 ###
-DELETE {{host}}/v1/schedule/637747fb996d402840fb92d4/topic/63775f736f5435fe0c17bcd6/register
+DELETE {{host}}/v1/schedule/638ab9a345a87774343b2781/topic/638abab39041e734c995cfec/register
 Authorization: Bearer {{student_token}}
 

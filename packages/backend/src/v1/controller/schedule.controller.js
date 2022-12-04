@@ -188,9 +188,11 @@ const register = async (req, res, next) => {
       'TOPIC REGISTER',
       'New Register in your Topic',
       req.user._id,
-      [topic.lecturerId],
+      null,
     );
-    await notificationService.sendNotification(topic.lecturerId, notification);
+    if (topic.lecturerId) {
+      await notificationService.sendNotification(topic.lecturerId._id, notification);
+    }
     return res.status(200).send('Successfully');
   } catch (err) {
     return next(err);

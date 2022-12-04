@@ -5,18 +5,23 @@
     <div class="flex h-screen antialiased text-gray-900 bg-gray-100">
       <div class="flex flex-shrink-0 transition-all">
         <LeftMiniBarVue />
-        <ManageBarLecturerVue />
+        <ManageBarLecturerVue v-if="page==='management'" />
       </div>
       <div class="flex grow flex-col">
         <HeaderBarVue :username="userName" />
         <div class="bg-white mx-4 border rounded h-full">
-          <template v-if="module === 'topic'">
-            <ManageTopicLecturerVue v-if="section === 'topic-list'" />
-            <FormTopicVue v-if="section === 'topic-update' || section === 'topic-import' || section === 'topic-view'" />
+          <template v-if="page==='management'">
+            <template v-if="module === 'topic'">
+              <ManageTopicLecturerVue v-if="section === 'topic-list'" />
+              <FormTopicVue v-if="section === 'topic-update' || section === 'topic-import' || section === 'topic-view'" />
+            </template>
+            <template v-if="module === 'topic_proposal'">
+              <ManageTopicProposalLecturerVue v-if="section === 'topic_proposal-list'" />
+              <FormTopicProposalVue v-if="section === 'topic_proposal-update' || section === 'topic_proposal-import' || section === 'topic_proposal-view'" />
+            </template>
           </template>
-          <template v-if="module === 'topic_proposal'">
-            <ManageTopicProposalLecturerVue v-if="section === 'topic_proposal-list'" />
-            <FormTopicProposalVue v-if="section === 'topic_proposal-update' || section === 'topic_proposal-import' || section === 'topic_proposal-view'" />
+          <template v-if="page==='notification'">
+            <NotificationVue />
           </template>
         </div>
       </div>
@@ -39,6 +44,7 @@ import ManageTopicLecturerVue from '../components/Lecturer/ManageTopicLecturer.v
 import ManageTopicProposalLecturerVue from '../components/Lecturer/ManageTopicProposalLecturer.vue';
 import FormTopicVue from '../components/Lecturer/FormTopic.vue';
 import FormTopicProposalVue from '../components/Lecturer/FormTopicProposal.vue';
+import NotificationVue from '../components/Notification.vue';
 
 export default {
   name: 'LecturerPage',
@@ -51,6 +57,7 @@ export default {
     FormTopicVue,
     ManageTopicProposalLecturerVue,
     FormTopicProposalVue,
+    NotificationVue,
   },
   props: {
   },

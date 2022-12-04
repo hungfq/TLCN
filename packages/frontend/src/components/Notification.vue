@@ -1,92 +1,17 @@
 <template>
-  <div class="shadow-md sm:rounded-lg m-4">
-    <table class="w-full text-sm text-left text-gray-500">
-      <thead class="text-xs text-gray-700 uppercase bg-gray-300">
-        <tr>
-          <th
-            scope="col"
-            class="py-3 px-6"
-          >
-            Tên đề tài
-          </th>
-          <th
-            scope="col"
-            class="py-3 px-6"
-          >
-            Mã đề tài
-          </th>
-          <th
-            scope="col"
-            class="py-3 px-6"
-          >
-            Danh sách sinh viên
-          </th>
-          <th
-            scope="col"
-            class="py-3 px-6"
-          >
-            Đợt đăng ký
-          </th>
-          <th
-            scope="col"
-            class="py-3 px-6"
-          >
-            <span class="sr-only">Edit</span>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="topic in listTopicsLecturer"
-          :key="`topic-${topic._id}`"
-          class="bg-slate-300 hover:bg-gray-50 "
-        >
-          <th
-            :key="`topic-${topic._id}`"
-            scope="row"
-            class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap "
-          >
-            {{ topic.title }}
-          </th>
-          <th
-            :key="`topic-${topic._id}`"
-            scope="row"
-            class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap "
-          >
-            {{ topic.code }}
-          </th>
-          <td class="py-4 px-6">
-            <div class="font-mono cursor-pointer">
-              <li
-                v-for="student in topic.studentInfo"
-                :key="`${Math.floor(Math.random() * 10000000000)}-${student}`"
-              >
-                {{ student.name }} - {{ student.code }}
-              </li>
-            </div>
-          </td>
-          <td class="py-4 px-6 text-right">
-            <th
-              scope="row"
-              class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap "
-            >
-              {{ topic.scheduleInfo ? topic.scheduleInfo.name : '' }}
-            </th>
-          </td>
-
-          <td class="py-4 px-6 text-right">
-            <a
-              class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
-              @click="handleUpdateTopic(topic._id)"
-            >Sửa</a>
-            <a
-              class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
-              @click="handleShowTopic(topic._id)"
-            >Xem chi tiết</a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <!-- component -->
+  <!-- This is an example component -->
+  <div class="flex">
+    <div class="w-full mx-4 my-4">
+      <div class="bg-white rounded-lg border-gray-300 border p-3 shadow-lg">
+        <div class="flex flex-row">
+          <div class="ml-2 mr-6">
+            <span class="font-semibold">Successfully Saved!</span>
+            <span class="block text-gray-500">Anyone with a link can now view this file</span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -94,7 +19,7 @@
 import { mapState, mapGetters } from 'vuex';
 
 export default {
-  name: 'ManageTopicLecturer',
+  name: 'NotificationComponent',
   components: {
 
   },

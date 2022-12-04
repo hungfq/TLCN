@@ -20,6 +20,30 @@ function getRoleFromType(type) {
   return role;
 }
 
+const findOneWithOnlyId = async (_id) => {
+  let user = null;
+  user = await _Admin.findOne({ _id });
+  if (user) return { ...user._doc, role: 'ADMIN' };
+  user = await _Lecturer.findOne({ _id });
+  if (user) return { ...user._doc, role: 'LECTURER' };
+  user = await _Student.findOne({ _id });
+  if (user) return { ...user._doc, role: 'STUDENT' };
+
+  return user;
+};
+
+const findOneModelWithOnlyId = async (_id) => {
+  let user = null;
+  user = await _Admin.findById(_id);
+  if (user) return user;
+  user = await _Lecturer.findById(_id);
+  if (user) return user;
+  user = await _Student.findById(_id);
+  if (user) return user;
+
+  return user;
+};
+
 const addOneUser = async (type, code, name, email, gender, picture) => {
   const User = getRoleFromType(type);
 
@@ -59,6 +83,14 @@ const addNotificationByType = async (type, _id, notificationId) => {
   return user;
 };
 
+const addNotification = async (_id, notificationId) => {
+  const user = await findOneModelWithOnlyId(_id);
+
+  const notificationIds = [...user.notificationIds];
+  user.notificationIds = [notificationId, ...notificationIds];
+  await user.save();
+};
+
 const listUserByType = async (type) => {
   const User = getRoleFromType(type);
 
@@ -71,18 +103,6 @@ const getStudentByCodes = async (students) => {
   const studentList = _Student.find({ code: { $in: students } })
     .select('code name email');
   return studentList;
-};
-
-const findOneWithOnlyId = async (_id) => {
-  let user = null;
-  user = await _Admin.findOne({ _id });
-  if (user) return { ...user._doc, role: 'ADMIN' };
-  user = await _Lecturer.findOne({ _id });
-  if (user) return { ...user._doc, role: 'LECTURER' };
-  user = await _Student.findOne({ _id });
-  if (user) return { ...user._doc, role: 'STUDENT' };
-
-  return user;
 };
 
 const upsertOne = async (type, code, name, email, gender) => {
@@ -103,6 +123,7 @@ module.exports = {
   findOneByCode,
   listUserByType,
   updateOneByCode,
+  addNotification,
   addNotificationByType,
   getStudentByCodes,
   findOneWithOnlyId,

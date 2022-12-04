@@ -6,7 +6,10 @@
     >
       Thêm đề tài
     </div>
-    <form @submit.prevent="upload">
+    <form
+      class="flex items-center justify-center"
+      @submit.prevent="upload"
+    >
       <input
         ref="uploadBtn"
         type="file"
