@@ -1,22 +1,4 @@
 <template>
-  <div class="flex">
-    <div
-      class=" rounded ml-auto mr-4 my-2 bg-blue-800 text-white font-sans font-semibold py-2 px-4 cursor-pointer"
-      @click="$store.dispatch('url/updateSection', 'topic_proposal-import')"
-    >
-      Thêm đề xuất đề tài
-    </div>
-    <form @submit.prevent="upload">
-      <input
-        ref="uploadBtn"
-        type="file"
-        accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-      >
-      <button type="submit">
-        Tải lên tệp excel
-      </button>
-    </form>
-  </div>
   <div class="shadow-md sm:rounded-lg m-4">
     <table class="w-full text-sm text-left text-gray-500">
       <thead class="text-xs text-gray-700 uppercase bg-gray-300">
@@ -72,8 +54,12 @@
             >Xem chi tiết</a>
             <a
               class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
-              @click="handleUpdateTopic(topic._id)"
+              @click="handleApproveTopic(topic._id)"
             >Gửi đề tài lên khoa</a>
+            <a
+              class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
+              @click="handleRemoveTopicProposal(topic._id)"
+            >Từ chối</a>
           </td>
         </tr>
       </tbody>
@@ -85,7 +71,7 @@
 import { mapState, mapGetters } from 'vuex';
 
 export default {
-  name: 'ManageTopicProposalLecturer',
+  name: 'ManageApproveProposalLecturer',
   components: {
 
   },
@@ -132,14 +118,30 @@ export default {
       this.$store.dispatch('url/updateSection', `${this.module}-view`);
       this.$store.dispatch('url/updateId', id);
     },
-    async handleRemoveTopic (id) {
+    async handleRemoveTopicProposal (id) {
       try {
         const value = {
           id,
           token: this.token,
         };
-        await this.$store.dispatch('topic/removeTopic', value);
-        this.$toast.success('Đã xóa thành công!');
+        await this.$store.dispatch('topic_proposal/removeTopicProposal', value);
+        await this.$store.dispatch('topic_proposal/fetchListTopicProposalByLectures', this.token);
+
+        this.$toast.success('Đã từ chối hướng dẫn đề tài thành công!');
+      } catch (e) {
+        this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
+      }
+    },
+    async handleApproveTopic (id) {
+      try {
+        const value = {
+          id,
+          token: this.token,
+        };
+        await this.$store.dispatch('topic_proposal/approveTopicProposalByLecturer', value);
+        await this.$store.dispatch('topic_proposal/fetchListTopicProposalByLectures', this.token);
+
+        this.$toast.success('Đã từ gửi đề tài lên khoa thành công!');
       } catch (e) {
         this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
       }

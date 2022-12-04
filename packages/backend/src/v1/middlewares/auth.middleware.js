@@ -21,9 +21,8 @@ async function validateEmail(email) {
 exports.isAuth = async (req, res, next) => {
   const authHeader = req.headers.authorization;
   const token = authHeader && authHeader.split(' ')[1];
-
+  console.log(authHeader);
   if (token == null) return res.sendStatus(401);
-
   jwt.verify(token, secretKey, async (err, user) => {
     if (err) return res.sendStatus(403);
 

@@ -37,6 +37,11 @@ const actions = {
     await TopicProposalApi.removeTopicProposal(token, id);
     dispatch('fetchListTopicProposalCreated', token);
   },
+  async approveTopicProposalByLecturer ({ dispatch }, payload) {
+    const { token, id } = payload;
+    await TopicProposalApi.approveTopicProposalByLecturer(token, id);
+    dispatch('setListTopicProposalByLecturer', token);
+  },
 };
 
 const mutations = {

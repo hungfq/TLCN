@@ -261,6 +261,26 @@ const updateProposalByUser = async (req, res, next) => {
   }
 };
 
+const approveProposalByLecturer = async (req, res, next) => {
+  try {
+    console.log('approveProposalByLecturer');
+    const { id } = req.params;
+    console.log(id);
+    const proposal = await _TopicProposal.findById(id);
+    // TODO: Only the admin and created users update proposal
+    if (!proposal) return res.status(404).send('Not found');
+
+    await _TopicProposal.updateOne({ _id: id }, {
+      status: 'ADMIN',
+    });
+    return res.status(200).send(
+      'Successfully updated proposal',
+    );
+  } catch (err) {
+    return next(err);
+  }
+};
+
 module.exports = {
   importTopics,
   insertTopic,
@@ -279,4 +299,5 @@ module.exports = {
   listTopicReviewByLecturer,
   listTopicProposalByCreatedId,
   updateProposalByUser,
+  approveProposalByLecturer,
 };

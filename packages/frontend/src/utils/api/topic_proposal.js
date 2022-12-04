@@ -48,4 +48,14 @@ export default class TopicProposalApi {
     });
     return res.data;
   }
+
+  static async approveTopicProposalByLecturer (token, id) {
+    console.log(token);
+    const res = await axios.post(`/approve/${id}`, {
+      headers: {
+        authorization: `bearer ${token}`,
+      },
+    });
+    return res.data;
+  }
 }

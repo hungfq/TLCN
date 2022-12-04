@@ -70,7 +70,7 @@
               v-model="lecturerId"
               :options="listLecturers"
               :close-on-select="false"
-              :disabled="true"
+              :disabled="isView"
             />
           </div>
         </div>
@@ -86,7 +86,7 @@
               :searchable="true"
               :create-option="true"
               :options="listStudents"
-              :disabled="true"
+              :disabled="isView"
             />
           </div>
         </div>
@@ -112,7 +112,7 @@ import { getValidationMessages } from '@formkit/validation';
 import { mapState, mapGetters } from 'vuex';
 
 export default {
-  name: 'FormTopicProposal',
+  name: 'FormApproveProposal',
   components: {
     Multiselect,
   },
@@ -150,13 +150,13 @@ export default {
       'token', 'userId',
     ]),
     isSave () {
-      return this.section === 'topic_proposal-import';
+      return this.section === 'topic_proposal_approve-import';
     },
     isUpdate () {
-      return this.section === 'topic_proposal-update';
+      return this.section === 'topic_proposal_approve-update';
     },
     isView () {
-      return this.section === 'topic_proposal-view';
+      return this.section === 'topic_proposal_approve-view';
     },
   },
   async mounted () {
@@ -186,8 +186,11 @@ export default {
     });
     if (this.isUpdate || this.isView) {
       const { id } = this.$store.state.url;
-      const { listTopicProposalCreated } = this.$store.state.topic_proposal;
-      const topic = listTopicProposalCreated.find((s) => s._id.toString() === id.toString());
+      console.log('🚀 ~ file: FormApproveProposal.vue:189 ~ mounted ~ id', id);
+      const { listTopicProposalByLecturer } = this.$store.state.topic_proposal;
+      console.log('🚀 ~ file: FormApproveProposal.vue:191 ~ mounted ~ listTopicProposalByLecturer', listTopicProposalByLecturer);
+      const topic = listTopicProposalByLecturer.find((s) => s._id.toString() === id.toString());
+      console.log('🚀 ~ file: FormApproveProposal.vue:191 ~ mounted ~ topic', topic);
       if (topic) {
         this.title = topic.title;
         this.code = topic.code;
@@ -223,9 +226,7 @@ export default {
         status: 'ADMIN',
       };
       try {
-        if (this.isSave) {
-          await this.$store.dispatch('topic_proposal/addTopicProposal', { token: this.token, value });
-        } else if (this.isUpdate) {
+        if (this.isUpdate) {
           await this.$store.dispatch('topic_proposal/updateTopicProposal', { token: this.token, value: { ...value, _id: this.id } });
         }
         this.$toast.success('Đã cập nhật một thành công!');
