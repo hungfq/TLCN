@@ -32,7 +32,7 @@ const router = (app) => {
   app.delete('/v1/topic-proposal/:id', isAuth, removeProposalTopic);
   app.put('/v1/topic-proposal/:id', isAuth, updateProposalByUser);
   app.get('/v1/topic-proposal/lecturer', isAuth, listTopicReviewByLecturer);
-  app.post('/v1/approve/:id', isAuth, approveProposalByLecturer);
+  app.get('/v1/approve/:id', isAuth, approveProposalByLecturer);
   app.get('/v1/topic-proposal/created', isAuth, listTopicProposalByCreatedId);
   app.get('/template/Topic', (req, res) => {
     const file = fs.createReadStream('public/template/TopicTemplate.xlsx');

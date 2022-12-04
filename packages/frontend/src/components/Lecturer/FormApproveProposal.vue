@@ -176,7 +176,7 @@ export default {
     });
     this.listStudents = students.map((student) => {
       let st = {
-        value: student._id,
+        value: student.code,
         label: `${student.name} - ${student.code}`,
       };
       if (this.isView) {

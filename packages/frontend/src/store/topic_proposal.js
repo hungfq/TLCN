@@ -40,7 +40,7 @@ const actions = {
   async approveTopicProposalByLecturer ({ dispatch }, payload) {
     const { token, id } = payload;
     await TopicProposalApi.approveTopicProposalByLecturer(token, id);
-    dispatch('setListTopicProposalByLecturer', token);
+    dispatch('fetchListTopicProposalByLectures', token);
   },
 };
 

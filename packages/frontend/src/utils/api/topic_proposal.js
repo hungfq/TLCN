@@ -50,8 +50,7 @@ export default class TopicProposalApi {
   }
 
   static async approveTopicProposalByLecturer (token, id) {
-    console.log(token);
-    const res = await axios.post(`/approve/${id}`, {
+    const res = await axios.get(`/approve/${id}`, {
       headers: {
         authorization: `bearer ${token}`,
       },
