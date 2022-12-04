@@ -44,7 +44,6 @@ import ManageTopicLecturerVue from '../components/Lecturer/ManageTopicLecturer.v
 import ManageTopicProposalLecturerVue from '../components/Lecturer/ManageTopicProposalLecturer.vue';
 import FormTopicVue from '../components/Lecturer/FormTopic.vue';
 import FormTopicProposalVue from '../components/Lecturer/FormTopicProposal.vue';
-import NotificationVue from '../components/Notification.vue';
 
 export default {
   name: 'LecturerPage',
@@ -57,7 +56,6 @@ export default {
     FormTopicVue,
     ManageTopicProposalLecturerVue,
     FormTopicProposalVue,
-    NotificationVue,
   },
   props: {
   },

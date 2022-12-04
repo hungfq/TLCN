@@ -28,7 +28,8 @@ const sendNotification = async (userId, notification) => {
 };
 
 const getMultiNotify = async (ids) => {
-  const notification = await _Notification.find({ _id: { $in: ids } });
+  const notification = await _Notification.find({ _id: { $in: ids } })
+    .sort({ createdAt: -1 });
   return notification;
 };
 

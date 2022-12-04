@@ -12,6 +12,7 @@ import topic from './topic';
 import schedule from './schedule';
 import router from '../router';
 import topic_proposal from './topic_proposal';
+import notification from './notification';
 /**
  * Disable persisted state when in embed mode!
  */
@@ -56,8 +57,9 @@ const createWebSocketPlugin = (socket) => (store) => {
   // });
 
   socket.on('notify', (notify) => {
-    console.log('🚀 ~ file: index.js:59 ~ socket.on ~ notify: ', notify);
-    // TODO: re-render notification
+    const { token } = store.state.auth.userInfo;
+    store.dispatch('notification/fetchListNotifications', token);
+    console.log('🚀 ~ file: index.js:62 ~ socket.on ~ notify', notify);
   });
 };
 
@@ -67,7 +69,7 @@ const websocketPlugin = createWebSocketPlugin(socket);
 
 const store = new Vuex.Store({
   modules: {
-    auth, student, url, lecturer, admin, topic, schedule, topic_proposal,
+    auth, student, url, lecturer, admin, topic, schedule, topic_proposal, notification,
   },
   plugins: [vuexLocal, websocketPlugin],
 });
