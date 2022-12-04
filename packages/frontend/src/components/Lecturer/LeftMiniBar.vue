@@ -124,7 +124,9 @@ export default {
   mounted () {
   },
   methods: {
-    signOut () {
+    async signOut () {
+      const { _id } = this.$store.state.auth.userInfo;
+      await this.$store.$socket.emit('logout', _id);
       this.$store.dispatch('auth/signOut');
     },
   },

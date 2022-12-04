@@ -106,6 +106,10 @@ export default {
       this.$store.dispatch('url/updateSection', 'student-list');
     }
   },
+  async created () {
+    const { _id } = this.$store.state.auth.userInfo;
+    await this.$store.$socket.emit('login', _id);
+  },
   methods: {
     closeErrorModal (close) {
       close();

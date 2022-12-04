@@ -51,12 +51,12 @@ const vuexLocal = createPersistedState({
 
 const createWebSocketPlugin = (socket) => (store) => {
   store.$socket = socket;
-  socket.on('connect', () => {
-    socket.emit('id', null);
-  });
+  // socket.on('connect', () => {
+  //   socket.emit('login', null);
+  // });
 
-  socket.on('notify', (payload) => {
-    console.log('🚀 ~ file: index.js:54 ~ socket.on ~ payload', payload);
+  socket.on('notify', (notify) => {
+    console.log('🚀 ~ file: index.js:59 ~ socket.on ~ notify: ', notify);
     // TODO: re-render notification
   });
 };

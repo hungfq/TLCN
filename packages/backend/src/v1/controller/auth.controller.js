@@ -73,7 +73,7 @@ const readNotification = async (req, res, next) => {
 };
 
 const test = async (req, res) => {
-  await getIo().to().emit('notify', 'notify send by server');
+  await getIo().emit('notify', 'notify send by server');
   return res.sendStatus(200);
 };
 

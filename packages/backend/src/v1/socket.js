@@ -7,20 +7,26 @@ const createSocket = (server) => {
   _io = new Server(server);
 
   _io.on('connection', (socket) => {
-    console.log(`socket id: ${socket.id}`);
+    console.log(`socket: ${socket.id} [CONNECTING]`);
 
     socket.emit('notify', 'init notification by server');
 
-    socket.on('id', async (id) => {
+    socket.on('login', async (id) => {
       if (id !== null) {
         const redis = await getRedis();
 
-        const temp = await redis.get(id.toString());
-        if (!temp) {
-          await redis.set(id.toString(), socket.id);
-        }
+        await redis.set(id.toString(), socket.id);
       }
-      console.log(`client id: ${id}`);
+      console.log(`socket: ${socket.id} ; client: ${id}`);
+    });
+
+    socket.on('logout', async (id) => {
+      if (id !== null) {
+        const redis = await getRedis();
+
+        await redis.del(id.toString());
+      }
+      console.log(`socket: ${socket.id} ; logout: ${id}`);
     });
 
     socket.on('notify', (msg) => {
@@ -30,7 +36,7 @@ const createSocket = (server) => {
 
     socket.on('disconnect', () => {
       // TO DO: remove socket_id of user
-      console.log('user disconnected');
+      console.log(`socket: ${socket.id} [DISCONNECTED]`);
     });
   });
 
