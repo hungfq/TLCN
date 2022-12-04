@@ -5,7 +5,8 @@ const {
   importTopics, insertTopic, listTopic, updateOneTopic, deleteOneTopic,
   findOneTopic, searchTopic, updateTopicStudent, updateTopicLecturer,
   addProposalTopic, listProposalTopic, approveProposalTopic, removeProposalTopic,
-  listTopicReviewByLecturer, listTopicProposalByCreatedId,
+  listTopicReviewByLecturer, listTopicProposalByCreatedId, updateProposalByUser,
+  approveProposalByLecturer,
 } = require('../controller/topic.controller');
 
 const authMiddleware = require('../middlewares/auth.middleware');
@@ -29,7 +30,9 @@ const router = (app) => {
   app.get('/v1/topic-proposal', isAuth, listProposalTopic);
   app.post('/v1/topic-proposal/approve/:id', isAuth, approveProposalTopic);
   app.delete('/v1/topic-proposal/:id', isAuth, removeProposalTopic);
+  app.put('/v1/topic-proposal/:id', isAuth, updateProposalByUser);
   app.get('/v1/topic-proposal/lecturer', isAuth, listTopicReviewByLecturer);
+  app.get('/v1/approve/:id', isAuth, approveProposalByLecturer);
   app.get('/v1/topic-proposal/created', isAuth, listTopicProposalByCreatedId);
   app.get('/template/Topic', (req, res) => {
     const file = fs.createReadStream('public/template/TopicTemplate.xlsx');

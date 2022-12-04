@@ -5,28 +5,34 @@
     <div class="flex h-screen antialiased text-gray-900 bg-gray-100">
       <div class="flex flex-shrink-0 transition-all">
         <LeftMiniBarVue />
-        <ManageBarLecturerVue v-if="page==='management'" />
+        <ManageBarLecturerVue v-if="page === 'management'" />
       </div>
       <div class="flex grow flex-col">
         <HeaderBarVue :username="userName" />
         <div class="bg-white mx-4 border rounded h-full">
-          <template v-if="page==='management'">
+          <template v-if="page === 'management'">
             <template v-if="module === 'topic'">
               <ManageTopicLecturerVue v-if="section === 'topic-list'" />
-              <FormTopicVue v-if="section === 'topic-update' || section === 'topic-import' || section === 'topic-view'" />
+              <FormTopicVue
+                v-if="section === 'topic-update' || section === 'topic-import' || section === 'topic-view'"
+              />
             </template>
             <template v-if="module === 'topic_proposal'">
               <ManageTopicProposalLecturerVue v-if="section === 'topic_proposal-list'" />
-              <FormTopicProposalVue v-if="section === 'topic_proposal-update' || section === 'topic_proposal-import' || section === 'topic_proposal-view'" />
+              <FormTopicProposalVue
+                v-if="section === 'topic_proposal-update' || section === 'topic_proposal-import' || section === 'topic_proposal-view'"
+              />
             </template>
           </template>
-          <template v-if="page==='notification'">
-            <NotificationVue />
+          <template v-if="module === 'topic_proposal_approve'">
+            <ManageApproveProposalLecturerVue v-if="section === 'topic_proposal_approve-list'" />
+            <FormApproveProposalVue v-if="section === 'topic_proposal_approve-view' || section === 'topic_proposal_approve-update'" />
           </template>
         </div>
       </div>
     </div>
   </div>
+
   <ErrorModalVue
     v-model="showErrorModal"
     :message="'Bạn không có quyền truy cập, vui lòng đăng nhập lại!'"
@@ -42,8 +48,10 @@ import ManageBarLecturerVue from '../components/Lecturer/ManageBarLecturer.vue';
 import HeaderBarVue from '../components/Admin/HeaderBar.vue';
 import ManageTopicLecturerVue from '../components/Lecturer/ManageTopicLecturer.vue';
 import ManageTopicProposalLecturerVue from '../components/Lecturer/ManageTopicProposalLecturer.vue';
-import FormTopicVue from '../components/Lecturer/FormTopic.vue';
+import ManageApproveProposalLecturerVue from '../components/Lecturer/ManageApproveProposalLecturer.vue';
 import FormTopicProposalVue from '../components/Lecturer/FormTopicProposal.vue';
+import FormTopicVue from '../components/Lecturer/FormTopic.vue';
+import FormApproveProposalVue from '../components/Lecturer/FormApproveProposal.vue';
 
 export default {
   name: 'LecturerPage',
@@ -56,6 +64,8 @@ export default {
     FormTopicVue,
     ManageTopicProposalLecturerVue,
     FormTopicProposalVue,
+    ManageApproveProposalLecturerVue,
+    FormApproveProposalVue,
   },
   props: {
   },

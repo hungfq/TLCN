@@ -24,6 +24,22 @@ const actions = {
   async addTopicProposal ({ dispatch }, payload) {
     const { token, value } = payload;
     await TopicProposalApi.addTopicProposal(token, value);
+    dispatch('fetchListTopicProposalCreated', token);
+  },
+
+  async updateTopicProposal ({ dispatch }, payload) {
+    const { token, value } = payload;
+    await TopicProposalApi.updateTopicProposal(token, value);
+    dispatch('fetchListTopicProposalCreated', token);
+  },
+  async removeTopicProposal ({ dispatch }, payload) {
+    const { token, id } = payload;
+    await TopicProposalApi.removeTopicProposal(token, id);
+    dispatch('fetchListTopicProposalCreated', token);
+  },
+  async approveTopicProposalByLecturer ({ dispatch }, payload) {
+    const { token, id } = payload;
+    await TopicProposalApi.approveTopicProposalByLecturer(token, id);
     dispatch('fetchListTopicProposalByLectures', token);
   },
 };

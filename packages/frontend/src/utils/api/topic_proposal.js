@@ -23,13 +23,38 @@ export default class TopicProposalApi {
   }
 
   static async addTopicProposal (token, value) {
-    console.log('🚀 ~ file: topic_proposal.js:17 ~ TopicProposalApi ~ addTopicProposal ~ static', value);
-    const res = await axios.post('/topic-proposal', value, {
+    const res = await axios.post('/topic-proposal/', value, {
       headers: {
         authorization: `bearer ${token}`,
       },
     });
-    console.log(res);
+    return res.data;
+  }
+
+  static async updateTopicProposal (token, value) {
+    const res = await axios.put(`/topic-proposal/${value._id}`, value, {
+      headers: {
+        authorization: `bearer ${token}`,
+      },
+    });
+    return res.data;
+  }
+
+  static async removeTopicProposal (token, id) {
+    const res = await axios.delete(`/topic-proposal/${id}`, {
+      headers: {
+        authorization: `bearer ${token}`,
+      },
+    });
+    return res.data;
+  }
+
+  static async approveTopicProposalByLecturer (token, id) {
+    const res = await axios.get(`/approve/${id}`, {
+      headers: {
+        authorization: `bearer ${token}`,
+      },
+    });
     return res.data;
   }
 }
