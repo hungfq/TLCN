@@ -21,7 +21,13 @@ const actions = {
   async readNotification ({ dispatch }, payload) {
     const { token, id } = payload;
     await NotificationApi.readNotification(token, id);
-    dispatch('fetchListNotifications', token);
+    await dispatch('fetchListNotifications', token);
+  },
+
+  async deleteNotification ({ dispatch }, payload) {
+    const { token, id } = payload;
+    await NotificationApi.deleteNotification(token, id);
+    await dispatch('fetchListNotifications', token);
   },
 
 };

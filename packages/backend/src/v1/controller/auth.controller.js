@@ -72,6 +72,16 @@ const readNotification = async (req, res, next) => {
   }
 };
 
+const deleteNotification = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    await notifyService.deleteNotify(id, req.user._id);
+    return res.status(200).send('Successfully');
+  } catch (err) {
+    next(err);
+  }
+};
+
 const test = async (req, res) => {
   const socketId = await notifyService.getSocketIdByUserId('6375b66924ace35d440f51ed');
   console.log('🚀 ~ file: auth.controller.js:77 ~ test ~ socketId', socketId);
@@ -83,5 +93,6 @@ module.exports = {
   loginWithGoogle,
   getNotification,
   readNotification,
+  deleteNotification,
   test,
 };

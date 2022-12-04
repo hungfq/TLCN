@@ -186,11 +186,8 @@ export default {
     });
     if (this.isUpdate || this.isView) {
       const { id } = this.$store.state.url;
-      console.log('🚀 ~ file: FormApproveProposal.vue:189 ~ mounted ~ id', id);
       const { listTopicProposalByLecturer } = this.$store.state.topic_proposal;
-      console.log('🚀 ~ file: FormApproveProposal.vue:191 ~ mounted ~ listTopicProposalByLecturer', listTopicProposalByLecturer);
       const topic = listTopicProposalByLecturer.find((s) => s._id.toString() === id.toString());
-      console.log('🚀 ~ file: FormApproveProposal.vue:191 ~ mounted ~ topic', topic);
       if (topic) {
         this.title = topic.title;
         this.code = topic.code;

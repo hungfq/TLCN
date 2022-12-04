@@ -46,6 +46,15 @@
         @click="showNotification"
       >
         <span class="sr-only">Toggle notifications panel</span>
+        <div
+          v-if="unreadCount(listNotifications)"
+          class="relative"
+        >
+          <div class="inline-flex absolute -top-2 -right-2 justify-center items-center w-6 h-6 text-xs font-bold text-white bg-red-500 rounded-full border-2 border-white dark:border-gray-900">
+            {{ unreadCount(listNotifications) }}
+          </div>
+        </div>
+        
         <svg
           aria-hidden="true"
           class="w-6 h-6"
@@ -63,11 +72,19 @@
         </svg>
         <div
           v-show="showNotificationModal"
-          class="overflow-y-auto max-h-[480px] absolute max-w-md mx-2 bg-slate-300 left-16 top-12 rounded-xl pb-2"
+          class="overflow-y-auto max-h-[480px] shadow-lg absolute max-w-md mx-2 bg-slate-300 left-16 top-12 rounded-xl pb-2"
           role="menu"
           aria-orientation="vertical"
           aria-label="user menu"
         >
+          <div
+            v-if="!listNotifications.length"
+            class="flex flex-col w-full"
+          >
+            <div class="mt-2 mx-2 px-12 py-28 bg-white rounded-lg shadow">
+              Hiện không có thông báo
+            </div>
+          </div>
           <div
             v-for="noti in listNotifications"
             :key="`noti-${noti._id}`"
@@ -76,7 +93,7 @@
             <div
               :class="[noti.isRead ? 'bg-white' : 'bg-emerald-50']"
               class="mt-2 mx-2 px-6 py-4 bg-white rounded-lg shadow"
-              @click="clickNotification(noti._id)"
+              @click="readNotification(noti._id)"
             >
               <div class="inline-flex items-center justify-between w-full">
                 <div class="inline-flex items-center">
@@ -88,9 +105,15 @@
                   {{ timeAgo(noti.createdAt) }}
                 </p>
               </div>
-              <p class="mt-1 text-sm text-left text-gray-900">
-                {{ noti.message }}
-              </p>
+              <div class="inline-flex items-center justify-between w-full">
+                <p class="mt-1 text-sm text-left text-gray-900">
+                  {{ noti.message }}
+                </p>
+                <a
+                  class="text-blue-700"
+                  @click="deleteNotification(noti._id)"
+                >Xóa</a>
+              </div>
             </div>
           </div>
         </div>
@@ -115,7 +138,7 @@
       </button>
       <div
         v-show="miniAvatarShow"
-        class="absolute w-48 py-1 mt-2 origin-bottom-left bg-white rounded-md shadow-lg left-10 bottom-14 focus:outline-none"
+        class="absolute w-48 py-1 mt-2 origin-bottom-left bg-white rounded-md shadow-lg mx-1 left-16 bottom-14 focus:outline-none"
         role="menu"
         aria-orientation="vertical"
         aria-label="user menu"
@@ -172,8 +195,8 @@ export default {
       'page', 'module', 'section', 'id',
     ]),
   },
-  mounted () {
-    this.$store.dispatch('notification/fetchListNotifications', this.token);
+  async mounted () {
+    await this.$store.dispatch('notification/fetchListNotifications', this.token);
   },
   methods: {
     async signOut () {
@@ -188,11 +211,17 @@ export default {
     timeAgo (createdAt) {
       return moment(createdAt).fromNow();
     },
+    unreadCount (listNotifications) {
+      return listNotifications.filter((x) => x.isRead === false).length;
+    },
     async showNotification () {
       this.showNotificationModal = !this.showNotificationModal;
     },
-    async clickNotification (_id) {
-      this.$store.dispatch('notification/readNotification', { token: this.token, id: _id });
+    async readNotification (_id) {
+      await this.$store.dispatch('notification/readNotification', { token: this.token, id: _id });
+    },
+    async deleteNotification (_id) {
+      await this.$store.dispatch('notification/deleteNotification', { token: this.token, id: _id });
     },
   },
 };

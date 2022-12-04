@@ -186,7 +186,7 @@ const register = async (req, res, next) => {
 
     const notification = await notificationService.addNotification(
       'TOPIC REGISTER',
-      `New Register in your Topic: ${topic.code}`,
+      `Schedule: ${schedule.name}. New Register in your Topic: ${topic.code}`,
       req.user._id,
       null,
     );

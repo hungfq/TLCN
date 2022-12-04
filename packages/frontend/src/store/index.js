@@ -56,10 +56,9 @@ const createWebSocketPlugin = (socket) => (store) => {
   //   socket.emit('login', null);
   // });
 
-  socket.on('notify', (notify) => {
+  socket.on('notify', async () => {
     const { token } = store.state.auth.userInfo;
-    store.dispatch('notification/fetchListNotifications', token);
-    console.log('🚀 ~ file: index.js:62 ~ socket.on ~ notify', notify);
+    await store.dispatch('notification/fetchListNotifications', token);
   });
 };
 

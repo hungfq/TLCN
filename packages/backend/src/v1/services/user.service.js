@@ -91,6 +91,17 @@ const addNotification = async (_id, notificationId) => {
   await user.save();
 };
 
+const removeNotification = async (_id, notificationId) => {
+  const user = await findOneModelWithOnlyId(_id);
+  const notificationIds = [...user.notificationIds];
+
+  const newList = notificationIds.filter(
+    (e) => e.toString() !== notificationId.toString(),
+  );
+  user.notificationIds = newList;
+  await user.save();
+};
+
 const listUserByType = async (type) => {
   const User = getRoleFromType(type);
 
@@ -124,6 +135,7 @@ module.exports = {
   listUserByType,
   updateOneByCode,
   addNotification,
+  removeNotification,
   addNotificationByType,
   getStudentByCodes,
   findOneWithOnlyId,
