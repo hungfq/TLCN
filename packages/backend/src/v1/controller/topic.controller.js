@@ -136,7 +136,7 @@ const addProposalTopic = async (req, res, next) => {
   try {
     let {
       // eslint-disable-next-line prefer-const
-      title, description, lecturerId, limit, students, status,
+      title, description, lecturerId, limit, students, status, deadline, major,
     } = req.body;
     console.log('🚀 ~ file: topic.controller.js:142 ~ addProposalTopic ~ lecturerId', lecturerId);
 
@@ -150,7 +150,7 @@ const addProposalTopic = async (req, res, next) => {
     const createdBy = req.user._id;
 
     const topic = await _TopicProposal.create({
-      title, description, lecturerId, limit, students, createdBy, status,
+      title, description, lecturerId, limit, students, createdBy, status, deadline, major,
     });
     console.log('🚀 ~ file: topic.controller.js:155 ~ addProposalTopic ~ topic', topic);
     if (lecturerId) {
@@ -240,17 +240,22 @@ const listTopicProposalByCreatedId = async (req, res, next) => {
 
 const updateProposalByUser = async (req, res, next) => {
   try {
-    const lecturerId = req.user._id;
     const { id } = req.params;
+    console.log('🚀 ~ file: topic.controller.js:244 ~ updateProposalByUser ~ id', id);
+    let {
+      // eslint-disable-next-line prefer-const
+      title, description, lecturerId, limit, students, deadline, major,
+    } = req.body;
     const proposal = await _TopicProposal.findById(id);
     // TODO: Only the admin and created users update proposal
     if (!proposal) return res.status(404).send('Not found');
 
-    // TODO: need to refactor function isAuth in middleware
-    // const lecturer = await _Lecturer.findById(lecturerId);
-    // if (!lecturer) return res.status(401).send('Access Denied');
-    const listTopics = await _TopicProposal.find({ lecturerId, status: 'LECTURER' });
-    return res.status(200).send(listTopics);
+    await _TopicProposal.updateOne({ _id: id }, {
+      title, description, lecturerId, limit, students, deadline, major,
+    });
+    return res.status(200).send(
+      'Successfully updated proposal',
+    );
   } catch (err) {
     return next(err);
   }
@@ -273,4 +278,5 @@ module.exports = {
   listProposalTopic,
   listTopicReviewByLecturer,
   listTopicProposalByCreatedId,
+  updateProposalByUser,
 };

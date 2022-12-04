@@ -186,8 +186,8 @@ export default {
     });
     if (this.isUpdate || this.isView) {
       const { id } = this.$store.state.url;
-      const { listTopics } = this.$store.state.topic;
-      const topic = listTopics.find((s) => s._id.toString() === id.toString());
+      const { listTopicProposalCreated } = this.$store.state.topic_proposal;
+      const topic = listTopicProposalCreated.find((s) => s._id.toString() === id.toString());
       if (topic) {
         this.title = topic.title;
         this.code = topic.code;
@@ -225,9 +225,8 @@ export default {
       try {
         if (this.isSave) {
           await this.$store.dispatch('topic_proposal/addTopicProposal', { token: this.token, value });
-          console.log(value);
         } else if (this.isUpdate) {
-          await this.$store.dispatch('topic/updateTopic', { token: this.token, value: { ...value, _id: this.id } });
+          await this.$store.dispatch('topic_proposal/updateTopicProposal', { token: this.token, value: { ...value, _id: this.id } });
         }
         this.$toast.success('Đã cập nhật một thành công!');
       } catch (e) {

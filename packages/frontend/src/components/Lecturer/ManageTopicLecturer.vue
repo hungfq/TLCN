@@ -79,7 +79,7 @@
                 v-for="student in topic.studentInfo"
                 :key="`${Math.floor(Math.random() * 10000000000)}-${student}`"
               >
-                {{ student.name }} - {{ student.code }}
+                <!-- {{ student.name }} - {{ student.code }} -->
               </li>
             </div>
           </td>
@@ -159,7 +159,10 @@ export default {
           ...t, studentInfo: listStudents, scheduleInfo,
         };
       });
-      const newList = list.filter((item) => item.lecturerId._id.toString() === this.userId.toString());
+      const newList = list.filter((item) => {
+        if (!item.lecturerId) return false;
+        return item.lecturerId._id.toString() === this.userId.toString();
+      });
       return newList;
     },
   },

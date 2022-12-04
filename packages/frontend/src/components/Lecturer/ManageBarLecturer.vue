@@ -30,13 +30,19 @@
           :class="[ isTopic ? 'flex p-2 items-center w-full space-x-2 text-white bg-indigo-600 rounded-lg' : 'flex p-2   items-center space-x-2 text-indigo-600 transition-colors rounded-lg group hover:bg-indigo-600 hover:text-white']"
           @click="updateModule('topic')"
         >
-          Quản lý đề tài
+          Quản lý đề tài hướng dẫn
         </a>
         <a
           :class="[ isTopicProposal ? 'flex p-2 items-center w-full space-x-2 text-white bg-indigo-600 rounded-lg' : 'flex p-2   items-center space-x-2 text-indigo-600 transition-colors rounded-lg group hover:bg-indigo-600 hover:text-white']"
           @click="updateModule('topic_proposal')"
         >
-          Đề xuất đề tài
+          Quản lý đề tài đề xuất
+        </a>
+        <a
+          :class="[ isTopicProposalApprove ? 'flex p-2 items-center w-full space-x-2 text-white bg-indigo-600 rounded-lg' : 'flex p-2   items-center space-x-2 text-indigo-600 transition-colors rounded-lg group hover:bg-indigo-600 hover:text-white']"
+          @click="updateModule('topic_proposal_approve')"
+        >
+          Yêu cầu hướng dẫn
         </a>
       </div>
     </nav>
@@ -65,6 +71,9 @@ export default {
     },
     isTopicProposal () {
       return this.module === 'topic_proposal';
+    },
+    isTopicProposalApprove () {
+      return this.module === 'topic_proposal_approve';
     },
   },
   mounted () {

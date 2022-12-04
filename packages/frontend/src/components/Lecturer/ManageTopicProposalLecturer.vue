@@ -64,11 +64,15 @@
           <td class="py-4 px-6 text-right">
             <a
               class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
-              @click="handleUpdateTopic(topic._id)"
+              @click="handleUpdateTopicProposal(topic._id)"
             >Sửa</a>
             <a
               class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
-              @click="handleShowTopic(topic._id)"
+              @click="handleRemoveTopicProposal(topic._id)"
+            >Xóa</a>
+            <a
+              class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
+              @click="handleShowTopicProposal(topic._id)"
             >Xem chi tiết</a>
           </td>
         </tr>
@@ -116,21 +120,21 @@ export default {
     this.$store.dispatch('student/fetchListStudent', this.token);
   },
   methods: {
-    handleUpdateTopic (id) {
+    handleUpdateTopicProposal (id) {
       this.$store.dispatch('url/updateSection', `${this.module}-update`);
       this.$store.dispatch('url/updateId', id);
     },
-    handleShowTopic (id) {
+    handleShowTopicProposal (id) {
       this.$store.dispatch('url/updateSection', `${this.module}-view`);
       this.$store.dispatch('url/updateId', id);
     },
-    async handleRemoveTopic (id) {
+    async handleRemoveTopicProposal (id) {
       try {
         const value = {
           id,
           token: this.token,
         };
-        await this.$store.dispatch('topic/removeTopic', value);
+        await this.$store.dispatch('topic_proposal/removeTopicProposal', value);
         this.$toast.success('Đã xóa thành công!');
       } catch (e) {
         this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
