@@ -4,7 +4,6 @@ const userService = require('../services/user.service');
 const notificationService = require('../services/notification.service');
 const fileUtils = require('../utils/file');
 const _TopicProposal = require('../models/topic_proposal.model');
-const _Lecturer = require('../models/lecturer.model');
 
 const importTopics = async (req, res, next) => {
   try {
