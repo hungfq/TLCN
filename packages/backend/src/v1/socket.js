@@ -4,7 +4,12 @@ const { getRedis } = require('./redis');
 let _io;
 
 const createSocket = (server) => {
-  _io = new Server(server);
+  _io = new Server(server, {
+    cors: {
+      origin: 'http://localhost:8080',
+      methods: ['GET', 'POST', 'OPTIONS'],
+    },
+  });
 
   _io.on('connection', (socket) => {
     console.log(`socket: ${socket.id} [CONNECTING]`);

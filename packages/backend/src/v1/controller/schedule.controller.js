@@ -2,6 +2,7 @@
 const scheduleService = require('../services/schedule.service');
 const userService = require('../services/user.service');
 const topicService = require('../services/topic.service');
+const notificationService = require('../services/notification.service');
 const fileUtils = require('../utils/file');
 
 const createOne = async (req, res, next) => {
@@ -183,6 +184,13 @@ const register = async (req, res, next) => {
     const students = [...topic.students, code];
     await topicService.updateStudents(topicId, students);
 
+    const notification = await notificationService.addNotification(
+      'TOPIC REGISTER',
+      'New Register in your Topic',
+      req.user._id,
+      [topic.lecturerId],
+    );
+    await notificationService.sendNotification(topic.lecturerId, notification);
     return res.status(200).send('Successfully');
   } catch (err) {
     return next(err);

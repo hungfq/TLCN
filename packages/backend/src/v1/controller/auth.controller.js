@@ -73,6 +73,8 @@ const readNotification = async (req, res, next) => {
 };
 
 const test = async (req, res) => {
+  const socketId = await notifyService.getSocketIdByUserId('6375b4f800911a0a30da7184');
+  console.log('🚀 ~ file: auth.controller.js:77 ~ test ~ socketId', socketId);
   await getIo().emit('notify', 'notify send by server');
   return res.sendStatus(200);
 };
