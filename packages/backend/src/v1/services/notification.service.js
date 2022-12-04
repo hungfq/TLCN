@@ -1,6 +1,7 @@
 const _Notification = require('../models/notification.model');
 const { getIo } = require('../socket');
 const { getRedis } = require('../redis');
+const userService = require('./user.service');
 
 const addNotification = async (title, message, from, to) => {
   const notification = await _Notification.create({
@@ -18,9 +19,11 @@ const getSocketIdByUserId = async (userId) => {
 };
 
 const sendNotification = async (userId, notification) => {
-  const socketId = getSocketIdByUserId(userId);
+  await userService.addNotification(userId, notification._id);
+
+  const socketId = await getSocketIdByUserId(userId.toString());
   if (socketId) {
-    await getIo().to(socketId).emit('notify', notification);
+    await getIo().emit('notify', notification);
   }
 };
 

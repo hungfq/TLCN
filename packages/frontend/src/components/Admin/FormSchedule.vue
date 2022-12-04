@@ -155,7 +155,7 @@ export default {
     const topics = this.$store.state.topic.listTopics;
     this.listStudents = students.map((student) => {
       let st = {
-        value: student._id,
+        value: student.code,
         label: student.name,
       };
       if (this.isView) {
@@ -165,7 +165,7 @@ export default {
     });
     this.listTopics = topics.map((topic) => {
       let st = {
-        value: topic._id,
+        value: topic.code,
         label: topic.title,
       };
       if (this.isView) {

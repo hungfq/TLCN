@@ -1,22 +1,4 @@
 <template>
-  <div class="flex">
-    <div
-      class=" rounded ml-auto mr-4 my-2 bg-blue-800 text-white font-sans font-semibold py-2 px-4 cursor-pointer"
-      @click="$store.dispatch('url/updateSection', 'topic-import')"
-    >
-      Thêm đề tài
-    </div>
-    <form @submit.prevent="upload">
-      <input
-        ref="uploadBtn"
-        type="file"
-        accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-      >
-      <button type="submit">
-        Tải lên tệp excel
-      </button>
-    </form>
-  </div>
   <div class="shadow-md sm:rounded-lg m-4">
     <table class="w-full text-sm text-left text-gray-500">
       <thead class="text-xs text-gray-700 uppercase bg-gray-300">
