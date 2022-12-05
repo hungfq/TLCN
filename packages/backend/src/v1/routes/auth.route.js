@@ -2,6 +2,7 @@ const {
   loginWithGoogle,
   getNotification,
   readNotification,
+  deleteNotification,
   test,
 } = require('../controller/auth.controller');
 
@@ -13,7 +14,8 @@ const router = (app) => {
   app.post('/v1/auth', loginWithGoogle);
 
   app.get('/v1/notification', isAuth, getNotification);
-  app.post('/v1/notification/:id/read', isAuth, readNotification);
+  app.post('/v1/notification/:id', isAuth, readNotification);
+  app.delete('/v1/notification/:id', isAuth, deleteNotification);
 
   app.get('/test', test);
 };

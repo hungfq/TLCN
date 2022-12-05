@@ -41,11 +41,19 @@
       <!-- Messages button -->
       <!-- Notifications button -->
       <button
-        class="p-2 transition-colors rounded-lg shadow-md hover:bg-indigo-800 hover:text-white focus:outline-none focus:ring focus:ring-indigo-600 focus:ring-offset-white focus:ring-offset-2"
+        class="p-2 transition-colors rounded-lg shadow-md focus:outline-none focus:ring focus:ring-indigo-600 focus:ring-offset-white focus:ring-offset-2"
         :class="'text-gray-500 bg-white'"
-        @click="showNotificationModal = !showNotificationModal"
+        @click="showNotification"
       >
         <span class="sr-only">Toggle notifications panel</span>
+        <div
+          v-if="unreadCount(listNotifications)"
+          class="relative"
+        >
+          <div class="inline-flex absolute -top-2 -right-2 justify-center items-center w-6 h-6 text-xs font-bold text-white bg-red-500 rounded-full border-2 border-white dark:border-gray-900">
+            {{ unreadCount(listNotifications) }}
+          </div>
+        </div>
         <svg
           aria-hidden="true"
           class="w-6 h-6"
@@ -63,54 +71,47 @@
         </svg>
         <div
           v-show="showNotificationModal"
-          class="absolute w-80 py-1 mx-2 bg-slate-300 left-16 top-12 h-[70%] rounded-xl"
+          class="overflow-y-auto max-h-[480px] shadow-lg absolute max-w-md mx-2 bg-slate-300 left-16 top-12 rounded-xl pb-2"
           role="menu"
           aria-orientation="vertical"
           aria-label="user menu"
         >
-          <div class="flex flex-col w-full">
-            <div
-              class="flex mx-2 mt-2 items-center pl-2 py-4 space-x-4 max-w-xs text-gray-500 bg-white rounded-lg divide-x divide-gray-200 shadow"
-              role="alert"
-            >
-              <svg
-                aria-hidden="true"
-                class="w-5 h-5 text-blue-600"
-                focusable="false"
-                data-prefix="fas"
-                data-icon="paper-plane"
-                role="img"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 512 512"
-              ><path
-                fill="currentColor"
-                d="M511.6 36.86l-64 415.1c-1.5 9.734-7.375 18.22-15.97 23.05c-4.844 2.719-10.27 4.097-15.68 4.097c-4.188 0-8.319-.8154-12.29-2.472l-122.6-51.1l-50.86 76.29C226.3 508.5 219.8 512 212.8 512C201.3 512 192 502.7 192 491.2v-96.18c0-7.115 2.372-14.03 6.742-19.64L416 96l-293.7 264.3L19.69 317.5C8.438 312.8 .8125 302.2 .0625 289.1s5.469-23.72 16.06-29.77l448-255.1c10.69-6.109 23.88-5.547 34 1.406S513.5 24.72 511.6 36.86z"
-              /></svg>
-              <div class=" flex flex-col text-sm font-normal">
-                <span class="font-bold text-left mx-2">Message sent successfully.</span>
-                <span class="text-left mx-2">Message sent successfully. This as s sj sjjsjsj</span>
-              </div>
+          <div
+            v-if="!listNotifications.length"
+            class="flex flex-col w-full"
+          >
+            <div class="mt-2 mx-2 px-12 py-28 bg-white rounded-lg shadow">
+              Hiện không có thông báo
             </div>
+          </div>
+          <div
+            v-for="noti in listNotifications"
+            :key="`noti-${noti._id}`"
+            class="flex flex-col w-full"
+          >
             <div
-              class="flex mx-2 mt-2 items-center pl-2 py-4 space-x-4 max-w-xs text-gray-500 bg-white rounded-lg divide-x divide-gray-200 shadow"
-              role="alert"
+              :class="[noti.isRead ? 'bg-white' : 'bg-emerald-50']"
+              class="mt-2 mx-2 px-6 py-4 bg-white rounded-lg shadow"
+              @click="readNotification(noti._id)"
             >
-              <svg
-                aria-hidden="true"
-                class="w-5 h-5 text-blue-600"
-                focusable="false"
-                data-prefix="fas"
-                data-icon="paper-plane"
-                role="img"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 512 512"
-              ><path
-                fill="currentColor"
-                d="M511.6 36.86l-64 415.1c-1.5 9.734-7.375 18.22-15.97 23.05c-4.844 2.719-10.27 4.097-15.68 4.097c-4.188 0-8.319-.8154-12.29-2.472l-122.6-51.1l-50.86 76.29C226.3 508.5 219.8 512 212.8 512C201.3 512 192 502.7 192 491.2v-96.18c0-7.115 2.372-14.03 6.742-19.64L416 96l-293.7 264.3L19.69 317.5C8.438 312.8 .8125 302.2 .0625 289.1s5.469-23.72 16.06-29.77l448-255.1c10.69-6.109 23.88-5.547 34 1.406S513.5 24.72 511.6 36.86z"
-              /></svg>
-              <div class=" flex flex-col text-sm font-normal">
-                <span class="font-bold text-left mx-2">Message sent successfully.</span>
-                <span class="text-left mx-2">Message sent successfully. This as s sj sjjsjsj</span>
+              <div class="inline-flex items-center justify-between w-full">
+                <div class="inline-flex items-center">
+                  <h3 class="font-bold text-base text-gray-800">
+                    {{ noti.title }}
+                  </h3>
+                </div>
+                <p class="text-xs text-gray-500">
+                  {{ timeAgo(noti.createdAt) }}
+                </p>
+              </div>
+              <div class="inline-flex items-center justify-between w-full">
+                <p class="mt-1 text-sm text-left text-gray-900">
+                  {{ noti.message }}
+                </p>
+                <a
+                  class="text-blue-700"
+                  @click="deleteNotification(noti._id)"
+                >Xóa</a>
               </div>
             </div>
           </div>
@@ -136,7 +137,7 @@
       </button>
       <div
         v-show="miniAvatarShow"
-        class="absolute w-48 py-1 mt-2 origin-bottom-left bg-white rounded-md shadow-lg left-10 bottom-14 focus:outline-none"
+        class="absolute w-48 py-1 mt-2 origin-bottom-left bg-white rounded-md shadow-lg mx-1 left-16 bottom-14 focus:outline-none"
         role="menu"
         aria-orientation="vertical"
         aria-label="user menu"
@@ -165,6 +166,7 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex';
+import moment from 'moment';
 
 export default {
   name: 'LeftMiniBar',
@@ -179,11 +181,21 @@ export default {
     };
   },
   computed: {
+    ...mapState({
+      isAuthenticated: ({ auth: { isAuthenticated } }) => isAuthenticated,
+    }),
+    ...mapGetters('auth', [
+      'userId', 'userEmail', 'userRole', 'token',
+    ]),
+    ...mapGetters('notification', [
+      'listNotifications',
+    ]),
     ...mapGetters('url', [
       'page', 'module', 'section', 'id',
     ]),
   },
-  mounted () {
+  async mounted () {
+    await this.$store.dispatch('notification/fetchListNotifications', this.token);
   },
   methods: {
     async signOut () {
@@ -194,6 +206,21 @@ export default {
     updatePage (module) {
       this.$store.dispatch('url/updatePage', module);
       console.log('🚀 ~ file: LeftMiniBar.vue:140 ~ updatePage ~ module', module);
+    },
+    timeAgo (createdAt) {
+      return moment(createdAt).fromNow();
+    },
+    unreadCount (listNotifications) {
+      return listNotifications.filter((x) => x.isRead === false).length;
+    },
+    async showNotification () {
+      this.showNotificationModal = !this.showNotificationModal;
+    },
+    async readNotification (_id) {
+      await this.$store.dispatch('notification/readNotification', { token: this.token, id: _id });
+    },
+    async deleteNotification (_id) {
+      await this.$store.dispatch('notification/deleteNotification', { token: this.token, id: _id });
     },
   },
 };

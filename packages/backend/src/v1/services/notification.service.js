@@ -28,7 +28,8 @@ const sendNotification = async (userId, notification) => {
 };
 
 const getMultiNotify = async (ids) => {
-  const notification = await _Notification.find({ _id: { $in: ids } });
+  const notification = await _Notification.find({ _id: { $in: ids } })
+    .sort({ createdAt: -1 });
   return notification;
 };
 
@@ -36,10 +37,16 @@ const readNotify = async (_id) => {
   await _Notification.updateOne({ _id }, { isRead: true });
 };
 
+const deleteNotify = async (_id, userId) => {
+  await userService.removeNotification(userId.toString(), _id.toString());
+  await _Notification.findOneAndDelete({ _id });
+};
+
 module.exports = {
   addNotification,
   sendNotification,
   getMultiNotify,
   readNotify,
+  deleteNotify,
   getSocketIdByUserId,
 };
