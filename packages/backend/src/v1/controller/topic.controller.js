@@ -172,9 +172,12 @@ const addProposalTopic = async (req, res, next) => {
 const approveProposalTopic = async (req, res, next) => {
   try {
     const { id } = req.params;
+    const {
+      title, description, code, limit, deadline, major, students, lecturerId,
+    } = req.body;
 
     const topicProposal = await topicService.findOneProposalTopic(id);
-    await topicService.createOne(null, topicProposal.title, topicProposal.description, 1, null, null, req.user._id, []);
+    await topicService.createOne(code, title, description, limit, deadline, major, lecturerId, students);
 
     await topicService.deleteOneProposalTopic(id);
 
@@ -255,7 +258,6 @@ const listTopicProposalByCreatedId = async (req, res, next) => {
 const updateProposalByUser = async (req, res, next) => {
   try {
     const { id } = req.params;
-    console.log('🚀 ~ file: topic.controller.js:244 ~ updateProposalByUser ~ id', id);
     let {
       // eslint-disable-next-line prefer-const
       title, description, lecturerId, limit, students, deadline, major,
@@ -277,9 +279,7 @@ const updateProposalByUser = async (req, res, next) => {
 
 const approveProposalByLecturer = async (req, res, next) => {
   try {
-    console.log('approveProposalByLecturer');
     const { id } = req.params;
-    console.log(id);
     const proposal = await _TopicProposal.findById(id);
     // TODO: Only the admin and created users update proposal
     if (!proposal) return res.status(404).send('Not found');

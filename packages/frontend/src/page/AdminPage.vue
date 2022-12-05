@@ -36,6 +36,7 @@
           </template>
           <template v-if="module === 'topic_proposal'">
             <ManageApproveProposalAdminVue v-if="section === 'topic_proposal-list'" />
+            <FormApproveVue v-if="section === 'topic_proposal-update' || section === 'topic_proposal-view'" />
           </template>
         </div>
       </div>
@@ -63,6 +64,7 @@ import ManageApproveProposalAdminVue from '../components/Admin/ManageApproveProp
 import FormUserVue from '../components/Admin/FormUser.vue';
 import FormTopicVue from '../components/Admin/FormTopic.vue';
 import FormScheduleVue from '../components/Admin/FormSchedule.vue';
+import FormApproveVue from '../components/Admin/FormApprove.vue';
 
 export default {
   name: 'AdminPage',
@@ -80,6 +82,7 @@ export default {
     ManageScheduleAdminVue,
     ManageApproveProposalAdminVue,
     FormScheduleVue,
+    FormApproveVue,
   },
   props: {
   },

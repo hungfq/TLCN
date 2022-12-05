@@ -104,7 +104,7 @@
           class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4  focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           @click="handleAddTopicAdmin"
         >
-          {{ isSave ? 'Lưu' : 'Cập nhật' }}
+          Duyệt đề tài
         </button>
       </div>
     </div>
@@ -117,7 +117,7 @@ import { getValidationMessages } from '@formkit/validation';
 import { mapState, mapGetters } from 'vuex';
 
 export default {
-  name: 'FormTopic',
+  name: 'FormAprrove',
   components: {
     Multiselect,
   },
@@ -154,14 +154,14 @@ export default {
     ...mapGetters('auth', [
       'token',
     ]),
-    isSave () {
-      return this.section === 'topic-import';
-    },
+    ...mapGetters('topic_proposal', [
+      'listTopicProposalAdmin',
+    ]),
     isUpdate () {
-      return this.section === 'topic-update';
+      return this.section === 'topic_proposal-update';
     },
     isView () {
-      return this.section === 'topic-view';
+      return this.section === 'topic_proposal-view';
     },
   },
   async mounted () {
@@ -191,8 +191,7 @@ export default {
     });
     if (this.isUpdate || this.isView) {
       const { id } = this.$store.state.url;
-      const { listTopics } = this.$store.state.topic;
-      const topic = listTopics.find((s) => s._id.toString() === id.toString());
+      const topic = this.listTopicProposalAdmin.find((s) => s._id.toString() === id.toString());
       if (topic) {
         this.title = topic.title;
         this.code = topic.code;
@@ -205,7 +204,7 @@ export default {
             .split('T')[0];
           this.deadline = dateString;
         }
-        if (topic.lecturerId) this.lecturerId = topic.lecturerId._id;
+        if (topic.lecturerId) this.lecturerId = topic.lecturerId;
         this.major = topic.major;
         this.studentIds = topic.students;
       }
@@ -218,6 +217,7 @@ export default {
     async handleAddTopicAdmin () {
       const { studentIds, lecturerId } = this;
       const value = {
+        id: this.id,
         title: this.title,
         description: this.description,
         code: this.code,
@@ -227,17 +227,17 @@ export default {
         students: studentIds,
         lecturerId,
       };
-      try {
-        if (this.isSave) {
-          await this.$store.dispatch('topic/addTopic', { token: this.token, value });
-        } else if (this.isUpdate) {
-          await this.$store.dispatch('topic/updateTopic', { token: this.token, value: { ...value, _id: this.id } });
+      if (!value.title || !value.code || !value.limit || !value.major || !value.lecturerId || !value.deadline) {
+        this.$toast.error('Vui lòng nhập các cột còn thiếu dữ liệu!');
+      } else {
+        try {
+          await this.$store.dispatch('topic_proposal/approveTopicProposalByAdmin', { token: this.token, value });
+          this.$toast.success('Đã duyệt thành công!');
+        } catch (e) {
+          this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
+        } finally {
+          this.rollBack();
         }
-        this.$toast.success('Đã cập nhật một thành công!');
-      } catch (e) {
-        this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
-      } finally {
-        this.rollBack();
       }
     },
   },

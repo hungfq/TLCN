@@ -137,7 +137,6 @@ export default {
           token: this.token,
         };
         await this.$store.dispatch('topic_proposal/removeTopicProposal', value);
-        await this.$store.dispatch('topic_proposal/fetchListTopicProposalByLectures', this.token);
 
         this.$toast.success('Đã từ chối hướng dẫn đề tài thành công!');
       } catch (e) {

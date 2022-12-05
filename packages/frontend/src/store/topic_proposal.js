@@ -44,11 +44,17 @@ const actions = {
     const { token, id } = payload;
     await TopicProposalApi.removeTopicProposal(token, id);
     dispatch('fetchListTopicProposalCreated', token);
+    dispatch('fetchListTopicProposalAdmin', token);
   },
   async approveTopicProposalByLecturer ({ dispatch }, payload) {
     const { token, id } = payload;
     await TopicProposalApi.approveTopicProposalByLecturer(token, id);
     dispatch('fetchListTopicProposalByLectures', token);
+  },
+  async approveTopicProposalByAdmin ({ dispatch }, payload) {
+    const { token, value } = payload;
+    await TopicProposalApi.approveTopicProposalByAdmin(token, value);
+    dispatch('fetchListTopicProposalAdmin', token);
   },
 };
 

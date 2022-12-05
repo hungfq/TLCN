@@ -66,4 +66,13 @@ export default class TopicProposalApi {
     });
     return res.data;
   }
+
+  static async approveTopicProposalByAdmin (token, value) {
+    const res = await axios.post(`/topic-proposal/approve/${value.id}`, value, {
+      headers: {
+        authorization: `bearer ${token}`,
+      },
+    });
+    return res.data;
+  }
 }
