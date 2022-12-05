@@ -43,7 +43,7 @@ const loginWithGoogle = async (req, res, next) => {
     if (!user) {
       return res.status(401).send({ message: 'The email is not exist' });
     }
-    const token = jwt.sign({ email }, secretKey, {
+    const token = jwt.sign({ email, role }, secretKey, {
       expiresIn: '720h',
     });
 
