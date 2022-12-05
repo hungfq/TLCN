@@ -34,6 +34,9 @@
             <ManageScheduleAdminVue v-if="section === 'schedule-list'" />
             <FormScheduleVue v-if="section === 'schedule-update' || section === 'schedule-import' || section === 'schedule-view'" />
           </template>
+          <template v-if="module === 'topic_proposal'">
+            <ManageApproveProposalAdminVue v-if="section === 'topic_proposal-list'" />
+          </template>
         </div>
       </div>
     </div>
@@ -56,6 +59,7 @@ import ManageLecturerAdminVue from '../components/Admin/ManageLecturerAdmin.vue'
 import ManageAdminVue from '../components/Admin/ManageAdmin.vue';
 import ManageTopicAdminVue from '../components/Admin/ManageTopicAdmin.vue';
 import ManageScheduleAdminVue from '../components/Admin/ManageScheduleAdmin.vue';
+import ManageApproveProposalAdminVue from '../components/Admin/ManageApproveProposalAdmin.vue';
 import FormUserVue from '../components/Admin/FormUser.vue';
 import FormTopicVue from '../components/Admin/FormTopic.vue';
 import FormScheduleVue from '../components/Admin/FormSchedule.vue';
@@ -74,6 +78,7 @@ export default {
     ManageTopicAdminVue,
     FormTopicVue,
     ManageScheduleAdminVue,
+    ManageApproveProposalAdminVue,
     FormScheduleVue,
   },
   props: {

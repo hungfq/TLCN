@@ -56,6 +56,12 @@
         >
           Quản lý đợt đăng ký
         </a>
+        <a
+          :class="[ isTopicProposal ? 'flex p-2 items-center w-full space-x-2 text-white bg-indigo-600 rounded-lg' : 'flex p-2   items-center space-x-2 text-indigo-600 transition-colors rounded-lg group hover:bg-indigo-600 hover:text-white']"
+          @click="updateModule('topic_proposal')"
+        >
+          Duyệt đề tài đề xuất
+        </a>
       </div>
     </nav>
   </div>
@@ -92,6 +98,9 @@ export default {
     },
     isSchedule () {
       return this.module === 'schedule';
+    },
+    isTopicProposal () {
+      return this.module === 'topic_proposal';
     },
   },
   mounted () {

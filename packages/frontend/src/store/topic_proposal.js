@@ -4,11 +4,13 @@ const initState = {
   listTopics: [],
   listTopicProposalByLecturer: [],
   listTopicProposalCreated: [],
+  listTopicProposalAdmin: [],
 };
 
 const getters = {
   listTopicProposalByLecturer: (state) => state.listTopicProposalByLecturer,
   listTopicProposalCreated: (state) => state.listTopicProposalCreated,
+  listTopicProposalAdmin: (state) => state.listTopicProposalAdmin,
 };
 
 const actions = {
@@ -16,9 +18,15 @@ const actions = {
     const listTopics = await TopicProposalApi.listAllTopicsByLecturer(token);
     commit('setListTopicProposalByLecturer', listTopics);
   },
+
   async fetchListTopicProposalCreated ({ commit }, token) {
     const listTopics = await TopicProposalApi.listAllTopicsByCreated(token);
     commit('setListTopicProposalCreated', listTopics);
+  },
+
+  async fetchListTopicProposalAdmin ({ commit }, token) {
+    const listTopics = await TopicProposalApi.listAllTopicsByAdmin(token);
+    commit('setListTopicProposalAdmin', listTopics);
   },
 
   async addTopicProposal ({ dispatch }, payload) {
@@ -53,6 +61,9 @@ const mutations = {
   },
   setListTopicProposalCreated: (state, listTopicProposalCreated) => {
     state.listTopicProposalCreated = listTopicProposalCreated;
+  },
+  setListTopicProposalAdmin: (state, listTopicProposalAdmin) => {
+    state.listTopicProposalAdmin = listTopicProposalAdmin;
   },
 
 };

@@ -13,6 +13,15 @@ export default class TopicProposalApi {
     return res.data;
   }
 
+  static async listAllTopicsByAdmin (token) {
+    const res = await axios.get('/topic-proposal/admin', {
+      headers: {
+        authorization: `bearer ${token}`,
+      },
+    });
+    return res.data;
+  }
+
   static async listAllTopicsByCreated (token) {
     const res = await axios.get('/topic-proposal/created', {
       headers: {

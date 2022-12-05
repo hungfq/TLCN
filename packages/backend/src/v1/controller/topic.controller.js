@@ -185,6 +185,7 @@ const approveProposalTopic = async (req, res, next) => {
     return next(err);
   }
 };
+
 const removeProposalTopic = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -225,6 +226,19 @@ const listTopicReviewByLecturer = async (req, res, next) => {
     return next(err);
   }
 };
+
+const listTopicReviewByAdmin = async (req, res, next) => {
+  try {
+    // TODO: need to refactor function isAuth in middleware
+    // const lecturer = await _Lecturer.findById(lecturerId);
+    // if (!lecturer) return res.status(401).send('Access Denied');
+    const listTopics = await _TopicProposal.find({ status: 'ADMIN' });
+    return res.status(200).send(listTopics);
+  } catch (err) {
+    return next(err);
+  }
+};
+
 const listTopicProposalByCreatedId = async (req, res, next) => {
   try {
     const createdBy = req.user._id;
@@ -300,4 +314,5 @@ module.exports = {
   listTopicProposalByCreatedId,
   updateProposalByUser,
   approveProposalByLecturer,
+  listTopicReviewByAdmin,
 };
