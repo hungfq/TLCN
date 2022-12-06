@@ -1,16 +1,13 @@
-const roleService = require('../services/role.service');
-
 exports.permit = (...permittedRoles) => async (request, response, next) => {
-//   const { user } = request;
-//   const permissions = await roleService.getPermissions(user.roleId);
-//   const isPermissionExist = permissions.find(
-//     (x) => x.permissionId.name === permittedRoles[0],
-//   );
+  const { user } = request;
+  const { role } = user;
+  const isRoleExist = permittedRoles.find(
+    (x) => x === role,
+  );
 
-  //   if (isPermissionExist) {
-  //     next();
-  //   } else {
-  //     response.status(403).json({ message: 'Permission denied' });
-  //   }
-  next();
+  if (isRoleExist) {
+    next();
+  } else {
+    response.status(403).json({ message: 'Permission denied' });
+  }
 };

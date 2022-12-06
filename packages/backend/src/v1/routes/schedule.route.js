@@ -18,10 +18,10 @@ const {
 const { upload } = require('../utils/file');
 
 const authMiddleware = require('../middlewares/auth.middleware');
-// const roleMiddleware = require('../middlewares/role.middlewares');
+// const roleMiddleware = require('../middlewares/role.middleware');
 
 const { isAuth } = authMiddleware;
-// const { permit } = roleMiddleware;
+// const { permit } = roleMiddleware; // permit('ADMIN', 'LECTURER'),
 
 const router = (app) => {
   app.post('/v1/schedule', isAuth, createOne);
