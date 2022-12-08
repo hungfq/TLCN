@@ -32,13 +32,13 @@
                 v-if="section === 'topic_proposal-update' || section === 'topic_proposal-import' || section === 'topic_proposal-view'"
               />
             </template>
+            <template v-if="module === 'topic_proposal_approve'">
+              <ManageApproveProposalLecturerVue v-if="section === 'topic_proposal_approve-list'" />
+              <FormApproveProposalVue v-if="section === 'topic_proposal_approve-view' || section === 'topic_proposal_approve-update'" />
+            </template>
           </template>
           <template v-if="page === 'task'">
             <TaskDraggableVue />
-          </template>
-          <template v-if="module === 'topic_proposal_approve'">
-            <ManageApproveProposalLecturerVue v-if="section === 'topic_proposal_approve-list'" />
-            <FormApproveProposalVue v-if="section === 'topic_proposal_approve-view' || section === 'topic_proposal_approve-update'" />
           </template>
         </div>
       </div>
