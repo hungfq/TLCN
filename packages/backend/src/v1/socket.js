@@ -12,7 +12,7 @@ const createSocket = (server) => {
   });
 
   _io.on('connection', (socket) => {
-    console.log(`socket: ${socket.id} [CONNECTING]`);
+    console.log(`socket: ${socket.id} [CONNECTING.....]`);
 
     socket.emit('notify', 'init notification by server');
 

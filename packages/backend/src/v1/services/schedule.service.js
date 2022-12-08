@@ -101,6 +101,19 @@ const listScheduleTopicLecturer = async (_id, lecturerId) => {
   return topicList;
 };
 
+const listScheduleTopicLecturerShort = async (_id, lecturerId) => {
+  const schedules = await _Schedule.find({});
+  const topicList = await Promise.all(
+    schedules.map(async (k) => {
+      const topics = await _Topic.find({ code: { $in: k.topics }, lecturerId })
+        .select('_id title code');
+      return { _id: k._id, name: k.name, topics };
+    }),
+  );
+
+  return topicList;
+};
+
 const listTopicLecturer = async (_id, lecturerId) => {
   const schedule = await _Schedule.findById(_id);
   const topicList = await _Topic.find({ code: { $in: schedule.topics }, lecturerId })
@@ -130,6 +143,7 @@ module.exports = {
   updateTopics,
   listTopics,
   listScheduleTopicLecturer,
+  listScheduleTopicLecturerShort,
   listTopicLecturer,
   checkStudentInTopic,
   removeSchedule,
