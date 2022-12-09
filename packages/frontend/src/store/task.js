@@ -1,13 +1,16 @@
 import ScheduleApi from '../utils/api/schedule';
+import TaskApi from '../utils/api/task';
 
 const initState = {
   listScheduleTopic: [],
   listTopic: [],
+  listTask: [],
 };
 
 const getters = {
   listScheduleTopic: (state) => state.listScheduleTopic,
   listTopic: (state) => state.listTopic,
+  listTask: (state) => state.listTask,
 };
 
 const actions = {
@@ -28,6 +31,15 @@ const actions = {
       console.log(e.message);
     }
   },
+  async fetchAllTask ({ commit }, payload) {
+    try {
+      const { token, topicId } = payload;
+      const listTask = await TaskApi.listAllTask(token, topicId);
+      commit('setListTask', listTask);
+    } catch (e) {
+      console.log(e.message);
+    }
+  },
 };
 
 const mutations = {
@@ -36,6 +48,9 @@ const mutations = {
   },
   setListTopic: (state, listTopic) => {
     state.listTopic = listTopic;
+  },
+  setListTask: (state, listTask) => {
+    state.listTask = listTask;
   },
 };
 

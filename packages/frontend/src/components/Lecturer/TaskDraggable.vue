@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import { VueDraggableNext } from 'vue-draggable-next';
 import TaskCard from './TaskCard.vue';
 
@@ -37,6 +38,7 @@ export default {
     TaskCard,
     VueDraggableNext,
   },
+
   data () {
     return {
       columns: [
@@ -139,6 +141,18 @@ export default {
       ],
     };
   },
+  computed: {
+    ...mapGetters('auth', [
+      'userId', 'userEmail', 'userRole', 'token',
+    ]),
+    ...mapGetters('url', [
+      'page', 'module', 'subModule', 'section', 'id',
+    ]),
+    ...mapGetters('task', [
+      'listScheduleTopic', 'listTopic', 'listTask',
+    ]),
+
+  },
 };
 </script>
 
@@ -149,9 +163,9 @@ export default {
 }
 /* Unfortunately @apply cannot be setup in code sandbox,
 but you'd use "@apply border opacity-50 border-blue-500 bg-gray-200" here */
-.ghost-card {
+/* .ghost-card {
   opacity: 0.5;
   background: #F7FAFC;
   border: 1px solid #4299e1;
-}
+} */
 </style>

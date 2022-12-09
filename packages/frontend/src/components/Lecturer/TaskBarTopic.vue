@@ -23,7 +23,7 @@
             :class="[ isTopic(topic._id) ? 'flex p-2 items-center w-full space-x-2 text-white bg-indigo-600 rounded-lg' : 'flex p-2   items-center space-x-2 text-indigo-600 transition-colors rounded-lg group hover:bg-indigo-600 hover:text-white']"
             @click="topicClick(topic._id)"
           >
-            {{ topic.title }}
+            {{ topic.code }}: {{ topic.title }}
           </button>
         </template>
       </div>
@@ -45,20 +45,23 @@ export default {
     };
   },
   computed: {
+    ...mapGetters('auth', [
+      'userId', 'userEmail', 'userRole', 'token',
+    ]),
     ...mapGetters('url', [
       'page', 'module', 'subModule', 'section', 'id',
     ]),
     ...mapGetters('task', [
-      'listScheduleTopic', 'listTopic',
+      'listScheduleTopic', 'listTopic', 'listTask',
     ]),
 
   },
   mounted () {
   },
   methods: {
-    topicClick (id) {
+    async topicClick (id) {
       this.updateSubModule(`topic-${id}`);
-      // this.$store.dispatch('task/setListTopic', id);
+      await this.$store.dispatch('task/fetchAllTask', { token: this.token, topicId: id });
     },
     isTopic (id) {
       return this.subModule === `topic-${id}`;

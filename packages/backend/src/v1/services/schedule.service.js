@@ -110,8 +110,9 @@ const listScheduleTopicLecturerShort = async (_id, lecturerId) => {
       return { _id: k._id, name: k.name, topics };
     }),
   );
+  const filteredArray = topicList.filter((e) => e.topics.length > 0);
 
-  return topicList;
+  return filteredArray;
 };
 
 const listTopicLecturer = async (_id, lecturerId) => {

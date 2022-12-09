@@ -3,8 +3,8 @@ Authorization: Bearer {{student_token}}
 Content-Type: application/json
 
 {
-    "name":"CNPMM 2022",
-    "description": "Đăng ký đề tài CNPMM",
+    "name":"TEST",
+    "description": "test schedule with no topic",
     "startDate":"2022-08-15",
     "endDate":"2022-09-05"
 }
