@@ -3,6 +3,7 @@ import HomePage from '../page/HomePage.vue';
 import DashBoardPage from '../page/DashboardPage.vue';
 import AdminPage from '../page/AdminPage.vue';
 import LecturerPage from '../page/LecturerPage.vue';
+import StudentPage from '../page/StudentPage.vue';
 
 const routes = [
   {
@@ -19,6 +20,11 @@ const routes = [
     path: '/lecturer',
     name: 'lecturer.default',
     component: LecturerPage,
+  },
+  {
+    path: '/student',
+    name: 'student.default',
+    component: StudentPage,
   },
   {
     path: '/dashboard',
