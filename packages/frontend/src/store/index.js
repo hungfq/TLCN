@@ -10,6 +10,7 @@ import admin from './admin';
 import url from './url';
 import topic from './topic';
 import schedule from './schedule';
+import task from './task';
 import router from '../router';
 import topic_proposal from './topic_proposal';
 import notification from './notification';
@@ -58,7 +59,9 @@ const createWebSocketPlugin = (socket) => (store) => {
 
   socket.on('notify', async () => {
     const { token } = store.state.auth.userInfo;
-    await store.dispatch('notification/fetchListNotifications', token);
+    if (token) {
+      await store.dispatch('notification/fetchListNotifications', token);
+    }
   });
 };
 
@@ -68,7 +71,7 @@ const websocketPlugin = createWebSocketPlugin(socket);
 
 const store = new Vuex.Store({
   modules: {
-    auth, student, url, lecturer, admin, topic, schedule, topic_proposal, notification,
+    auth, student, url, lecturer, admin, topic, schedule, topic_proposal, notification, task,
   },
   plugins: [vuexLocal, websocketPlugin],
 });

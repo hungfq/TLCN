@@ -22,7 +22,7 @@ Content-Type: application/json
 ###
 GET {{host}}/v1/schedule
 ?startDate=2022-08-10
-&endDate=2022-09-09
+&endDate=2022-12-31
 Authorization: Bearer {{student_token}}
 ###
 GET {{host}}/v1/schedule/638ab9a345a87774343b2781
@@ -49,6 +49,9 @@ GET {{host}}/v1/schedule/638ab9a345a87774343b2781/topic
 Authorization: Bearer {{student_token}}
 ###
 GET {{host}}/v1/schedule-topic-lecturer
+Authorization: Bearer {{lecturer_token}}
+###
+GET {{host}}/v1/schedule-topic-lecturer/short
 Authorization: Bearer {{lecturer_token}}
 ###
 GET {{host}}/v1/schedule/638ab9a345a87774343b2781/topic-lecturer/6375b66924ace35d440f51ed

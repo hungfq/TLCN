@@ -141,6 +141,17 @@ const listScheduleTopicLecturer = async (req, res, next) => {
   }
 };
 
+const listScheduleTopicLecturerShort = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const topics = await scheduleService.listScheduleTopicLecturerShort(id, req.user._id);
+
+    return res.status(200).send(topics);
+  } catch (err) {
+    return next(err);
+  }
+};
+
 const listTopicLecturer = async (req, res, next) => {
   try {
     const { id, lecturerId } = req.params;
@@ -241,6 +252,7 @@ module.exports = {
   importTopics,
   listTopics,
   listScheduleTopicLecturer,
+  listScheduleTopicLecturerShort,
   listTopicLecturer,
   register,
   cancelRegister,

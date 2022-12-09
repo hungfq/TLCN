@@ -6,10 +6,19 @@
       <div class="flex flex-shrink-0 transition-all">
         <LeftMiniBarVue />
         <ManageBarLecturerVue v-if="page === 'management'" />
+        <TaskBarScheduleVue v-if="page === 'task'" />
+        <TaskBarTopicVue v-if="page === 'task'" />
       </div>
-      <div class="flex grow flex-col">
-        <HeaderBarVue :username="userName" />
-        <div class="bg-white mx-4 border rounded h-full">
+      <div class="flex grow flex-col overflow-x-clip">
+        <HeaderBarVue
+          v-if="page !== 'task'"
+          :username="userName"
+        />
+        <MiniHeaderBarVue
+          v-if="page === 'task'"
+          :username="userName"
+        />
+        <div class="bg-white mx-4 border rounded overflow-scroll">
           <template v-if="page === 'management'">
             <template v-if="module === 'topic'">
               <ManageTopicLecturerVue v-if="section === 'topic-list'" />
@@ -23,10 +32,13 @@
                 v-if="section === 'topic_proposal-update' || section === 'topic_proposal-import' || section === 'topic_proposal-view'"
               />
             </template>
+            <template v-if="module === 'topic_proposal_approve'">
+              <ManageApproveProposalLecturerVue v-if="section === 'topic_proposal_approve-list'" />
+              <FormApproveProposalVue v-if="section === 'topic_proposal_approve-view' || section === 'topic_proposal_approve-update'" />
+            </template>
           </template>
-          <template v-if="module === 'topic_proposal_approve'">
-            <ManageApproveProposalLecturerVue v-if="section === 'topic_proposal_approve-list'" />
-            <FormApproveProposalVue v-if="section === 'topic_proposal_approve-view' || section === 'topic_proposal_approve-update'" />
+          <template v-if="page === 'task'">
+            <TaskDraggableVue />
           </template>
         </div>
       </div>
@@ -46,12 +58,16 @@ import ErrorModalVue from '../components/Modal/ErrorModal.vue';
 import LeftMiniBarVue from '../components/Lecturer/LeftMiniBar.vue';
 import ManageBarLecturerVue from '../components/Lecturer/ManageBarLecturer.vue';
 import HeaderBarVue from '../components/Admin/HeaderBar.vue';
+import MiniHeaderBarVue from '../components/Lecturer/MiniHeaderBar.vue';
 import ManageTopicLecturerVue from '../components/Lecturer/ManageTopicLecturer.vue';
 import ManageTopicProposalLecturerVue from '../components/Lecturer/ManageTopicProposalLecturer.vue';
 import ManageApproveProposalLecturerVue from '../components/Lecturer/ManageApproveProposalLecturer.vue';
 import FormTopicProposalVue from '../components/Lecturer/FormTopicProposal.vue';
 import FormTopicVue from '../components/Lecturer/FormTopic.vue';
 import FormApproveProposalVue from '../components/Lecturer/FormApproveProposal.vue';
+import TaskBarScheduleVue from '../components/Lecturer/TaskBarSchedule.vue';
+import TaskBarTopicVue from '../components/Lecturer/TaskBarTopic.vue';
+import TaskDraggableVue from '../components/Lecturer/TaskDraggable.vue';
 
 export default {
   name: 'LecturerPage',
@@ -60,12 +76,16 @@ export default {
     LeftMiniBarVue,
     ManageBarLecturerVue,
     HeaderBarVue,
+    MiniHeaderBarVue,
     ManageTopicLecturerVue,
     FormTopicVue,
     ManageTopicProposalLecturerVue,
     FormTopicProposalVue,
     ManageApproveProposalLecturerVue,
     FormApproveProposalVue,
+    TaskBarScheduleVue,
+    TaskBarTopicVue,
+    TaskDraggableVue,
   },
   props: {
   },
@@ -83,7 +103,7 @@ export default {
       'userId', 'userEmail', 'userRole', 'token', 'userName',
     ]),
     ...mapGetters('url', [
-      'page', 'module', 'section', 'id',
+      'page', 'module', 'subModule', 'section', 'id',
     ]),
   },
   async mounted () {
@@ -94,6 +114,7 @@ export default {
     if (!page && !module && !section) {
       this.$store.dispatch('url/updatePage', 'management');
       this.$store.dispatch('url/updateModule', 'topic');
+      this.$store.dispatch('url/updateSubModule', 'topic');
       this.$store.dispatch('url/updateSection', 'topic-list');
     }
   },

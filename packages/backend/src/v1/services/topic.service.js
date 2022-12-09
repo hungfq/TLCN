@@ -5,7 +5,6 @@ const _ = require('lodash');
 const _Topic = require('../models/topic.model');
 const _TopicProposal = require('../models/topic_proposal.model');
 const _Lecturer = require('../models/lecturer.model');
-const _Student = require('../models/student.model');
 const userService = require('./user.service');
 
 const createOne = async (code, title, description, limit, deadline, major, lecturerId, students) => {

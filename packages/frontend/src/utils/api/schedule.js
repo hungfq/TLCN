@@ -39,4 +39,22 @@ export default class ScheduleApi {
     });
     return res.data;
   }
+
+  static async lecturerListScheduleTopic (token) {
+    const res = await axios.get('/schedule-topic-lecturer', {
+      headers: {
+        authorization: `bearer ${token}`,
+      },
+    });
+    return res.data;
+  }
+
+  static async lecturerListScheduleTopicShort (token) {
+    const res = await axios.get('/schedule-topic-lecturer/short', {
+      headers: {
+        authorization: `bearer ${token}`,
+      },
+    });
+    return res.data;
+  }
 }
