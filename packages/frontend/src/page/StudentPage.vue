@@ -14,6 +14,12 @@
             <ManageTopicStudentVue v-if="section==='topic-list'" />
             <FormTopicVue v-if="section==='topic-view'" />
           </template>
+          <template v-if="module === 'topic_proposal'">
+            <ManageTopicProposalStudentVue v-if="section==='topic_proposal-list'" />
+            <FormTopicProposalVue
+              v-if="section === 'topic_proposal-update' || section === 'topic_proposal-import' || section === 'topic_proposal-view'"
+            />
+          </template>
         </div>
       </div>
     </div>
@@ -32,7 +38,9 @@ import ErrorModalVue from '../components/Modal/ErrorModal.vue';
 import LeftMiniBarVue from '../components/Student/LeftMiniBar.vue';
 import ManageBarStudentVue from '../components/Student/ManageBarStudent.vue';
 import ManageTopicStudentVue from '../components/Student/ManageTopicStudent.vue';
+import ManageTopicProposalStudentVue from '../components/Student/ManageTopicProposalStudent.vue';
 import FormTopicVue from '../components/Student/FormTopic.vue';
+import FormTopicProposalVue from '../components/Student/FormTopicProposal.vue';
 import HeaderBarVue from '../components/Admin/HeaderBar.vue';
 
 export default {
@@ -42,8 +50,10 @@ export default {
     LeftMiniBarVue,
     ManageBarStudentVue,
     ManageTopicStudentVue,
+    ManageTopicProposalStudentVue,
     FormTopicVue,
     HeaderBarVue,
+    FormTopicProposalVue,
   },
   props: {
   },
