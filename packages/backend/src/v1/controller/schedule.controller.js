@@ -196,8 +196,8 @@ const register = async (req, res, next) => {
     await topicService.updateStudents(topicId, students);
 
     const notification = await notificationService.addNotification(
-      'TOPIC REGISTER',
-      `Schedule: ${schedule.name}. New Register in your Topic: ${topic.code}`,
+      'ĐĂNG KÝ ĐỀ TÀI',
+      `Đợt: ${schedule.name}. Có đăng ký mới trong đề tài: ${topic.code}`,
       req.user._id,
       null,
     );

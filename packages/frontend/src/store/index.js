@@ -24,6 +24,7 @@ const vuexLocal = createPersistedState({
     'auth',
     'url.page',
     'url.module',
+    'url.subModule',
     'url.section',
     'url.id',
     'student',
@@ -36,6 +37,8 @@ const vuexLocal = createPersistedState({
     'topic.listTopics',
     'schedule',
     'schedule.listSchedules',
+    'task.listScheduleTopic',
+    'task.listTopic',
   ],
 
   getState: (key, storage) => {

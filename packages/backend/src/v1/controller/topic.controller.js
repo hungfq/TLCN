@@ -156,8 +156,8 @@ const addProposalTopic = async (req, res, next) => {
     console.log('🚀 ~ file: topic.controller.js:155 ~ addProposalTopic ~ topic', topic);
     if (lecturerId) {
       const notification = await notificationService.addNotification(
-        'TOPIC PROPOSAL',
-        'You are suggested in the proposal topic',
+        'ĐỀ XUẤT ĐỀ TÀI',
+        'Bạn được yêu cầu hướng dẫn trong một đề tài',
         req.user._id,
         [lecturerId],
       );
@@ -342,6 +342,15 @@ const addNewRegisterTopicStudent = async (req, res, next) => {
     const oldStudent = topicOld.students;
     topicOld.students = [...oldStudent, code];
     await topicOld.save();
+    const notification = await notificationService.addNotification(
+      'ĐĂNG KÝ ĐỀ TÀI',
+      `Có đăng ký mới trong đề tài: ${topicOld.code}`,
+      req.user._id,
+      null,
+    );
+    if (topicOld.lecturerId) {
+      await notificationService.sendNotification(topicOld.lecturerId._id, notification);
+    }
     return res.status(200).send('Register success');
   } catch (err) {
     return next(err);

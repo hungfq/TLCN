@@ -57,12 +57,15 @@
           </th>
           <td class="py-4 px-6">
             <div class="font-mono cursor-pointer">
-              <li
-                v-for="student in topic.studentInfo"
-                :key="`${Math.floor(Math.random() * 10000000000)}-${student}`"
-              >
-                <!-- {{ student.name }} - {{ student.code }} -->
-              </li>
+              <!-- {{ topic.studentInfo }} -->
+              <template v-if="topic.studentInfo && topic.studentInfo.length > 0">
+                <li
+                  v-for="student in topic.studentInfo"
+                  :key="`${Math.floor(Math.random() * 10000000000)}-${student}`"
+                >
+                  {{ student.name }} - {{ student.code }}
+                </li>
+              </template>
             </div>
           </td>
           <td class="py-4 px-6 text-right">
@@ -124,7 +127,7 @@ export default {
     ]),
     listTopicsLecturer () {
       const list = this.listTopics.map((t) => {
-        let listStudents = t.students.map((s) => this.listStudents.find((st) => st.code.toString() === s.toString()));
+        const listStudents = t.students.map((s) => this.listStudents.find((st) => st.code.toString() === s.toString()));
         let scheduleInfoId = null;
         let scheduleInfo = null;
         this.listSchedules.forEach((s) => {
@@ -136,7 +139,6 @@ export default {
         if (scheduleInfoId) {
           scheduleInfo = this.listSchedules.find((s) => s._id.toString() === scheduleInfoId.toString());
         }
-        if (listStudents.length < 1) listStudents = [{ code: '', name: '' }];
         return {
           ...t, studentInfo: listStudents, scheduleInfo,
         };
