@@ -1,4 +1,4 @@
-GET {{host}}/v1/task?topicId=637645ddf4fd555c64b73d39
+GET {{host}}/v1/task?topicId=63928a5f7da1c06616c33bc3
 Authorization: Bearer {{student_token}}
 ###
 
@@ -7,11 +7,11 @@ Authorization: Bearer {{student_token}}
 Content-Type: application/json
 
 {
-    "topicId": "637645ddf4fd555c64b73d39",
-    "code": "MM-11",
+    "topicId": "63928a5f7da1c06616c33bc3",
+    "code": "HPQ-11-01",
     "title": "Create Use case diagram",
     "description": "",
-    "status": "TODO",
+    "status": "PENDING",
     "process": "NOT_APPROVE",
     "startTime": "",
     "endTime": "",
