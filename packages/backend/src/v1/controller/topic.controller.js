@@ -4,6 +4,8 @@ const userService = require('../services/user.service');
 const notificationService = require('../services/notification.service');
 const fileUtils = require('../utils/file');
 const _TopicProposal = require('../models/topic_proposal.model');
+const _Schedule = require('../models/schedule.model');
+const _Topic = require('../models/topic.model');
 
 const importTopics = async (req, res, next) => {
   try {
@@ -138,7 +140,6 @@ const addProposalTopic = async (req, res, next) => {
       // eslint-disable-next-line prefer-const
       title, description, lecturerId, limit, students, status, deadline, major,
     } = req.body;
-    console.log('🚀 ~ file: topic.controller.js:142 ~ addProposalTopic ~ lecturerId', lecturerId);
 
     if (!title) return res.status(400).send('Not valid title');
     if (!description) description = '';
@@ -197,11 +198,8 @@ const removeProposalTopic = async (req, res, next) => {
     if (!topic) {
       return res.status(404).send('Not found');
     }
-
     await topicService.deleteOneProposalTopic(id);
-
     console.log(`TODO: send notification to ${topic.createdBy}`);
-
     return res.status(200).send('Successfully');
   } catch (err) {
     return next(err);
@@ -295,6 +293,61 @@ const approveProposalByLecturer = async (req, res, next) => {
   }
 };
 
+const getListTopicAcceptRegister = async (req, res, next) => {
+  try {
+    const { code } = req.user;
+    console.log('🚀 ~ file: topic.controller.js:299 ~ getListTopicAcceptRegister ~ code', code);
+    let listCodeTopic = [];
+    const listSchedule = await _Schedule.find({
+      startDate: {
+        $lt: Date.now(),
+      },
+      endDate: {
+        $gte: Date.now(),
+      },
+      students: {
+        $in: [code],
+      },
+    });
+    listSchedule.forEach((s) => {
+      if (s.topics.length > 1) listCodeTopic.push(...s.topics);
+      else listCodeTopic.push(s.topics);
+    });
+    const setSchedule = new Set(listCodeTopic);
+    listCodeTopic = [...setSchedule];
+    const listTopicAcceptRegisters = await _Topic.find({
+      code: {
+        $in: listCodeTopic,
+      },
+    });
+    return res.status(200).send(listTopicAcceptRegisters);
+  } catch (e) {
+    return next(e);
+  }
+};
+
+const addNewRegisterTopicStudent = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { code } = req.user;
+    const topicOld = await _Topic.findById(id);
+    const isRegister = await _Topic.findOne({
+      students: {
+        $in: [code],
+      },
+    });
+    if (!topicOld) return res.status(404).send('Topic not found');
+    if (isRegister) return res.status(400).send('Register is exist');
+    if (topicOld.students.length >= 1 && topicOld.limit) return res.status(422).send('The register is out of limit');
+    const oldStudent = topicOld.students;
+    topicOld.students = [...oldStudent, code];
+    await topicOld.save();
+    return res.status(200).send('Register success');
+  } catch (err) {
+    return next(err);
+  }
+};
+
 module.exports = {
   importTopics,
   insertTopic,
@@ -315,4 +368,6 @@ module.exports = {
   updateProposalByUser,
   approveProposalByLecturer,
   listTopicReviewByAdmin,
+  getListTopicAcceptRegister,
+  addNewRegisterTopicStudent,
 };

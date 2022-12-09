@@ -102,4 +102,22 @@ export default class TopicApi {
     });
     return res.data;
   }
+
+  static async listTopicAcceptRegisters (token) {
+    const res = await axios.get('/topic-proposal/student', {
+      headers: {
+        authorization: `bearer ${token}`,
+      },
+    });
+    return res.data;
+  }
+
+  static async addRegisterTopic (token, id) {
+    const res = await axios.post(`/topic-student/${id}`, {}, {
+      headers: {
+        authorization: `bearer ${token}`,
+      },
+    });
+    return res.data;
+  }
 }
