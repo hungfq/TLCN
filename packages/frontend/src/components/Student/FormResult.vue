@@ -1,18 +1,15 @@
 <!-- eslint-disable max-len -->
 <template>
-  <div
-    class="mx-4 my-4 rounded px-2 py-2 bg-slate-500 w-fit text-white font-semibold cursor-pointer"
-    @click="rollBack"
-  >
-    Quay về
-  </div>
   <div class="p-4 w-full h-full md:h-auto mx-auto mt-[10px]">
     <!-- Modal content -->
-    <div class="bg-white rounded-lg shadow">
+    <div
+      v-if="isExistRegister"
+      class="bg-white rounded-lg shadow"
+    >
       <!-- Modal header -->
       <div class="flex justify-between items-start p-4 rounded-t border-b">
         <h3 class="text-xl font-semibold text-gray-900">
-          Thông tin đề tài
+          Thông tin đề tài đã đăng ký
         </h3>
       </div>
       <div class="ml-5 grid grid-cols-2">
@@ -23,7 +20,7 @@
           label="Tiêu đề"
           help="Vd: Xây dụng web thương mại điện tử e-shop"
           validation="required"
-          :disabled="isView"
+          :disabled="true"
         />
         <FormKit
           v-model="code"
@@ -31,7 +28,7 @@
           type="text"
           label="Mã đề tài"
           validation="required"
-          :disabled="isView"
+          :disabled="true"
         />
         <FormKit
           v-model="description"
@@ -40,7 +37,7 @@
           label="Mô tả"
           help="Ghi các thông tin chi tiết tại đây"
           validation="required"
-          :disabled="isView"
+          :disabled="true"
         />
         <FormKit
           v-model="limit"
@@ -48,7 +45,7 @@
           type="number"
           label="Số thành viên"
           validation="required"
-          :disabled="isView"
+          :disabled="true"
         />
         <FormKit
           v-model="major"
@@ -56,7 +53,7 @@
           type="text"
           label="Chuyên ngành"
           validation="required"
-          :disabled="isView"
+          :disabled="true"
         />
         <FormKit
           v-model="deadline"
@@ -64,7 +61,7 @@
           type="date"
           label="Thời hạn hoàn thành"
           validation="required"
-          :disabled="isView"
+          :disabled="true"
         />
         <div class="w-3/4">
           <span class="font-bold text-sm">
@@ -75,7 +72,7 @@
               v-model="lecturerId"
               :options="listLecturers"
               :close-on-select="false"
-              :disabled="isView"
+              :disabled="true"
             />
           </div>
         </div>
@@ -91,22 +88,16 @@
               :searchable="true"
               :create-option="true"
               :options="listStudents"
-              :disabled="isView"
+              :disabled="true"
             />
           </div>
         </div>
       </div>
       <!-- Modal footer -->
-      <div class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200">
-        <button
-          v-if="!isView"
-          type="button"
-          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4  focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          @click="handleAddTopicAdmin"
-        >
-          {{ isSave ? 'Lưu' : 'Cập nhật' }}
-        </button>
-      </div>
+      <div class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200" />
+    </div>
+    <div v-else>
+      Chưa tồn tại đăng ký của bạn
     </div>
   </div>
 </template>
@@ -145,6 +136,7 @@ export default {
         'lecturer3',
       ],
       messages: '',
+      topic: null,
     };
   },
   computed: {
@@ -163,8 +155,12 @@ export default {
     isView () {
       return this.section === 'topic-view';
     },
+    isExistRegister () {
+      return !!this.topic;
+    },
   },
   async mounted () {
+    await this.$store.dispatch('topic/fetchTopicResult', this.token);
     await this.$store.dispatch('lecturer/fetchListLecturer', this.token);
     await this.$store.dispatch('student/fetchListStudent', this.token);
     const lecturers = this.$store.state.lecturer.listLecturer;
@@ -182,33 +178,30 @@ export default {
     this.listStudents = students.map((student) => {
       let st = {
         value: student.code,
-        label: student.name,
+        label: `${student.name} - ${student.code}`,
       };
       if (this.isView) {
         st = { ...st, disabled: true };
       }
       return st;
     });
-    if (this.isUpdate || this.isView) {
-      const { id } = this.$store.state.url;
-      const { listTopicByStudent } = this.$store.state.topic;
-      const topic = listTopicByStudent.find((s) => s._id.toString() === id.toString());
-      if (topic) {
-        this.title = topic.title;
-        this.code = topic.code;
-        this.description = topic.description;
-        this.limit = topic.limit;
-        if (topic.deadline) {
-          const date = new Date(topic.deadline);
-          const dateString = new Date(date.getTime() - (date.getTimezoneOffset() * 60000))
-            .toISOString()
-            .split('T')[0];
-          this.deadline = dateString;
-        }
-        if (topic.lecturerId) this.lecturerId = topic.lecturerId;
-        this.major = topic.major;
-        this.studentIds = topic.students;
+    const topic = this.$store.state.topic.topicResult;
+    this.topic = topic;
+    if (topic) {
+      this.title = topic.title;
+      this.code = topic.code;
+      this.description = topic.description;
+      this.limit = topic.limit;
+      if (topic.deadline) {
+        const date = new Date(topic.deadline);
+        const dateString = new Date(date.getTime() - (date.getTimezoneOffset() * 60000))
+          .toISOString()
+          .split('T')[0];
+        this.deadline = dateString;
       }
+      if (topic.lecturerId) this.lecturerId = topic.lecturerId;
+      this.major = topic.major;
+      this.studentIds = topic.students;
     }
   },
   methods: {

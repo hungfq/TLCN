@@ -296,7 +296,7 @@ const approveProposalByLecturer = async (req, res, next) => {
 const getListTopicAcceptRegister = async (req, res, next) => {
   try {
     const { code } = req.user;
-    console.log('🚀 ~ file: topic.controller.js:299 ~ getListTopicAcceptRegister ~ code', code);
+    // console.log('🚀 ~ file: topic.controller.js:299 ~ getListTopicAcceptRegister ~ code', code);
     let listCodeTopic = [];
     const listSchedule = await _Schedule.find({
       startDate: {
@@ -357,6 +357,21 @@ const addNewRegisterTopicStudent = async (req, res, next) => {
   }
 };
 
+const getResultRegister = async (req, res, next) => {
+  try {
+    const { code } = req.user;
+    console.log('🚀 ~ file: topic.controller.js:363 ~ getResultRegister ~ code', code);
+    const topic = await _Topic.findOne({
+      students: {
+        $in: [code],
+      },
+    });
+    console.log('🚀 ~ file: topic.controller.js:368 ~ getResultRegister ~ topic', topic);
+    return res.status(200).send(topic);
+  } catch (err) {
+    return next(err);
+  }
+};
 module.exports = {
   importTopics,
   insertTopic,
@@ -367,6 +382,7 @@ module.exports = {
   deleteOneTopic,
   updateTopicStudent,
   updateTopicLecturer,
+  getResultRegister,
 
   addProposalTopic,
   approveProposalTopic,
