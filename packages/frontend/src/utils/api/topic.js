@@ -120,4 +120,13 @@ export default class TopicApi {
     });
     return res.data;
   }
+
+  static async listTopicMember (token, topicId) {
+    const res = await axios.get(`/topic/${topicId}/members`, {
+      headers: {
+        authorization: `bearer ${token}`,
+      },
+    });
+    return res.data;
+  }
 }

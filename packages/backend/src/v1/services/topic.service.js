@@ -176,6 +176,16 @@ const removeStudentInTopic = async (studentId, topicId) => {
   await updateStudents(topicId, students);
 };
 
+const getTopicMember = async (topicId) => {
+  const topic = await _Topic.findById(topicId);
+  const result = [];
+  const students = await userService.getStudentByCodes(topic.students);
+  students.forEach((student) => result.push({ _id: student._id, code: student.code, name: student.name }));
+  const lecturer = await _Lecturer.findById(topic.lecturerId);
+  result.push({ _id: lecturer._id, code: lecturer.code, name: lecturer.name });
+  return result;
+};
+
 module.exports = {
   createOne,
   findOne,
@@ -192,4 +202,5 @@ module.exports = {
   deleteOneProposalTopic,
   listProposalTopic,
   searchAndSort,
+  getTopicMember,
 };

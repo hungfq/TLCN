@@ -88,4 +88,6 @@ Authorization: Bearer {{student_token}}
 
 DELETE  {{host}}/v1/topic-proposal/6376686927773b68d829e7b7
 Authorization: Bearer {{student_token}}
-
+###
+GET {{host}}/v1/topic/63928a5f7da1c06616c33bc3/members
+Authorization: Bearer {{student_token}}

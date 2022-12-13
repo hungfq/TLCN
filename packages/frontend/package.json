@@ -13,6 +13,8 @@
     "@babel/eslint-parser": "^7.18.9",
     "@babel/preset-env": "^7.19.0",
     "@braid/vue-formulate": "^2.5.3",
+    "@ckeditor/ckeditor5-build-classic": "^35.4.0",
+    "@ckeditor/ckeditor5-vue": "^4.0.1",
     "@formkit/themes": "^1.0.0-beta.12",
     "@formkit/validation": "^1.0.0-beta.12",
     "@formkit/vue": "^1.0.0-beta.12",

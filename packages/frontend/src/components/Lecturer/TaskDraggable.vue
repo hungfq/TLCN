@@ -10,26 +10,35 @@
           {{ column.title }}
         </p>
         <VueDraggableNext
-          :list="column.tasks"
+          :list="listTask"
           :animation="200"
           ghost-class="ghost-card"
           group="tasks"
         >
-          <task-card
-            v-for="(task) in column.tasks"
-            :key="task.id"
-            :task="task"
-            class="mt-3 cursor-move"
-          />
+          <template v-for="(task) in listTask">
+            <task-card
+              v-if="task.status === column.value"
+              :key="task._id"
+              :task="task"
+              class="mt-3 cursor-move"
+              @click="showTaskDetailModal(task._id)"
+            />
+          </template>
         </VueDraggableNext>
       </div>
     </div>
   </div>
+  <TaskDetailModalVue
+    v-model="showTaskDetail"
+    :taskId="taskId"
+    @close-error="closeTaskDetailModal"
+  />
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 import { VueDraggableNext } from 'vue-draggable-next';
+import TaskDetailModalVue from '../Modal/TaskDetailModal.vue';
 import TaskCard from './TaskCard.vue';
 
 export default {
@@ -37,106 +46,29 @@ export default {
   components: {
     TaskCard,
     VueDraggableNext,
+    TaskDetailModalVue,
   },
 
   data () {
     return {
+      showTaskDetail: false,
+      taskId: '',
       columns: [
         {
           title: 'PENDING',
-          tasks: [
-            {
-              id: 1,
-              title: 'Add discount code to checkout page',
-              date: 'Sep 14',
-              type: 'Feature Request',
-            },
-            {
-              id: 2,
-              title: 'Provide documentation on integrations',
-              date: 'Sep 12',
-            },
-            {
-              id: 3,
-              title: 'Design shopping cart dropdown',
-              date: 'Sep 9',
-              type: 'Design',
-            },
-            {
-              id: 4,
-              title: 'Add discount code to checkout page',
-              date: 'Sep 14',
-              type: 'Feature Request',
-            },
-            {
-              id: 5,
-              title: 'Add discount code to checkout page',
-              date: 'Sep 14',
-              type: 'Feature Request',
-            },
-          ],
+          value: 'PENDING',
         },
         {
           title: 'TO DO',
-          tasks: [
-            {
-              id: 6,
-              title: 'Design shopping cart dropdown',
-              date: 'Sep 9',
-              type: 'Design',
-            },
-            {
-              id: 7,
-              title: 'Add discount code to checkout page',
-              date: 'Sep 14',
-              type: 'Feature Request',
-            },
-            {
-              id: 8,
-              title: 'Provide documentation on integrations',
-              date: 'Sep 12',
-              type: 'Backend',
-            },
-          ],
+          value: 'TODO',
         },
         {
           title: 'IN PROGRESS',
-          tasks: [
-            {
-              id: 9,
-              title: 'Provide documentation on integrations',
-              date: 'Sep 12',
-            },
-            {
-              id: 10,
-              title: 'Design shopping cart dropdown',
-              date: 'Sep 9',
-              type: 'Design',
-            },
-          ],
+          value: 'IN_PROCESS',
         },
         {
           title: 'DONE',
-          tasks: [
-            {
-              id: 14,
-              title: 'Add discount code to checkout page',
-              date: 'Sep 14',
-              type: 'Feature Request',
-            },
-            {
-              id: 15,
-              title: 'Design shopping cart dropdown',
-              date: 'Sep 9',
-              type: 'Design',
-            },
-            {
-              id: 16,
-              title: 'Add discount code to checkout page',
-              date: 'Sep 14',
-              type: 'Feature Request',
-            },
-          ],
+          value: 'DONE',
         },
       ],
     };
@@ -151,7 +83,15 @@ export default {
     ...mapGetters('task', [
       'listScheduleTopic', 'listTopic', 'listTask',
     ]),
-
+  },
+  methods: {
+    showTaskDetailModal (id) {
+      this.showTaskDetail = true;
+      this.taskId = id;
+    },
+    closeTaskDetailModal (close) {
+      close();
+    },
   },
 };
 </script>

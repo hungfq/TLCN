@@ -12,4 +12,13 @@ export default class TaskApi {
     });
     return res.data;
   }
+
+  static async getTaskDetail (token, taskId) {
+    const res = await axios.get(`/task/${taskId}`, {
+      headers: {
+        authorization: `bearer ${token}`,
+      },
+    });
+    return res.data;
+  }
 }

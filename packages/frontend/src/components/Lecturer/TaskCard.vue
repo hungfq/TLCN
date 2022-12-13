@@ -4,7 +4,6 @@
       <p class="text-gray-700 font-semibold font-sans tracking-wide text-sm">
         {{ task.title }}
       </p>
-
       <img
         class="w-6 h-6 rounded-full ml-3"
         src="https://pickaface.net/gallery/avatar/unr_sample_161118_2054_ynlrg.png"
@@ -12,7 +11,7 @@
       >
     </div>
     <div class="flex mt-4 justify-between items-center">
-      <span class="text-sm text-gray-600">{{ task.date }}</span>
+      <span class="text-sm text-gray-600">{{ task.code }}</span>
       <badge
         v-if="task.type"
         :color="badgeColor"

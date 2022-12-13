@@ -1,16 +1,21 @@
 import ScheduleApi from '../utils/api/schedule';
+import TopicApi from '../utils/api/topic';
 import TaskApi from '../utils/api/task';
 
 const initState = {
   listScheduleTopic: [],
   listTopic: [],
   listTask: [],
+  listMember: [],
+  taskDetail: '',
 };
 
 const getters = {
   listScheduleTopic: (state) => state.listScheduleTopic,
   listTopic: (state) => state.listTopic,
   listTask: (state) => state.listTask,
+  listMember: (state) => state.listMember,
+  taskDetail: (state) => state.taskDetail,
 };
 
 const actions = {
@@ -40,6 +45,25 @@ const actions = {
       console.log(e.message);
     }
   },
+  async fetchListMember ({ commit }, payload) {
+    try {
+      const { token, topicId } = payload;
+      const listMember = await TopicApi.listTopicMember(token, topicId);
+      commit('setListMember', listMember);
+    } catch (e) {
+      console.log(e.message);
+    }
+  },
+  async fetchTaskDetail ({ commit }, payload) {
+    try {
+      const { token, taskId } = payload;
+      const taskDetail = await TaskApi.getTaskDetail(token, taskId);
+      commit('setTaskDetail', taskDetail);
+    } catch (e) {
+      console.log(e.message);
+    }
+  },
+
 };
 
 const mutations = {
@@ -51,6 +75,12 @@ const mutations = {
   },
   setListTask: (state, listTask) => {
     state.listTask = listTask;
+  },
+  setListMember: (state, listMember) => {
+    state.listMember = listMember;
+  },
+  setTaskDetail: (state, taskDetail) => {
+    state.taskDetail = taskDetail;
   },
 };
 

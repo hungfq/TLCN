@@ -8,9 +8,9 @@ Content-Type: application/json
 
 {
     "topicId": "63928a5f7da1c06616c33bc3",
-    "code": "HPQ-11-01",
-    "title": "Create Use case diagram",
-    "description": "",
+    "code": "THH-111",
+    "title": "Design System",
+    "description": "Description",
     "status": "PENDING",
     "process": "NOT_APPROVE",
     "startTime": "",

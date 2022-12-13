@@ -134,6 +134,16 @@ const updateTopicLecturer = async (req, res, next) => {
   }
 };
 
+const getTopicMember = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const result = await topicService.getTopicMember(id);
+    return res.status(200).send(result);
+  } catch (err) {
+    return next(err);
+  }
+};
+
 const addProposalTopic = async (req, res, next) => {
   try {
     let {
@@ -367,6 +377,8 @@ module.exports = {
   deleteOneTopic,
   updateTopicStudent,
   updateTopicLecturer,
+
+  getTopicMember,
 
   addProposalTopic,
   approveProposalTopic,
