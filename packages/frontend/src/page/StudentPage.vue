@@ -20,6 +20,9 @@
               v-if="section === 'topic_proposal-update' || section === 'topic_proposal-import' || section === 'topic_proposal-view'"
             />
           </template>
+          <template v-if="module === 'result'">
+            <FormResultVue v-if="section==='result-list'" />
+          </template>
         </div>
       </div>
     </div>
@@ -40,6 +43,7 @@ import ManageBarStudentVue from '../components/Student/ManageBarStudent.vue';
 import ManageTopicStudentVue from '../components/Student/ManageTopicStudent.vue';
 import ManageTopicProposalStudentVue from '../components/Student/ManageTopicProposalStudent.vue';
 import FormTopicVue from '../components/Student/FormTopic.vue';
+import FormResultVue from '../components/Student/FormResult.vue';
 import FormTopicProposalVue from '../components/Student/FormTopicProposal.vue';
 import HeaderBarVue from '../components/Admin/HeaderBar.vue';
 
@@ -54,6 +58,7 @@ export default {
     FormTopicVue,
     HeaderBarVue,
     FormTopicProposalVue,
+    FormResultVue,
   },
   props: {
   },

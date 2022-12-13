@@ -4,6 +4,7 @@ const initState = {
   listTopics: [],
   listTopicByLecturer: [],
   listTopicByStudent: [],
+  topicResult: null,
 };
 
 const getters = {
@@ -24,6 +25,11 @@ const actions = {
     const { token, lecturerId } = value;
     const listTopics = await TopicApi.listAllTopicsByLecturerId(token, lecturerId);
     commit('setListTopicsByLecturer', listTopics);
+  },
+
+  async fetchTopicResult ({ commit }, token) {
+    const topic = await TopicApi.getResultRegister(token);
+    commit('setTopicResult', topic);
   },
 
   async addTopic ({ dispatch }, payload) {
@@ -65,6 +71,9 @@ const mutations = {
   },
   setListTopicsByStudent: (state, listTopicByStudent) => {
     state.listTopicByStudent = listTopicByStudent;
+  },
+  setTopicResult: (state, topicResult) => {
+    state.topicResult = topicResult;
   },
 };
 
