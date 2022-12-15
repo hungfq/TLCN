@@ -12,6 +12,9 @@
     </div>
     <div class="flex mt-4 justify-between items-center">
       <span class="text-sm text-gray-600">{{ task.code }}</span>
+      <template v-if="task.assignToFilter">
+        <span class="text-sm text-gray-600">{{ task.assignToFilter.name }}</span>
+      </template>
       <badge
         v-if="task.type"
         :color="badgeColor"

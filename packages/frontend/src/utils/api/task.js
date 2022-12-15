@@ -21,4 +21,32 @@ export default class TaskApi {
     });
     return res.data;
   }
+
+  static async insertTask (token, value, topicId) {
+    const {
+      code, title, description, status, process, assignTo,
+    } = value;
+    const res = await axios.post('/task', {
+      topicId, code, title, description, status, process, assignTo,
+    }, {
+      headers: {
+        authorization: `bearer ${token}`,
+      },
+    });
+    return res.data;
+  }
+
+  static async updateTask (token, value) {
+    const {
+      _id, code, title, description, status, process, assignTo,
+    } = value;
+    const res = await axios.put(`/task/${_id}`, {
+      code, title, description, status, process, assignTo,
+    }, {
+      headers: {
+        authorization: `bearer ${token}`,
+      },
+    });
+    return res.data;
+  }
 }

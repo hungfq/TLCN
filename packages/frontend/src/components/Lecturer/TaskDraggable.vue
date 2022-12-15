@@ -1,5 +1,11 @@
 <template>
-  <div class="flex  overflow-x-scroll max-w-full">
+  <button
+    class=" m-4 bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded"
+    @click="addTaskHandler"
+  >
+    Add task
+  </button>
+  <div class="flex overflow-x-scroll max-w-full">
     <div class="flex p-2 pr-0">
       <div
         v-for="column in columns"
@@ -14,6 +20,7 @@
           :animation="200"
           ghost-class="ghost-card"
           group="tasks"
+          @end="onDragEnd(column)"
         >
           <template v-for="(task) in listTask">
             <task-card
@@ -30,8 +37,8 @@
   </div>
   <TaskDetailModalVue
     v-model="showTaskDetail"
-    :taskId="taskId"
-    @close-error="closeTaskDetailModal"
+    :task-id="taskId"
+    @close-detail-modal="closeTaskDetailModal"
   />
 </template>
 
@@ -89,8 +96,15 @@ export default {
       this.showTaskDetail = true;
       this.taskId = id;
     },
+    addTaskHandler () {
+      this.showTaskDetail = true;
+      this.taskId = '';
+    },
     closeTaskDetailModal (close) {
       close();
+    },
+    onDragEnd (data) {
+      console.log('🚀 ~ file: TaskDraggable.vue:107 ~ onDragEnd ~ data', data);
     },
   },
 };
@@ -98,8 +112,8 @@ export default {
 
 <style scoped>
 .column-width {
-  min-width: 280px;
-  width: 280px;
+  min-width: 276px;
+  width: 276px;
 }
 /* Unfortunately @apply cannot be setup in code sandbox,
 but you'd use "@apply border opacity-50 border-blue-500 bg-gray-200" here */

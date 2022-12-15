@@ -17,8 +17,9 @@ const listTaskByTopic = async (req, res, next) => {
 const createNewTask = async (req, res, next) => {
   try {
     const {
-      topicId, code, title, description, status, process, startTime, endTime, createdBy, assignTo,
+      topicId, code, title, description, status, process, startTime, endTime, assignTo,
     } = req.body;
+    const createdBy = req.user._id;
     const task = await taskService.createNewTask(topicId, code, title, description, status, process, startTime, endTime, createdBy, assignTo);
     return res.status(201).send(task);
   } catch (err) {
@@ -31,6 +32,19 @@ const getOneTask = async (req, res, next) => {
     const { id } = req.params;
     const task = await taskService.getOneTask(id);
     return res.status(200).send(task);
+  } catch (err) {
+    return next(err);
+  }
+};
+
+const updateOneTask = async (req, res, next) => {
+  try {
+    const { taskId } = req.params;
+    const {
+      code, title, description, status, process, assignTo,
+    } = req.body;
+    await taskService.updateOneTask(taskId, code, title, description, status, process, assignTo);
+    return res.status(200).send('Successfully');
   } catch (err) {
     return next(err);
   }
@@ -130,6 +144,7 @@ module.exports = {
   listTaskByTopic,
   createNewTask,
   getOneTask,
+  updateOneTask,
   updateProcess,
   updateStatusTask,
   updateAssignTo,

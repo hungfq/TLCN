@@ -348,7 +348,7 @@ const addNewRegisterTopicStudent = async (req, res, next) => {
     });
     if (!topicOld) return res.status(404).send('Topic not found');
     if (isRegister) return res.status(400).send('Register is exist');
-    if (topicOld.students.length >= 1 && topicOld.limit) return res.status(422).send('The register is out of limit');
+    if (topicOld.students.length >= topicOld.limit) return res.status(422).send('The register is out of limit');
     const oldStudent = topicOld.students;
     topicOld.students = [...oldStudent, code];
     await topicOld.save();

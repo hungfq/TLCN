@@ -4,13 +4,18 @@
     v-bind="$attrs"
     @before-open="handleShow(taskId)"
   >
-    <div class="relative p-4 w-full max-w-6xl h-full mx-auto mt-[5%]">
+    <div class="relative p-4 w-full max-w-6xl mx-auto mt-[5%]">
       <!-- Modal content -->
-      <div class="relative bg-white rounded-md shadow ">
+      <div class="relative bg-white rounded-md shadow pb-8">
         <!-- Modal header -->
         <div class="flex justify-between items-start p-4 rounded-t border-b ">
           <h2 class="text-xl font-semibold text-gray-900 ">
-            {{ taskDetail.code }}
+            <!-- {{ taskDetail.code }} -->
+            <input
+              v-model="taskDetail.code"
+              class="w-full p-2"
+              placeholder="Code"
+            >
           </h2>
           <button
             type="button"
@@ -33,9 +38,9 @@
           </button>
         </div>
         <!-- Modal body -->
-        <div class="px-6 grid grid-cols-6 gap-2">
+        <div class="px-6 grid grid-cols-12 gap-4">
           <!-- Left body -->
-          <div class="col-span-4">
+          <div class="col-span-9">
             <div class="font-medium my-4">
               <input
                 v-model="taskDetail.title"
@@ -43,19 +48,19 @@
                 placeholder="Title"
               >
             </div>
-            <div class="font-medium my-4">
+            <!-- <div class="font-medium my-4">
+              {{ taskDetail }}
+            </div> -->
+            <div class="h-96 overflow-x-scroll">
               <ckeditor
                 v-model="editorData"
                 :editor="editor"
                 @input="changeDescription"
               />
             </div>
-            <div class="font-medium my-4">
-              {{ taskDetail }}
-            </div>
           </div>
           <!-- Right body -->
-          <div class="col-span-2">
+          <div class="col-span-3">
             <div class="font-normal my-4">
               Status:
               <select
@@ -86,9 +91,17 @@
                 </option>
               </select>
             </div>
-            <div class="font-normal my-4">
-              Created: {{ taskDetail.createdByFilter ? taskDetail.createdByFilter.name : 'none' }}
-            </div>
+            <template v-if="taskDetail.createdByFilter">
+              <div class="font-normal my-4">
+                Created: {{ taskDetail.createdByFilter ? taskDetail.createdByFilter.name : 'none' }}
+              </div>
+            </template>
+            <button
+              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full"
+              @click="saveHandle(close)"
+            >
+              Save
+            </button>
           </div>
         </div>
       </div>
@@ -126,12 +139,12 @@ export default {
       'page', 'module', 'section', 'id',
     ]),
     ...mapGetters('task', [
-      'listScheduleTopic', 'listTopic', 'listMember', 'taskDetail',
+      'listScheduleTopic', 'listTopic', 'topicId', 'listMember', 'taskDetail',
     ]),
   },
   methods: {
-    async handleShow (id) {
-      await this.$store.dispatch('task/fetchTaskDetail', { token: this.token, taskId: id });
+    async handleShow (taskId) {
+      await this.$store.dispatch('task/fetchTaskDetail', { token: this.token, taskId });
       if (this.taskDetail) {
         this.editorData = this.taskDetail.description;
       }
@@ -140,6 +153,17 @@ export default {
       if (this.taskDetail) {
         this.taskDetail.description = data;
       }
+    },
+    async saveHandle (close) {
+      if (this.taskDetail._id) {
+        await this.$store.dispatch('task/updateTask', { token: this.token, value: this.taskDetail });
+      } else {
+        await this.$store.dispatch('task/insertTask', { token: this.token, value: this.taskDetail, topicId: this.topicId });
+      }
+      if (this.topicId) {
+        await this.$store.dispatch('task/fetchAllTask', { token: this.token, topicId: this.topicId });
+      }
+      this.$emit('closeDetailModal', close);
     },
   },
 };

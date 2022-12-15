@@ -2,6 +2,7 @@
 const {
   createNewTask,
   getOneTask,
+  updateOneTask,
   updateProcess,
   updateStatusTask,
   listTaskByTopic,
@@ -23,6 +24,7 @@ const router = (app) => {
   app.get('/v1/task', isAuth, listTaskByTopic);
   app.post('/v1/task', isAuth, createNewTask);
   app.get('/v1/task/:id', isAuth, getOneTask);
+  app.put('/v1/task/:taskId', isAuth, updateOneTask);
   app.put('/v1/task-progress/:id', isAuth, updateProcess);
   app.put('/v1/task-status/:id', isAuth, updateStatusTask);
   app.put('/v1/task-assign/:id', isAuth, updateAssignTo);
