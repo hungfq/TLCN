@@ -368,6 +368,29 @@ const addNewRegisterTopicStudent = async (req, res, next) => {
     return next(err);
   }
 };
+const removeRegisterTopicStudent = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { code } = req.user;
+    const topicOld = await _Topic.findById(id);
+    if (!topicOld) return res.status(404).send('Topic not found');
+    const oldStudent = topicOld.students.filter((s) => s !== code);
+    topicOld.students = [...oldStudent];
+    await topicOld.save();
+    const notification = await notificationService.addNotification(
+      'ĐĂNG KÝ ĐỀ TÀI',
+      `Hủy đăng ký mới trong đề tài: ${topicOld.code}`,
+      req.user._id,
+      null,
+    );
+    if (topicOld.lecturerId) {
+      await notificationService.sendNotification(topicOld.lecturerId._id, notification);
+    }
+    return res.status(200).send('Remove success');
+  } catch (err) {
+    return next(err);
+  }
+};
 
 const getResultRegister = async (req, res, next) => {
   try {
@@ -407,4 +430,5 @@ module.exports = {
   listTopicReviewByAdmin,
   getListTopicAcceptRegister,
   addNewRegisterTopicStudent,
+  removeRegisterTopicStudent,
 };
