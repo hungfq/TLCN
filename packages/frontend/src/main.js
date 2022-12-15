@@ -8,6 +8,7 @@ import CKEditor from '@ckeditor/ckeditor5-vue';
 import App from './App.vue';
 import router from './router/index';
 import store from './store/index';
+import '@formkit/themes/genesis';
 
 const app = createApp(App);
 app.use(vue3GoogleLogin, {
