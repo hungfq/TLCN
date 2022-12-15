@@ -15,10 +15,10 @@
       <div class="ml-5 grid grid-cols-2">
         <FormKit
           v-model="title"
+          class="font-bold text-sm py-4 my-4"
           type="text"
           name="title"
           label="Tiêu đề"
-          help="Vd: Xây dụng web thương mại điện tử e-shop"
           validation="required"
           :disabled="true"
         />
@@ -35,7 +35,6 @@
           name="description"
           type="textarea"
           label="Mô tả"
-          help="Ghi các thông tin chi tiết tại đây"
           validation="required"
           :disabled="true"
         />
@@ -60,7 +59,6 @@
           name="deadline"
           type="date"
           label="Thời hạn hoàn thành"
-          validation="required"
           :disabled="true"
         />
         <div class="w-3/4">
@@ -94,7 +92,15 @@
         </div>
       </div>
       <!-- Modal footer -->
-      <div class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200" />
+      <div class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200">
+        <button
+          type="button"
+          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4  focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          @click="handleRemoveTopic"
+        >
+          Xóa đăng ký
+        </button>
+      </div>
     </div>
     <div v-else>
       Chưa tồn tại đăng ký của bạn
@@ -116,6 +122,7 @@ export default {
   },
   data () {
     return {
+      id: '',
       title: '',
       code: '',
       description: '',
@@ -137,14 +144,18 @@ export default {
       ],
       messages: '',
       topic: null,
+      schedule: null,
     };
   },
   computed: {
     ...mapGetters('url', [
-      'page', 'module', 'section', 'id',
+      'page', 'module', 'section',
     ]),
     ...mapGetters('auth', [
       'token',
+    ]),
+    ...mapGetters('schedule', [
+      'listSchedules',
     ]),
     isSave () {
       return this.section === 'topic-import';
@@ -163,8 +174,11 @@ export default {
     await this.$store.dispatch('topic/fetchTopicResult', this.token);
     await this.$store.dispatch('lecturer/fetchListLecturer', this.token);
     await this.$store.dispatch('student/fetchListStudent', this.token);
+    await this.$store.dispatch('schedule/fetchListSchedules', this.token);
     const lecturers = this.$store.state.lecturer.listLecturer;
     const students = this.$store.state.student.listStudents;
+    const { code } = this.$store.state.auth.userInfo;
+    this.schedule = this.listSchedules.find((s) => s.students.code === code);
     this.listLecturers = lecturers.map((lecturer) => {
       let l = {
         value: lecturer._id,
@@ -188,6 +202,7 @@ export default {
     const topic = this.$store.state.topic.topicResult;
     this.topic = topic;
     if (topic) {
+      this.id = topic._id;
       this.title = topic.title;
       this.code = topic.code;
       this.description = topic.description;
@@ -231,6 +246,18 @@ export default {
         this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
       } finally {
         this.rollBack();
+      }
+    },
+    async handleRemoveTopic () {
+      try {
+        const value = {
+          id: this.id,
+          token: this.token,
+        };
+        await this.$store.dispatch('topic/removeTopic', value);
+        this.$toast.success('Đã xóa thành công!');
+      } catch (e) {
+        this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
       }
     },
   },

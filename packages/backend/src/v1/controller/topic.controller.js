@@ -370,13 +370,11 @@ const addNewRegisterTopicStudent = async (req, res, next) => {
 const getResultRegister = async (req, res, next) => {
   try {
     const { code } = req.user;
-    console.log('🚀 ~ file: topic.controller.js:363 ~ getResultRegister ~ code', code);
     const topic = await _Topic.findOne({
       students: {
         $in: [code],
       },
     });
-    console.log('🚀 ~ file: topic.controller.js:368 ~ getResultRegister ~ topic', topic);
     return res.status(200).send(topic);
   } catch (err) {
     return next(err);
