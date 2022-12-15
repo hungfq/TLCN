@@ -69,12 +69,12 @@
             >Sửa</a>
             <a
               class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
-              @click="handleRemoveTopic(topic._id)"
-            >Xóa</a>
-            <a
-              class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
               @click="handleShowTopic(topic._id)"
             >Xem chi tiết</a>
+            <a
+              class="font-medium text-red-600 dark:text-red-500 hover:underline mx-2"
+              @click="handleRemoveTopic(topic._id)"
+            >Xóa</a>
           </td>
         </tr>
       </tbody>

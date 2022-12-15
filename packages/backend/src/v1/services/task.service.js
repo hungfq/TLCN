@@ -37,6 +37,11 @@ const getOneTask = async (taskId) => {
   return { ...task._doc, createdByFilter, assignToFilter };
 };
 
+const updateOneTask = async (taskId, code, title, description, status, process, assignTo) => {
+  // console.log("🚀 ~ file: task.service.js:41 ~ updateOneTask ~ taskId, title, description, status, process, assignTo", taskId, title, description, status, process, assignTo)
+  await _Task.updateOne({ _id: taskId }, { code, title, description, status, process, assignTo });
+};
+
 const updateProcess = async (taskId, process) => {
   await _Task.updateOne({ taskId }, { process });
 };
@@ -79,6 +84,7 @@ module.exports = {
   listTaskByTopic,
   createNewTask,
   getOneTask,
+  updateOneTask,
   addCommentToTask,
   updateStatusTask,
   updateAssignTo,
