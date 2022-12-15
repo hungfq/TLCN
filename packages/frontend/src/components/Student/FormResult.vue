@@ -223,39 +223,15 @@ export default {
     rollBack () {
       this.$store.dispatch('url/updateSection', `${this.module}-list`);
     },
-    async handleAddTopicAdmin () {
-      const { studentIds, lecturerId } = this;
-      const value = {
-        title: this.title,
-        description: this.description,
-        code: this.code,
-        limit: this.limit,
-        deadline: this.deadline,
-        major: this.major,
-        students: studentIds,
-        lecturerId,
-      };
-      try {
-        if (this.isSave) {
-          await this.$store.dispatch('topic/addTopic', { token: this.token, value });
-        } else if (this.isUpdate) {
-          await this.$store.dispatch('topic/updateTopic', { token: this.token, value: { ...value, _id: this.id } });
-        }
-        this.$toast.success('Đã cập nhật một thành công!');
-      } catch (e) {
-        this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
-      } finally {
-        this.rollBack();
-      }
-    },
     async handleRemoveTopic () {
       try {
         const value = {
           id: this.id,
           token: this.token,
         };
-        await this.$store.dispatch('topic/removeTopic', value);
+        await this.$store.dispatch('topic/removeRegisterTopicStudent', value);
         this.$toast.success('Đã xóa thành công!');
+        this.topic = null;
       } catch (e) {
         this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
       }

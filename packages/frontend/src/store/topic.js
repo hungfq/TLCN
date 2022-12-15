@@ -60,6 +60,14 @@ const actions = {
     await TopicApi.addRegisterTopic(token, id);
     dispatch('fetchListTopicByStudent', token);
   },
+
+  async removeRegisterTopicStudent ({ dispatch, commit }, value) {
+    const { token, id } = value;
+    await TopicApi.removeRegisterTopicStudent(token, id);
+    dispatch('fetchTopicResult', token);
+    dispatch('fetchListTopicByStudent', token);
+    dispatch('fetchListTopics', token);
+  },
 };
 
 const mutations = {
