@@ -163,7 +163,6 @@ const addProposalTopic = async (req, res, next) => {
     const topic = await _TopicProposal.create({
       title, description, lecturerId, limit, students, createdBy, status, deadline, major,
     });
-    console.log('🚀 ~ file: topic.controller.js:155 ~ addProposalTopic ~ topic', topic);
     if (lecturerId) {
       const notification = await notificationService.addNotification(
         'ĐỀ XUẤT ĐỀ TÀI',
@@ -171,8 +170,11 @@ const addProposalTopic = async (req, res, next) => {
         req.user._id,
         [lecturerId],
       );
-      await userService.addNotificationByType('LECTURER', lecturerId, notification._id);
-      console.log(`TODO: send notification to ${lecturerId}`);
+
+      await notificationService.sendNotification(lecturerId, notification);
+
+      // await userService.addNotificationByType('LECTURER', lecturerId, notification._id);
+      // console.log(`TODO: send notification to ${lecturerId}`);
     }
     return res.status(201).send(topic);
   } catch (err) {
