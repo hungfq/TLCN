@@ -8,9 +8,9 @@ const fileUtils = require('../utils/file');
 const createOne = async (req, res, next) => {
   try {
     const {
-      name, description, startDate, endDate, students, topics,
+      name, description, startDate, endDate,
     } = req.body;
-    const schedule = await scheduleService.createOne(name, description, startDate, endDate, students, topics);
+    const schedule = await scheduleService.createOne(name, description, startDate, endDate);
     return res.status(201).send(schedule);
   } catch (err) {
     return next(err);
@@ -31,9 +31,9 @@ const updateOne = async (req, res, next) => {
   try {
     const { id } = req.params;
     const {
-      name, description, startDate, endDate, students, topics,
+      name, description, startDate, endDate,
     } = req.body;
-    await scheduleService.updateOne(id, name, description, startDate, endDate, students, topics);
+    await scheduleService.updateOne(id, name, description, startDate, endDate);
     return res.status(200).send('Successfully');
   } catch (err) {
     return next(err);
@@ -67,15 +67,6 @@ const importStudents = async (req, res, next) => {
   }
 };
 
-const listStudents = async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const students = await scheduleService.listStudents(id);
-    return res.status(200).send(students);
-  } catch (err) {
-    return next(err);
-  }
-};
 const removeSchedule = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -107,24 +98,6 @@ const importTopics = async (req, res, next) => {
 
     await scheduleService.updateTopics(id, topics);
     return res.status(200).send('Successfully');
-  } catch (err) {
-    return next(err);
-  }
-};
-
-const listTopics = async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const topics = await scheduleService.listTopics(id);
-
-    const result = await Promise.all(
-      topics.map(async (topic) => {
-        const { students } = topic;
-        const studentList = await userService.getStudentByCodes(students);
-        return { ...topic._doc, students: studentList };
-      }),
-    );
-    return res.status(200).send(result);
   } catch (err) {
     return next(err);
   }
@@ -248,9 +221,7 @@ module.exports = {
   updateOne,
   listSchedules,
   importStudents,
-  listStudents,
   importTopics,
-  listTopics,
   listScheduleTopicLecturer,
   listScheduleTopicLecturerShort,
   listTopicLecturer,
