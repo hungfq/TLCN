@@ -10,18 +10,12 @@ const findOne = async (_id) => {
   return schedule;
 };
 
-const createOne = async (name, description, startDate, endDate, students, topics) => {
-  let listStudents = [];
-  let listTopics = [];
-  if (students) listStudents = students;
-  if (topics) listTopics = topics;
+const createOne = async (name, description, startDate, endDate) => {
   const schedule = await _Schedule.create({
     name,
     description,
     startDate,
     endDate,
-    students: listStudents,
-    topics: listTopics,
   });
   return schedule;
 };
@@ -30,15 +24,13 @@ const removeSchedule = async (id) => {
   await _Schedule.deleteOne({ _id: id });
 };
 
-const updateOne = async (_id, name, description, startDate, endDate, students, topics) => {
-  let value = {
+const updateOne = async (_id, name, description, startDate, endDate) => {
+  const value = {
     name,
     description,
     startDate,
     endDate,
   };
-  if (students) value = { ...value, students };
-  if (topics) value = { ...value, topics };
   await _Schedule.updateOne({ _id }, value);
 };
 
@@ -57,14 +49,6 @@ const listBetweenTime = async (from, to) => {
     schedule = _Schedule.find({}).sort({ startDate: -1 });
   }
   return schedule;
-};
-
-const updateStudents = async (_id, students) => {
-  await _Schedule.updateOne({ _id }, { students });
-};
-
-const updateTopics = async (_id, topics) => {
-  await _Schedule.updateOne({ _id }, { topics });
 };
 
 const listStudents = async (_id) => {

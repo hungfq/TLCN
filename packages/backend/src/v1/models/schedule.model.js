@@ -7,6 +7,7 @@ const ScheduleSchema = new mongoose.Schema({
   topics: { type: Array },
   startDate: { type: Date },
   endDate: { type: Date },
+  type: { type: String },
 });
 
 module.exports = mongoose.model('Schedule', ScheduleSchema);
