@@ -92,6 +92,15 @@ const actions = {
       throw new Error(e.message);
     }
   },
+  async updateTaskStatus ({ dispatch }, payload) {
+    try {
+      const { token, value } = payload;
+      await TaskApi.updateTask(token, value);
+      dispatch('fetchTaskDetail', { token, taskId: value._id });
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  },
 };
 
 const mutations = {

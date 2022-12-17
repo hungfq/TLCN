@@ -16,10 +16,10 @@
         <span class="text-sm text-gray-600">{{ task.assignToFilter.name }}</span>
       </template>
       <badge
-        v-if="task.type"
+        v-if="task.assignToFilter"
         :color="badgeColor"
       >
-        {{ task.type }}
+        {{ task.assignToFilter.name }}
       </badge>
     </div>
   </div>
