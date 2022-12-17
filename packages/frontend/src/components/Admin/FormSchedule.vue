@@ -52,32 +52,13 @@
         />
         <div class="w-3/4">
           <span class="font-bold text-sm">
-            Đề tài đăng ký
+            Loại việc thời gian
           </span>
           <div class="mt-1">
             <Multiselect
-              v-model="topics"
-              mode="tags"
+              v-model="type"
+              :options="listTypes"
               :close-on-select="false"
-              :searchable="true"
-              :create-option="true"
-              :options="listTopics"
-              :disabled="isView"
-            />
-          </div>
-        </div>
-        <div class="my-2-1 w-3/4">
-          <span class="font-bold text-sm py-4 my-4">
-            Sinh viên đăng kí
-          </span>
-          <div class="mt-1">
-            <Multiselect
-              v-model="students"
-              mode="tags"
-              :close-on-select="false"
-              :searchable="true"
-              :create-option="true"
-              :options="listStudents"
               :disabled="isView"
             />
           </div>
@@ -116,18 +97,20 @@ export default {
       description: '',
       startDate: '',
       endDate: '',
-      students: [],
-      topics: [],
-      listStudents: [
-        'student1',
-        'student2',
-        'student3',
-        'student4',
-      ],
-      listTopics: [
-        'topic1',
-        'lecturer2',
-        'lecturer3',
+      type: '',
+      listTypes: [
+        {
+          value: 'PROPOSAL',
+          label: 'Đề xuất đề tài',
+        },
+        {
+          value: 'APPROVE',
+          label: 'Duyệt đề tài',
+        },
+        {
+          value: 'REGISTER',
+          label: 'Đăng ký đề tài',
+        },
       ],
     };
   },
@@ -149,30 +132,6 @@ export default {
     },
   },
   async mounted () {
-    await this.$store.dispatch('student/fetchListStudent', this.token);
-    await this.$store.dispatch('topic/fetchListTopics', this.token);
-    const students = this.$store.state.student.listStudents;
-    const topics = this.$store.state.topic.listTopics;
-    this.listStudents = students.map((student) => {
-      let st = {
-        value: student.code,
-        label: student.name,
-      };
-      if (this.isView) {
-        st = { ...st, disabled: true };
-      }
-      return st;
-    });
-    this.listTopics = topics.map((topic) => {
-      let st = {
-        value: topic.code,
-        label: topic.title,
-      };
-      if (this.isView) {
-        st = { ...st, disabled: true };
-      }
-      return st;
-    });
     if (this.isUpdate || this.isView) {
       const { id } = this.$store.state.url;
       const { listSchedules } = this.$store.state.schedule;
@@ -182,8 +141,7 @@ export default {
         this.description = schedule.description;
         this.startDate = this.formatDate(schedule.startDate);
         this.endDate = this.formatDate(schedule.endDate);
-        this.students = schedule.students;
-        this.topics = schedule.topics;
+        this.type = schedule.type;
       }
     }
   },
@@ -193,10 +151,10 @@ export default {
     },
     async handleAddScheduleAdmin () {
       const {
-        students, topics, name, description, startDate, endDate,
+        name, description, startDate, endDate, type,
       } = this;
       const value = {
-        students, topics, name, description, startDate, endDate,
+        name, description, startDate, endDate, type,
       };
       try {
         if (this.isSave) {

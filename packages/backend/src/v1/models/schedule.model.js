@@ -7,7 +7,11 @@ const ScheduleSchema = new mongoose.Schema({
   topics: { type: Array },
   startDate: { type: Date },
   endDate: { type: Date },
-  type: { type: String },
+  type: {
+    type: String,
+    enum: ['PROPOSAL', 'APPROVE', 'REGISTER'],
+    default: 'PROPOSAL',
+  },
 });
 
 module.exports = mongoose.model('Schedule', ScheduleSchema);

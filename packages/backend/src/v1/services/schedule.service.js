@@ -10,12 +10,13 @@ const findOne = async (_id) => {
   return schedule;
 };
 
-const createOne = async (name, description, startDate, endDate) => {
+const createOne = async (name, description, startDate, endDate, type) => {
   const schedule = await _Schedule.create({
     name,
     description,
     startDate,
     endDate,
+    type,
   });
   return schedule;
 };
@@ -123,9 +124,7 @@ module.exports = {
   createOne,
   updateOne,
   listBetweenTime,
-  updateStudents,
   listStudents,
-  updateTopics,
   listTopics,
   listScheduleTopicLecturer,
   listScheduleTopicLecturerShort,
