@@ -164,7 +164,6 @@ export default {
         }
         this.$toast.success('Đã cập nhật một thành công!');
       } catch (e) {
-        console.error(e.message);
         this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
       } finally {
         this.rollBack();
