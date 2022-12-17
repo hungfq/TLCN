@@ -20,7 +20,7 @@
           :animation="200"
           ghost-class="ghost-card"
           group="tasks"
-          @end="onDragEnd(column)"
+          @add="onDragEnd(column)"
         >
           <template v-for="(task) in listTask">
             <task-card
@@ -28,6 +28,7 @@
               :key="task._id"
               :task="task"
               class="mt-3 cursor-move"
+              @dragend="handleChange(task)"
               @click="showTaskDetailModal(task._id)"
             />
           </template>
@@ -78,6 +79,7 @@ export default {
           value: 'DONE',
         },
       ],
+      editTask: null,
     };
   },
   computed: {
@@ -100,11 +102,24 @@ export default {
       this.showTaskDetail = true;
       this.taskId = '';
     },
-    closeTaskDetailModal (close) {
-      close();
+    async closeTaskDetailModal (close) {
+      await close();
     },
-    onDragEnd (data) {
-      console.log('🚀 ~ file: TaskDraggable.vue:107 ~ onDragEnd ~ data', data);
+    async onDragEnd (column) {
+      if (this.editTask) {
+        this.editTask.status = column.value;
+        await this.$store.dispatch('task/updateTaskStatus', { token: this.token, value: this.editTask });
+      }
+      if (this.topicId) {
+        await this.$store.dispatch('task/fetchAllTask', { token: this.token, topicId: this.topicId });
+      }
+      this.editTask = null;
+      console.log('🚀 ~ file: TaskDraggable.vue:107 ~ onDragEnd ~ column', column);
+    },
+    handleChange (task) {
+      this.editTask = null;
+      this.editTask = task;
+      console.log('🚀 ~ file: TaskDraggable.vue:111 ~ handleChange ~ task', task);
     },
   },
 };

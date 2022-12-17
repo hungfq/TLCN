@@ -49,4 +49,18 @@ export default class TaskApi {
     });
     return res.data;
   }
+
+  static async updateTaskStatus (token, value) {
+    const {
+      _id, status,
+    } = value;
+    const res = await axios.put(`/task-status/${_id}`, {
+      status,
+    }, {
+      headers: {
+        authorization: `bearer ${token}`,
+      },
+    });
+    return res.data;
+  }
 }
