@@ -21,6 +21,11 @@
     </form>
   </div>
   <div class="shadow-md sm:rounded-lg m-4">
+    <SearchInput
+      v-model="searchVal"
+      :search-icon="true"
+      @keydown.space.enter="search"
+    />
     <table class="w-full text-sm text-left text-gray-500">
       <thead class="text-xs text-gray-700 uppercase bg-gray-300">
         <tr>
@@ -46,7 +51,7 @@
       </thead>
       <tbody>
         <tr
-          v-for="user in listAdmins"
+          v-for="user in admins"
           :key="`user-${user._id}`"
           class="bg-slate-300 hover:bg-gray-50 "
         >
@@ -80,15 +85,19 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex';
+import SearchInput from 'vue-search-input';
+// Optionally import default styling
+import 'vue-search-input/dist/styles.css';
 
 export default {
   name: 'ManageAdmin',
   components: {
-
+    SearchInput,
   },
   data () {
     return {
-
+      searchVal: '',
+      admins: [],
     };
   },
   computed: {
@@ -104,6 +113,7 @@ export default {
   },
   mounted () {
     this.$store.dispatch('admin/fetchListAdmins', this.token);
+    this.admins = this.listAdmins;
   },
   methods: {
     handleUpdateAdmin (id) {
@@ -129,6 +139,17 @@ export default {
       } else {
         this.$toast.error('File không tồn tại');
       }
+    },
+    search () {
+      if (this.searchVal !== '') {
+        const adminFilters = this.listAdmins.filter((st) => {
+          const re = new RegExp(`\\b${this.searchVal}`, 'gi');
+          if (st.name.match(re)) return true;
+          if (st.email.match(re)) return true;
+          return false;
+        });
+        this.admins = adminFilters;
+      } else this.admins = this.listAdmins;
     },
   },
 };

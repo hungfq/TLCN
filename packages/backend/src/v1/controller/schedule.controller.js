@@ -8,9 +8,9 @@ const fileUtils = require('../utils/file');
 const createOne = async (req, res, next) => {
   try {
     const {
-      name, description, startDate, endDate,
+      name, description, startDate, endDate, type,
     } = req.body;
-    const schedule = await scheduleService.createOne(name, description, startDate, endDate);
+    const schedule = await scheduleService.createOne(name, description, startDate, endDate, type);
     return res.status(201).send(schedule);
   } catch (err) {
     return next(err);
