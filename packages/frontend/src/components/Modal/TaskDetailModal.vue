@@ -6,7 +6,7 @@
   >
     <div class="relative p-4 w-full max-w-6xl mx-auto mt-[5%]">
       <!-- Modal content -->
-      <div class="relative bg-white rounded-md shadow pb-8">
+      <div class="relative bg-white rounded-md shadow">
         <!-- Modal header -->
         <div class="flex justify-between items-start p-4 rounded-t border-b ">
           <h2 class="text-xl font-semibold text-gray-900 ">
@@ -51,12 +51,32 @@
             <!-- <div class="font-medium my-4">
               {{ taskDetail }}
             </div> -->
-            <div class="h-96 overflow-x-scroll">
+            <div class="h-80 overflow-x-scroll">
               <ckeditor
                 v-model="editorData"
                 :editor="editor"
                 @input="changeDescription"
               />
+              <template
+                v-for="item in taskDetail.comments"
+                :key="item._id"
+              >
+                <TaskDetailComment :comment="item"/>
+              </template>
+            </div>
+            <div class="font-normal my-4 flex space-x-1">
+              <input
+                v-model="comment"
+                class=" p-2 border-2 rounded-sm flex-1"
+                placeholder="Add a comment..."
+                @keyup.enter="addComment"
+              >
+              <button
+                class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded"
+                @click="addComment"
+              >
+                Send
+              </button>
             </div>
           </div>
           <!-- Right body -->
@@ -111,9 +131,13 @@
 <script>
 import { mapGetters } from 'vuex';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import TaskDetailComment from '../Lecturer/TaskDetailComment.vue';
 
 export default {
   name: 'TaskDetailModal',
+  components: {
+    TaskDetailComment,
+  },
   inheritAttrs: false,
   props: {
     // eslint-disable-next-line vue/require-prop-type-constructor, vue/require-default-prop
@@ -129,6 +153,7 @@ export default {
         { text: 'IN PROCESS', value: 'IN_PROCESS' },
         { text: 'DONE', value: 'DONE' },
       ],
+      comment: '',
     };
   },
   computed: {
@@ -164,6 +189,10 @@ export default {
         await this.$store.dispatch('task/fetchAllTask', { token: this.token, topicId: this.topicId });
       }
       this.$emit('closeDetailModal', close);
+    },
+    async addComment () {
+      await this.$store.dispatch('task/insertComment', { token: this.token, message: this.comment, taskId: this.taskDetail._id });
+      this.comment = '';
     },
   },
 };

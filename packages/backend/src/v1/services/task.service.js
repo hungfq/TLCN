@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 const _Task = require('../models/task.model');
 const userService = require('./user.service');
+const commentService = require('./comment.service');
 
 const listTaskByTopic = async (topicId, studentId, statusTask) => {
   let tasks = await _Task.find({ topicId });
@@ -34,7 +35,8 @@ const getOneTask = async (taskId) => {
   const createdByFilter = (({ _id, name }) => ({ _id, name }))(createdBy);
   const assignTo = await userService.findOneWithOnlyId(task.assignTo);
   const assignToFilter = (({ _id, name }) => ({ _id, name }))(assignTo ?? {});
-  return { ...task._doc, createdByFilter, assignToFilter };
+  const comments = await commentService.getMultiCommentWithUserInfo(task.comment);
+  return { ...task._doc, createdByFilter, assignToFilter, comments };
 };
 
 const updateOneTask = async (taskId, code, title, description, status, process, assignTo) => {

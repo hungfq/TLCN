@@ -101,6 +101,15 @@ const actions = {
       throw new Error(e.message);
     }
   },
+  async insertComment ({ dispatch }, payload) {
+    try {
+      const { token, message, taskId } = payload;
+      await TaskApi.insertComment(token, message, taskId);
+      dispatch('fetchTaskDetail', { token, taskId });
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  },
 };
 
 const mutations = {

@@ -63,4 +63,15 @@ export default class TaskApi {
     });
     return res.data;
   }
+
+  static async insertComment (token, message, taskId) {
+    const res = await axios.post(`/task-comment/${taskId}`, {
+      message,
+    }, {
+      headers: {
+        authorization: `bearer ${token}`,
+      },
+    });
+    return res.data;
+  }
 }

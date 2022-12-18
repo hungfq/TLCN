@@ -1,4 +1,5 @@
 /* eslint-disable max-len */
+const _Task = require('../models/task.model');
 const taskService = require('../services/task.service');
 const commentService = require('../services/comment.service');
 
@@ -116,11 +117,22 @@ const updateInfo = async (req, res, next) => {
   }
 };
 
+const getCommentTask = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const task = await _Task.findById(id);
+    const comment = await commentService.getMultiComment(task.comment);
+    return res.status(200).send(comment);
+  } catch (err) {
+    return next(err);
+  }
+};
+
 const addCommentTask = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { message } = req.body;
-    const comment = await commentService.createComment(message, req.user.id);
+    const comment = await commentService.createComment(message, req.user._id);
     await taskService.addCommentToTask(id, comment._id);
     return res.status(200).send('Successfully');
   } catch (err) {
@@ -151,6 +163,7 @@ module.exports = {
   updateStartTime,
   updateEndTime,
   updateInfo,
+  getCommentTask,
   addCommentTask,
   deleteTask,
 };

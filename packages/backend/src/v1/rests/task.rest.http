@@ -75,7 +75,9 @@ Content-Type: application/json
     "description": "new description"
 }
 ###
-
+GET {{host}}/v1/task-comment/638301df6c6ad645905980b8
+Authorization: Bearer {{student_token}}
+###
 POST {{host}}/v1/task-comment/638301df6c6ad645905980b8
 Authorization: Bearer {{student_token}}
 Content-Type: application/json
