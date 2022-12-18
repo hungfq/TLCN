@@ -159,7 +159,6 @@ export default {
         });
 
         this.topics = topicFilter;
-        console.log('🚀 ~ file: ManageTopicAdmin.vue:161 ~ search ~ this.topics', this.topics);
       } else this.topics = this.listTopics;
     },
   },
