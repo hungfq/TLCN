@@ -18,7 +18,7 @@
       <!-- Menu button -->
       <button
         class="p-2 transition-colors rounded-lg shadow-md hover:bg-indigo-800 hover:text-white focus:outline-none focus:ring focus:ring-indigo-600 focus:ring-offset-white focus:ring-offset-2"
-        :class=" 'text-white bg-indigo-600'"
+        :class="[page === 'management' ? 'text-white bg-indigo-600' : '']"
         @click="updatePage('management')"
       >
         <span class="sr-only">Toggle sidebar</span>
@@ -38,14 +38,34 @@
           />
         </svg>
       </button>
+      <!-- Task button -->
+      <button
+        class="p-2 transition-colors rounded-lg shadow-md hover:bg-indigo-800 hover:text-white focus:outline-none focus:ring focus:ring-indigo-600 focus:ring-offset-white focus:ring-offset-2"
+        :class="[page === 'task' ? 'text-white bg-indigo-600' : '']"
+        @click="updatePage('task')"
+      >
+        <svg
+          width="24px"
+          height="24px"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+        >
+          <path d="M5 22h14c1.103 0 2-.897 2-2V5c0-1.103-.897-2-2-2h-2a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1H5c-1.103 0-2 .897-2 2v15c0 1.103.897 2 2 2zM5 5h2v2h10V5h2v15H5V5z" /><path d="m11 13.586-1.793-1.793-1.414 1.414L11 16.414l5.207-5.207-1.414-1.414z" /></svg>
+      </button>
       <!-- Messages button -->
+    </div>
+
+    <!-- Avatar and Notifications-->
+    <div
+      class="relative flex flex-col items-center space-y-4 p-2"
+      x-data="{ isOpen: false }"
+    >
       <!-- Notifications button -->
       <button
         class="p-2 transition-colors rounded-lg shadow-md focus:outline-none focus:ring focus:ring-indigo-600 focus:ring-offset-white focus:ring-offset-2"
         :class="'text-gray-500 bg-white'"
-        @click="showNotification"
+        @click="clickNotifyOrInfo('notify')"
       >
-        <span class="sr-only">Toggle notifications panel</span>
         <div
           v-if="unreadCount(listNotifications)"
           class="relative"
@@ -69,64 +89,57 @@
             d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
           />
         </svg>
+      </button>
+      <div
+        v-show="notificationShow"
+        class="overflow-y-auto absolute w-80 max-h-[480px] py-1 mt-2 origin-bottom-left bg-white rounded-md shadow-lg mx-1 left-16 bottom-2 focus:outline-none"
+        role="menu"
+        aria-orientation="vertical"
+        aria-label="user menu"
+      >
         <div
-          v-show="showNotificationModal"
-          class="overflow-y-auto max-h-[480px] shadow-lg absolute max-w-md mx-2 bg-slate-300 left-16 top-12 rounded-xl pb-2"
-          role="menu"
-          aria-orientation="vertical"
-          aria-label="user menu"
+          v-if="!listNotifications.length"
+          class="flex flex-col w-full"
+        >
+          <div class="mt-2 mx-2 px-12 py-28 bg-white rounded-lg shadow">
+            Hiện không có thông báo
+          </div>
+        </div>
+        <div
+          v-for="noti in listNotifications"
+          :key="`noti-${noti._id}`"
+          class="flex flex-col w-full"
         >
           <div
-            v-if="!listNotifications.length"
-            class="flex flex-col w-full"
+            :class="[noti.isRead ? 'bg-white' : 'bg-emerald-50']"
+            class="mt-2 mx-2 px-6 py-4 bg-white rounded-lg shadow cursor-pointer"
+            @click="readNotification(noti._id)"
           >
-            <div class="mt-2 mx-2 px-12 py-28 bg-white rounded-lg shadow">
-              Hiện không có thông báo
+            <div class="inline-flex items-center justify-between w-full">
+              <div class="inline-flex items-center">
+                <h3 class="font-bold text-base text-gray-800">
+                  {{ noti.title }}
+                </h3>
+              </div>
+              <p class="text-xs text-gray-500">
+                {{ timeAgo(noti.createdAt) }}
+              </p>
             </div>
-          </div>
-          <div
-            v-for="noti in listNotifications"
-            :key="`noti-${noti._id}`"
-            class="flex flex-col w-full"
-          >
-            <div
-              :class="[noti.isRead ? 'bg-white' : 'bg-emerald-50']"
-              class="mt-2 mx-2 px-6 py-4 bg-white rounded-lg shadow"
-              @click="readNotification(noti._id)"
-            >
-              <div class="inline-flex items-center justify-between w-full">
-                <div class="inline-flex items-center">
-                  <h3 class="font-bold text-base text-gray-800">
-                    {{ noti.title }}
-                  </h3>
-                </div>
-                <p class="text-xs text-gray-500">
-                  {{ timeAgo(noti.createdAt) }}
-                </p>
-              </div>
-              <div class="inline-flex items-center justify-between w-full">
-                <p class="mt-1 text-sm text-left text-gray-900">
-                  {{ noti.message }}
-                </p>
-                <a
-                  class="text-blue-700"
-                  @click="deleteNotification(noti._id)"
-                >Xóa</a>
-              </div>
+            <div class="inline-flex items-center justify-between w-full">
+              <p class="mt-1 text-sm text-left text-gray-900">
+                {{ noti.message }}
+              </p>
+              <a
+                class="text-blue-700"
+                @click="deleteNotification(noti._id)"
+              >Xóa</a>
             </div>
           </div>
         </div>
-      </button>
-    </div>
-
-    <!-- User avatar -->
-    <div
-      class="relative flex items-center flex-shrink-0 p-2"
-      x-data="{ isOpen: false }"
-    >
+      </div>
       <button
         class="transition-opacity rounded-lg opacity-80 hover:opacity-100 focus:outline-none focus:ring focus:ring-indigo-600 focus:ring-offset-white focus:ring-offset-2"
-        @click="miniAvatarShow = !miniAvatarShow"
+        @click="clickNotifyOrInfo('avatar')"
       >
         <img
           class="w-10 h-10 rounded-lg shadow-md"
@@ -137,7 +150,7 @@
       </button>
       <div
         v-show="miniAvatarShow"
-        class="absolute w-48 py-1 mt-2 origin-bottom-left bg-white rounded-md shadow-lg mx-1 left-16 bottom-14 focus:outline-none"
+        class="absolute w-48 py-1 mt-2 origin-bottom-left bg-white rounded-md shadow-lg mx-1 left-16 bottom-2 focus:outline-none"
         role="menu"
         aria-orientation="vertical"
         aria-label="user menu"
@@ -177,7 +190,7 @@ export default {
   data () {
     return {
       miniAvatarShow: false,
-      showNotificationModal: false,
+      notificationShow: false,
     };
   },
   computed: {
@@ -205,7 +218,16 @@ export default {
     },
     updatePage (module) {
       this.$store.dispatch('url/updatePage', module);
-      console.log('🚀 ~ file: LeftMiniBar.vue:140 ~ updatePage ~ module', module);
+      // console.log('🚀 ~ file: LeftMiniBar.vue:140 ~ updatePage ~ module', module);
+    },
+    clickNotifyOrInfo (input) {
+      if (input === 'notify') {
+        this.miniAvatarShow = false;
+        this.notificationShow = !this.notificationShow;
+      } else if (input === 'avatar') {
+        this.notificationShow = false;
+        this.miniAvatarShow = !this.miniAvatarShow;
+      }
     },
     timeAgo (createdAt) {
       return moment(createdAt).fromNow();
@@ -214,7 +236,7 @@ export default {
       return listNotifications.filter((x) => x.isRead === false).length;
     },
     async showNotification () {
-      this.showNotificationModal = !this.showNotificationModal;
+      this.notificationShow = !this.notificationShow;
     },
     async readNotification (_id) {
       await this.$store.dispatch('notification/readNotification', { token: this.token, id: _id });

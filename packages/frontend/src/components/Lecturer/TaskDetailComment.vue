@@ -7,7 +7,7 @@
       <span class="font-bold">
         {{ comment.createdByFilter.name }}
       </span>
-      <span>
+      <span class="text-sm font-extralight">
         {{ timeAgo(comment.createdAt) }}
       </span>
     </div>
