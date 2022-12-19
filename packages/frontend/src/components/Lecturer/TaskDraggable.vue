@@ -1,10 +1,14 @@
 <template>
-  <button
-    class=" m-4 bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded"
-    @click="addTaskHandler"
+  <template
+    v-if="topicId"
   >
-    Add task
-  </button>
+    <button
+      class=" m-4 bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded"
+      @click="addTaskHandler"
+    >
+      Add task
+    </button>
+  </template>
   <div class="flex overflow-x-scroll max-w-full">
     <div class="flex p-2 pr-0">
       <div
@@ -90,7 +94,7 @@ export default {
       'page', 'module', 'subModule', 'section', 'id',
     ]),
     ...mapGetters('task', [
-      'listScheduleTopic', 'listTopic', 'listTask',
+      'listTask', 'topicId',
     ]),
   },
   methods: {
