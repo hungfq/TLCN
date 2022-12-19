@@ -21,6 +21,11 @@
     </form>
   </div>
   <div class="shadow-md sm:rounded-lg m-4">
+    <SearchInput
+      v-model="searchVal"
+      :search-icon="true"
+      @keydown.space.enter="search"
+    />
     <table class="w-full text-sm text-left text-gray-500">
       <thead class="text-xs text-gray-700 uppercase bg-gray-300">
         <tr>
@@ -52,7 +57,7 @@
       </thead>
       <tbody>
         <tr
-          v-for="schedule in listSchedules"
+          v-for="schedule in schedules"
           :key="`schedule-${schedule._id}`"
           class="bg-slate-300 hover:bg-gray-50 "
         >
@@ -95,15 +100,19 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex';
+import SearchInput from 'vue-search-input';
+// Optionally import default styling
+import 'vue-search-input/dist/styles.css';
 
 export default {
   name: 'ManageScheduleAdmin',
   components: {
-
+    SearchInput,
   },
   data () {
     return {
-
+      schedules: [],
+      searchVal: '',
     };
   },
   computed: {
@@ -119,6 +128,7 @@ export default {
   },
   mounted () {
     this.$store.dispatch('schedule/fetchListSchedules', this.token);
+    this.schedules = this.listSchedules;
   },
   methods: {
     handleUpdateSchedule (id) {
@@ -154,6 +164,20 @@ export default {
       } catch (e) {
         return '';
       }
+    },
+    search () {
+      if (this.searchVal !== '') {
+        const scheduleFilter = this.listSchedules.filter((schedule) => {
+          const re = new RegExp(`\\b${this.searchVal}`, 'gi');
+          const startDate = this.formatDay(schedule.startDate);
+          const endDate = this.formatDay(schedule.endDate);
+          if (schedule.name.match(re)) return true;
+          if (endDate.match(re)) return true;
+          if (startDate.match(re)) return true;
+          return false;
+        });
+        this.schedules = scheduleFilter;
+      } else this.schedules = this.listSchedules;
     },
   },
 };

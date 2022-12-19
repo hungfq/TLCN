@@ -1,5 +1,10 @@
 <template>
   <div class="shadow-md sm:rounded-lg m-4">
+    <SearchInput
+      v-model="searchVal"
+      :search-icon="true"
+      @keydown.space.enter="search"
+    />
     <table class="w-full text-sm text-left text-gray-500">
       <thead class="text-xs text-gray-700 uppercase bg-gray-300">
         <tr>
@@ -25,7 +30,7 @@
       </thead>
       <tbody>
         <tr
-          v-for="topic in listTopicProposal"
+          v-for="topic in topics"
           :key="`topic-${topic._id}`"
           class="bg-slate-300 hover:bg-gray-50 "
         >
@@ -69,15 +74,19 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex';
+import SearchInput from 'vue-search-input';
+// Optionally import default styling
+import 'vue-search-input/dist/styles.css';
 
 export default {
   name: 'ManageApproveProposalLecturer',
   components: {
-
+    SearchInput,
   },
   data () {
     return {
-
+      searchVal: '',
+      topics: [],
     };
   },
   computed: {
@@ -108,6 +117,7 @@ export default {
   mounted () {
     this.$store.dispatch('topic_proposal/fetchListTopicProposalByLectures', this.token);
     this.$store.dispatch('student/fetchListStudent', this.token);
+    this.topics = this.listTopicProposal;
   },
   methods: {
     handleUpdateTopic (id) {
@@ -148,6 +158,20 @@ export default {
     },
     displayLecturer (lecturer) {
       return lecturer ? lecturer.name : '';
+    },
+    search () {
+      if (this.searchVal !== '') {
+        const topicFilter = this.listTopicProposal.filter((topic) => {
+          const re = new RegExp(`\\b${this.searchVal}`, 'gi');
+          if (topic.title.match(re)) return true;
+          if (topic.createdInfo) {
+            if (topic.createdInfo.name.match(re)) return true;
+            if (topic.createdInfo.code.match(re)) return true;
+          }
+          return false;
+        });
+        this.topics = topicFilter;
+      } else this.topics = this.listTopicProposal;
     },
   },
 };
