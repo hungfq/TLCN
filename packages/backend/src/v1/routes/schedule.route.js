@@ -12,6 +12,7 @@ const {
   register,
   cancelRegister,
   removeSchedule,
+  getScheduleToday,
 } = require('../controller/schedule.controller');
 
 const { upload } = require('../utils/file');
@@ -24,6 +25,7 @@ const { isAuth } = authMiddleware;
 
 const router = (app) => {
   app.post('/v1/schedule', isAuth, createOne);
+  app.get('/v1/schedule/today', isAuth, getScheduleToday);
   app.get('/v1/schedule', isAuth, listSchedules);
   app.get('/v1/schedule/:id', isAuth, findOne);
   app.put('/v1/schedule/:id', isAuth, updateOne);

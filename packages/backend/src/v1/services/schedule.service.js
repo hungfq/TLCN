@@ -25,12 +25,13 @@ const removeSchedule = async (id) => {
   await _Schedule.deleteOne({ _id: id });
 };
 
-const updateOne = async (_id, name, description, startDate, endDate) => {
+const updateOne = async (_id, name, description, startDate, endDate, type) => {
   const value = {
     name,
     description,
     startDate,
     endDate,
+    type,
   };
   await _Schedule.updateOne({ _id }, value);
 };

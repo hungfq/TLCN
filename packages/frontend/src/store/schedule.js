@@ -2,10 +2,12 @@ import ScheduleApi from '../utils/api/schedule';
 
 const initState = {
   listSchedules: [],
+  listScheduleToday: [],
 };
 
 const getters = {
   listSchedules: (state) => state.listSchedules,
+  listScheduleToday: (state) => state.listScheduleToday,
 };
 
 const actions = {
@@ -13,6 +15,14 @@ const actions = {
     try {
       const listSchedules = await ScheduleApi.listAllSchedule(token);
       commit('setListSchedules', listSchedules);
+    } catch (e) {
+      console.log(e.message);
+    }
+  },
+  async fetchListScheduleToday ({ commit }, token) {
+    try {
+      const listSchedules = await ScheduleApi.listScheduleToday(token);
+      commit('setListScheduleToday', listSchedules);
     } catch (e) {
       console.log(e.message);
     }
@@ -42,6 +52,9 @@ const actions = {
 const mutations = {
   setListSchedules: (state, listSchedules) => {
     state.listSchedules = listSchedules;
+  },
+  setListScheduleToday: (state, listScheduleToday) => {
+    state.listScheduleToday = listScheduleToday;
   },
 };
 

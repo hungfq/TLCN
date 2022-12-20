@@ -20,11 +20,17 @@
         <div class="bg-white mx-4 border rounded h-full">
           <template v-if="page === 'management'">
             <template v-if="module === 'topic'">
-              <ManageTopicStudentVue v-if="section==='topic-list'" />
+              <ManageTopicStudentVue
+                v-if="section==='topic-list'"
+                :open=" isScheduleRegister"
+              />
               <FormTopicVue v-if="section==='topic-view'" />
             </template>
             <template v-if="module === 'topic_proposal'">
-              <ManageTopicProposalStudentVue v-if="section==='topic_proposal-list'" />
+              <ManageTopicProposalStudentVue
+                v-if="section==='topic_proposal-list'"
+                :open=" isScheduleProposal"
+              />
               <FormTopicProposalVue
                 v-if="section === 'topic_proposal-update' || section === 'topic_proposal-import' || section === 'topic_proposal-view'"
               />
@@ -97,6 +103,17 @@ export default {
     ...mapGetters('url', [
       'page', 'module', 'section', 'id',
     ]),
+    ...mapGetters('schedule', [
+      'listScheduleToday',
+    ]),
+    isScheduleProposal () {
+      const check = this.listScheduleToday.find((c) => c.type === 'PROPOSAL');
+      return !!check;
+    },
+    isScheduleRegister () {
+      const check = this.listScheduleToday.find((c) => c.type === 'REGISTER');
+      return !!check;
+    },
   },
   async mounted () {
     if (!this.isAuthenticated || this.userRole !== 'STUDENT') {
@@ -108,6 +125,7 @@ export default {
       this.$store.dispatch('url/updateModule', 'topic');
       this.$store.dispatch('url/updateSection', 'topic-list');
     }
+    this.$store.dispatch('schedule/fetchListScheduleToday', this.token);
   },
   async created () {
     const { _id } = this.$store.state.auth.userInfo;

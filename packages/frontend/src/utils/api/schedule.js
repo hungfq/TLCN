@@ -13,6 +13,15 @@ export default class ScheduleApi {
     return res.data;
   }
 
+  static async listScheduleToday (token) {
+    const res = await axios.get('/schedule/today', {
+      headers: {
+        authorization: `bearer ${token}`,
+      },
+    });
+    return res.data;
+  }
+
   static async addSchedule (token, value) {
     const res = await axios.post('/schedule', value, {
       headers: {

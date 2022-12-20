@@ -4,6 +4,7 @@ const userService = require('../services/user.service');
 const topicService = require('../services/topic.service');
 const notificationService = require('../services/notification.service');
 const fileUtils = require('../utils/file');
+const _Schedule = require('../models/schedule.model');
 
 const createOne = async (req, res, next) => {
   try {
@@ -31,9 +32,10 @@ const updateOne = async (req, res, next) => {
   try {
     const { id } = req.params;
     const {
-      name, description, startDate, endDate,
+      name, description, startDate, endDate, type,
     } = req.body;
-    await scheduleService.updateOne(id, name, description, startDate, endDate);
+    console.log('🚀 ~ file: schedule.controller.js:37 ~ updateOne ~ type', type);
+    await scheduleService.updateOne(id, name, description, startDate, endDate, type);
     return res.status(200).send('Successfully');
   } catch (err) {
     return next(err);
@@ -215,6 +217,23 @@ const cancelRegister = async (req, res, next) => {
   }
 };
 
+const getScheduleToday = async (req, res, next) => {
+  try {
+    const listSchedule = await _Schedule.find({
+      startDate: {
+        $lt: Date.now(),
+      },
+      endDate: {
+        $gte: Date.now(),
+      },
+    });
+    console.log('🚀 ~ file: schedule.controller.js:230 ~ getScheduleToday ~ listSchedule', listSchedule);
+    return res.status(200).send(listSchedule);
+  } catch (error) {
+    return next(error);
+  }
+};
+
 module.exports = {
   createOne,
   findOne,
@@ -228,4 +247,5 @@ module.exports = {
   register,
   cancelRegister,
   removeSchedule,
+  getScheduleToday,
 };

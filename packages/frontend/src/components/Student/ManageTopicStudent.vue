@@ -1,96 +1,105 @@
 <template>
-  <div class="shadow-md sm:rounded-lg m-4">
-    <SearchInput
-      v-model="searchVal"
-      :search-icon="true"
-      @keydown.space.enter="search"
-    />
-    <table class="w-full text-sm text-left text-gray-500">
-      <thead class="text-xs text-gray-700 uppercase bg-gray-300">
-        <tr>
-          <th
-            scope="col"
-            class="py-3 px-6"
-          >
-            Tên đề tài
-          </th>
-          <th
-            scope="col"
-            class="py-3 px-6"
-          >
-            Mã đề tài
-          </th>
-          <th
-            scope="col"
-            class="py-3 px-6"
-          >
-            Số lượng
-          </th>
-          <th
-            scope="col"
-            class="py-3 px-6"
-          >
-            Giảng viên hướng dẫn
-          </th>
-          <th
-            scope="col"
-            class="py-3 px-6"
-          >
-            <span class="sr-only">Edit</span>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="topic in topics"
-          :key="`topic-${topic._id}`"
-          class="bg-slate-300 hover:bg-gray-50 "
-        >
-          <th
-            :key="`topic-${topic._id}`"
-            scope="row"
-            class="py-2 px-6 font-medium text-gray-900 whitespace-nowrap "
-          >
-            {{ topic.title }}
-          </th>
-          <th
-            :key="`topic-${topic._id}`"
-            scope="row"
-            class="py-2 px-6 font-medium text-gray-900 whitespace-nowrap "
-          >
-            {{ topic.code }}
-          </th>
-          <td class="py-2 pl-6">
+  <template v-if="!open">
+    <div class="py-2 mx-2 font-medium text-red-600 ">
+      Hiện tại đang không có đợt đăng ký, vui lòng chọn mục khác!
+    </div>
+  </template>
+  <template v-if="open">
+    <div
+      class="shadow-md sm:rounded-lg m-4"
+    >
+      <SearchInput
+        v-model="searchVal"
+        :search-icon="true"
+        @keydown.space.enter="search"
+      />
+      <table class="w-full text-sm text-left text-gray-500">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-300">
+          <tr>
             <th
-              scope="row"
-              class="py-2 px-4 font-medium text-gray-900  "
+              scope="col"
+              class="py-3 px-6"
             >
-              {{ topic.students.length }} / {{ topic.limit }}
+              Tên đề tài
             </th>
-          </td>
-          <td class="py-2 pl-6">
             <th
-              scope="row"
-              class="py-2 px-4 font-medium text-gray-900  "
+              scope="col"
+              class="py-3 px-6"
             >
-              {{ displayLecturer(topic.lecturerId) }}
+              Mã đề tài
             </th>
-          </td>
+            <th
+              scope="col"
+              class="py-3 px-6"
+            >
+              Số lượng
+            </th>
+            <th
+              scope="col"
+              class="py-3 px-6"
+            >
+              Giảng viên hướng dẫn
+            </th>
+            <th
+              scope="col"
+              class="py-3 px-6"
+            >
+              <span class="sr-only">Edit</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="topic in topics"
+            :key="`topic-${topic._id}`"
+            class="bg-slate-300 hover:bg-gray-50 "
+          >
+            <th
+              :key="`topic-${topic._id}`"
+              scope="row"
+              class="py-2 px-6 font-medium text-gray-900 whitespace-nowrap "
+            >
+              {{ topic.title }}
+            </th>
+            <th
+              :key="`topic-${topic._id}`"
+              scope="row"
+              class="py-2 px-6 font-medium text-gray-900 whitespace-nowrap "
+            >
+              {{ topic.code }}
+            </th>
+            <td class="py-2 pl-6">
+              <th
+                scope="row"
+                class="py-2 px-4 font-medium text-gray-900  "
+              >
+                {{ topic.students.length }} / {{ topic.limit }}
+              </th>
+            </td>
+            <td class="py-2 pl-6">
+              <th
+                scope="row"
+                class="py-2 px-4 font-medium text-gray-900  "
+              >
+                {{ displayLecturer(topic.lecturerId) }}
+              </th>
+            </td>
 
-          <td class="py-2 px-6">
-            <a
-              class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
-              @click="handleRegisterTopic(topic._id)"
-            >Đăng ký</a>
-            <a
-              class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
-              @click="handleShowTopic(topic._id)"
-            >Xem chi tiết</a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+            <td class="py-2 px-6">
+              <a
+                class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
+                @click="handleRegisterTopic(topic._id)"
+              >Đăng ký</a>
+              <a
+                class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
+                @click="handleShowTopic(topic._id)"
+              >Xem chi tiết</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </template>
 </template>
 
 <script>
@@ -103,6 +112,12 @@ export default {
   name: 'ManageTopicStudent',
   components: {
     SearchInput,
+  },
+  props: {
+    open: {
+      type: Boolean,
+      default: true,
+    },
   },
   data () {
     return {

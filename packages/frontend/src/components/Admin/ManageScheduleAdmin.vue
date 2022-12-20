@@ -126,18 +126,18 @@ export default {
       'listSchedules',
     ]),
   },
-  mounted () {
-    this.$store.dispatch('schedule/fetchListSchedules', this.token);
+  async mounted () {
+    await this.$store.dispatch('schedule/fetchListSchedules', this.token);
     this.schedules = this.listSchedules;
   },
   methods: {
-    handleUpdateSchedule (id) {
-      this.$store.dispatch('url/updateSection', 'schedule-update');
-      this.$store.dispatch('url/updateId', id);
+    async handleUpdateSchedule (id) {
+      await this.$store.dispatch('url/updateSection', 'schedule-update');
+      await this.$store.dispatch('url/updateId', id);
     },
-    handleShowSchedule (id) {
-      this.$store.dispatch('url/updateSection', 'schedule-view');
-      this.$store.dispatch('url/updateId', id);
+    async handleShowSchedule (id) {
+      await this.$store.dispatch('url/updateSection', 'schedule-view');
+      await this.$store.dispatch('url/updateId', id);
     },
     async handleRemoveSchedule (id) {
       try {

@@ -39,6 +39,9 @@ const vuexLocal = createPersistedState({
     'schedule.listSchedules',
     'task.listScheduleTopic',
     'task.listTopic',
+    'topic_proposal.listTopicProposalCreated',
+    'topic_proposal.listTopicProposalByLecturer',
+    'topic_proposal.listTopicProposalAdmin',
   ],
 
   getState: (key, storage) => {
