@@ -101,7 +101,6 @@
 <script>
 import { mapState, mapGetters } from 'vuex';
 import SearchInput from 'vue-search-input';
-// Optionally import default styling
 import 'vue-search-input/dist/styles.css';
 
 export default {
@@ -158,7 +157,6 @@ export default {
         };
         await this.$store.dispatch('topic_proposal/removeTopicProposal', value);
         this.$toast.success('Đã xóa thành công!');
-        this.$store.dispatch('topic/fetchListTopicByStudent', this.token);
       } catch (e) {
         this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
       }
