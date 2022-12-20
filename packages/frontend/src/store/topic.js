@@ -18,7 +18,7 @@ const actions = {
     commit('setListTopics', listTopics);
   },
   async fetchListTopicByStudent ({ commit }, token) {
-    const listTopics = await TopicApi.listTopicAcceptRegisters(token);
+    const listTopics = await TopicApi.listAllTopics(token);
     commit('setListTopicsByStudent', listTopics);
   },
   async fetchListTopicByLectures ({ commit }, value) {

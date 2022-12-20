@@ -152,6 +152,7 @@ export default {
           const re = new RegExp(`\\b${this.searchVal}`, 'gi');
           // console.log('🚀 ~ file: ManageTopicAdmin.vue:155 ~ topicFilter ~ topic.title.match(re)', topic.title.match(re));
           if (topic.title.match(re)) return true;
+          if (topic.code.match(re)) return true;
           if (!topic.lecturerId) return false;
           // console.log('🚀 ~ file: ManageTopicAdmin.vue:158 ~ topicFilter ~ topic.lecturerId.name.match(re)', topic.lecturerId.name.match(re));
           if (topic.lecturerId.name.match(re)) return true;

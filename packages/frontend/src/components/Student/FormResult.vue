@@ -232,6 +232,7 @@ export default {
         await this.$store.dispatch('topic/removeRegisterTopicStudent', value);
         this.$toast.success('Đã xóa thành công!');
         this.topic = null;
+        this.$store.dispatch('topic/fetchListTopicByStudent', this.token);
       } catch (e) {
         this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
       }

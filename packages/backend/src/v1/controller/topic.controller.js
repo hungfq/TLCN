@@ -258,7 +258,7 @@ const listTopicProposalByCreatedId = async (req, res, next) => {
     // TODO: need to refactor function isAuth in middleware
     // const lecturer = await _Lecturer.findById(lecturerId);
     // if (!lecturer) return res.status(401).send('Access Denied');
-    const listTopics = await _TopicProposal.find({ createdBy });
+    const listTopics = await _TopicProposal.find({ createdBy }).populate({ path: 'lecturerId', select: 'name _id' });
     return res.status(200).send(listTopics);
   } catch (err) {
     return next(err);
