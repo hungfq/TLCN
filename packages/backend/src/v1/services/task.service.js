@@ -82,6 +82,11 @@ const deleteTask = async (id) => {
   await _Task.deleteOne({ _id: id });
 };
 
+const getTopicIdByTask = async (taskId) => {
+  const task = await _Task.findById(taskId);
+  return task.topicId;
+}
+
 module.exports = {
   listTaskByTopic,
   createNewTask,
@@ -95,4 +100,5 @@ module.exports = {
   updateEndTime,
   updateProcess,
   deleteTask,
+  getTopicIdByTask,
 };

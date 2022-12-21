@@ -20,11 +20,11 @@
           :key="`topic-${topic._id}`"
         > -->
         <button
-          :class="[ isTopic(getTopic._id) ? 'flex p-2 items-center w-full space-x-2 text-white bg-indigo-600 rounded-lg' : 'flex p-2   items-center space-x-2 text-indigo-600 transition-colors rounded-lg group hover:bg-indigo-600 hover:text-white']"
-          @click="topicClick(getTopic._id)"
+          :class="[ isTopic(topics._id) ? 'flex p-2 items-center w-full space-x-2 text-white bg-indigo-600 rounded-lg' : 'flex p-2   items-center space-x-2 text-indigo-600 transition-colors rounded-lg group hover:bg-indigo-600 hover:text-white']"
+          @click="topicClick(topics._id)"
         >
-          {{ getTopic }}
-          {{ getTopic.code }}: {{ getTopic.title }}
+          <!-- {{ topics }} -->
+          {{ topics.code }}: {{ topics.title }}
         </button>
         <!-- </template> -->
       </div>
@@ -64,8 +64,8 @@ export default {
   methods: {
     async topicClick (id) {
       this.updateSubModule(`topic-${id}`);
-      // await this.$store.dispatch('task/fetchAllTask', { token: this.token, topicId: id });
-      // await this.$store.dispatch('task/fetchListMember', { token: this.token, topicId: id });
+      await this.$store.dispatch('task/fetchAllTask', { token: this.token, topicId: id });
+      await this.$store.dispatch('task/fetchListMember', { token: this.token, topicId: id });
     },
     isTopic (id) {
       return this.subModule === `topic-${id}`;
@@ -73,11 +73,6 @@ export default {
     updateSubModule (subModule) {
       this.$store.dispatch('url/updateSubModule', subModule);
       this.$store.dispatch('url/updateSection', `${subModule}-task`);
-    },
-    getTopic () {
-      const topic = this.$store.state.topic.topicResult;
-      console.log('🚀 ~ file: TaskBarTopic.vue:79 ~ getTopic ~ topic', topic);
-      return topic;
     },
   },
 };

@@ -2,6 +2,7 @@
 const _Task = require('../models/task.model');
 const taskService = require('../services/task.service');
 const commentService = require('../services/comment.service');
+const notifyService = require('../services/notification.service');
 
 const listTaskByTopic = async (req, res, next) => {
   try {
@@ -22,6 +23,7 @@ const createNewTask = async (req, res, next) => {
     } = req.body;
     const createdBy = req.user._id;
     const task = await taskService.createNewTask(topicId, code, title, description, status, process, startTime, endTime, createdBy, assignTo);
+    await notifyService.sendTaskRefreshSocket(topicId);
     return res.status(201).send(task);
   } catch (err) {
     return next(err);
@@ -45,6 +47,8 @@ const updateOneTask = async (req, res, next) => {
       code, title, description, status, process, assignTo,
     } = req.body;
     await taskService.updateOneTask(taskId, code, title, description, status, process, assignTo);
+    const topicId = await taskService.getTopicIdByTask(taskId);
+    await notifyService.sendTaskRefreshSocket(topicId);
     return res.status(200).send('Successfully');
   } catch (err) {
     return next(err);
@@ -56,6 +60,8 @@ const updateProcess = async (req, res, next) => {
     const { taskId } = req.params;
     const { process } = req.body;
     await taskService.updateProcess(taskId, process);
+    const topicId = await taskService.getTopicIdByTask(taskId);
+    await notifyService.sendTaskRefreshSocket(topicId);
     return res.status(200).send('Successfully');
   } catch (err) {
     return next(err);
@@ -67,6 +73,8 @@ const updateStatusTask = async (req, res, next) => {
     const { taskId } = req.params;
     const { status } = req.body;
     await taskService.updateStatusTask(taskId, status);
+    const topicId = await taskService.getTopicIdByTask(taskId);
+    await notifyService.sendTaskRefreshSocket(topicId);
     return res.status(200).send('Successfully');
   } catch (err) {
     return next(err);

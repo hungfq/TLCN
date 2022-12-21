@@ -69,6 +69,14 @@ const createWebSocketPlugin = (socket) => (store) => {
       await store.dispatch('notification/fetchListNotifications', token);
     }
   });
+
+  socket.on('task', async (data) => {
+    const { topicId } = store.state.task;
+    const { token } = store.state.auth.userInfo;
+    if (topicId === data) {
+      await store.dispatch('task/fetchAllTask', { token, topicId });
+    }
+  });
 };
 
 const socket = io('http://localhost:5000');

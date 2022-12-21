@@ -109,7 +109,12 @@ export default {
     async closeTaskDetailModal (close) {
       await close();
     },
+    sleep (ms) {
+      // eslint-disable-next-line no-promise-executor-return
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    },
     async onDragEnd (column) {
+      await this.sleep(1);
       if (this.editTask) {
         this.editTask.status = column.value;
         await this.$store.dispatch('task/updateTaskStatus', { token: this.token, value: this.editTask });

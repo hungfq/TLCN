@@ -23,7 +23,7 @@ const sendNotification = async (userId, notification) => {
 
   const socketId = await getSocketIdByUserId(userId.toString());
   if (socketId) {
-    await getIo().emit('notify', notification);
+    await getIo().to(socketId).emit('notify', notification);
   }
 };
 
@@ -42,6 +42,10 @@ const deleteNotify = async (_id, userId) => {
   await _Notification.findOneAndDelete({ _id });
 };
 
+const sendTaskRefreshSocket = async (topicId) => {
+  await getIo().emit('task', topicId);
+};
+
 module.exports = {
   addNotification,
   sendNotification,
@@ -49,4 +53,5 @@ module.exports = {
   readNotify,
   deleteNotify,
   getSocketIdByUserId,
+  sendTaskRefreshSocket,
 };
