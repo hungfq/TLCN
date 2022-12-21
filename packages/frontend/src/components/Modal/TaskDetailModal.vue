@@ -61,7 +61,7 @@
                 v-for="item in taskDetail.comments"
                 :key="item._id"
               >
-                <TaskDetailComment :comment="item"/>
+                <TaskDetailComment :comment="item" />
               </template>
             </div>
             <div class="font-normal my-4 flex space-x-1">
@@ -143,13 +143,14 @@ export default {
     // eslint-disable-next-line vue/require-prop-type-constructor, vue/require-default-prop
     taskId: '',
   },
+  emits: ['closeDetailModal'],
   data () {
     return {
       editor: ClassicEditor,
       editorData: '',
       statuses: [
-        { text: 'TODO', value: 'TODO' },
         { text: 'PENDING', value: 'PENDING' },
+        { text: 'TODO', value: 'TODO' },
         { text: 'IN PROCESS', value: 'IN_PROCESS' },
         { text: 'DONE', value: 'DONE' },
       ],
