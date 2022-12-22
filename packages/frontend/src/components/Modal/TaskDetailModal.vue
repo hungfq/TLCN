@@ -192,8 +192,10 @@ export default {
       this.$emit('closeDetailModal', close);
     },
     async addComment () {
-      await this.$store.dispatch('task/insertComment', { token: this.token, message: this.comment, taskId: this.taskDetail._id });
-      this.comment = '';
+      if (this.comment !== '') {
+        await this.$store.dispatch('task/insertComment', { token: this.token, message: this.comment, taskId: this.taskDetail._id });
+        this.comment = '';
+      }
     },
   },
 };
