@@ -8,7 +8,7 @@
         <ManageBarStudentVue v-if="page === 'management'" />
         <TaskBarTopicVue v-if="page === 'task'" />
       </div>
-      <div class="flex grow flex-col">
+      <div class="flex grow flex-col overflow-x-clip">
         <HeaderBarVue
           v-if="page !== 'task'"
           :username="userName"
