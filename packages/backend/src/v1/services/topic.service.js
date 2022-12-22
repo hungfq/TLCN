@@ -7,17 +7,8 @@ const _TopicProposal = require('../models/topic_proposal.model');
 const _Lecturer = require('../models/lecturer.model');
 const userService = require('./user.service');
 
-const createOne = async (code, title, description, limit, deadline, major, lecturerId, students) => {
-  const topic = await _Topic.create({
-    code,
-    title,
-    description,
-    limit,
-    deadline,
-    major,
-    lecturerId,
-    students,
-  });
+const createOne = async (value) => {
+  const topic = await _Topic.create(value);
   return topic;
 };
 
@@ -27,10 +18,8 @@ const findOne = async (_id) => {
   return topic;
 };
 
-const updateOne = async (_id, code, title, description, limit, deadline, major, lecturerId, students) => {
-  await _Topic.updateOne({ _id }, {
-    code, title, description, limit, deadline, major, lecturerId, students,
-  });
+const updateOne = async (_id, value) => {
+  await _Topic.updateOne({ _id }, value);
 };
 
 const removeOne = async (id) => {

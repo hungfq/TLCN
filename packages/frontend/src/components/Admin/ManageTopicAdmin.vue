@@ -118,8 +118,8 @@ export default {
       'page', 'module', 'section', 'id',
     ]),
   },
-  mounted () {
-    this.$store.dispatch('topic/fetchListTopics', this.token);
+  async mounted () {
+    await this.$store.dispatch('topic/fetchListTopics', this.token);
     this.topics = this.listTopics;
   },
   methods: {
@@ -139,6 +139,8 @@ export default {
         };
         await this.$store.dispatch('topic/removeTopic', value);
         this.$toast.success('Đã xóa thành công!');
+        await this.$store.dispatch('topic/fetchListTopics', this.token);
+        this.search();
       } catch (e) {
         this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
       }
@@ -150,11 +152,9 @@ export default {
       if (this.searchVal !== '') {
         const topicFilter = this.listTopics.filter((topic) => {
           const re = new RegExp(`\\b${this.searchVal}`, 'gi');
-          // console.log('🚀 ~ file: ManageTopicAdmin.vue:155 ~ topicFilter ~ topic.title.match(re)', topic.title.match(re));
           if (topic.title.match(re)) return true;
           if (topic.code.match(re)) return true;
           if (!topic.lecturerId) return false;
-          // console.log('🚀 ~ file: ManageTopicAdmin.vue:158 ~ topicFilter ~ topic.lecturerId.name.match(re)', topic.lecturerId.name.match(re));
           if (topic.lecturerId.name.match(re)) return true;
           return false;
         });

@@ -112,8 +112,8 @@ export default {
       'lecturerId', 'lecturerEmail', 'lecturer', 'listLecturer',
     ]),
   },
-  mounted () {
-    this.$store.dispatch('lecturer/fetchListLecturer', this.token);
+  async mounted () {
+    await this.$store.dispatch('lecturer/fetchListLecturer', this.token);
     this.lecturers = this.listLecturer;
   },
   methods: {

@@ -31,10 +31,8 @@ const importTopics = async (req, res, next) => {
 };
 const insertTopic = async (req, res, next) => {
   try {
-    const {
-      code, title, description, limit, deadline, major, lecturerId, students,
-    } = req.body;
-    const topic = await topicService.createOne(code, title, description, limit, deadline, major, lecturerId, students);
+    const value = req.body;
+    const topic = await topicService.createOne(value);
     return res.status(201).send(topic);
   } catch (err) {
     return next(err);
@@ -60,14 +58,13 @@ const findOneTopic = async (req, res, next) => {
 const updateOneTopic = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const {
-      code, title, description, limit, deadline, major, lecturerId, students,
-    } = req.body;
+    const value = req.body;
+    delete value.id;
     const topic = await topicService.findOne(id);
     if (!topic) {
       return res.status(404).send('Not found');
     }
-    await topicService.updateOne(id, code, title, description, limit, deadline, major, lecturerId, students);
+    await topicService.updateOne(id, value);
     return res.status(200).send('Successfully');
   } catch (err) {
     return next(err);
@@ -185,12 +182,11 @@ const addProposalTopic = async (req, res, next) => {
 const approveProposalTopic = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const {
-      title, description, code, limit, deadline, major, students, lecturerId,
-    } = req.body;
+    const value = req.body;
+    delete value.id;
 
     const topicProposal = await topicService.findOneProposalTopic(id);
-    await topicService.createOne(code, title, description, limit, deadline, major, lecturerId, students);
+    await topicService.createOne(value);
 
     await topicService.deleteOneProposalTopic(id);
 

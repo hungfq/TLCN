@@ -59,6 +59,14 @@
           :disabled="isView"
         />
         <FormKit
+          v-model="startDate"
+          name="startDate"
+          type="date"
+          label="Thời hạn bắt đầu"
+          validation="required"
+          :disabled="isView"
+        />
+        <FormKit
           v-model="deadline"
           name="deadline"
           type="date"
@@ -74,7 +82,46 @@
             <Multiselect
               v-model="lecturerId"
               :options="listLecturers"
-              :close-on-select="false"
+              :searchable="true"
+              :disabled="isView"
+            />
+          </div>
+        </div>
+        <div class="w-3/4">
+          <span class="font-bold text-sm">
+            Giáo viên phản biện
+          </span>
+          <div class="mt-1">
+            <Multiselect
+              v-model="criticalLecturerId"
+              :options="listLecturers"
+              :searchable="true"
+              :disabled="isView"
+            />
+          </div>
+        </div>
+        <div class="w-3/4">
+          <span class="font-bold text-sm">
+            Chủ tịch hội đồng
+          </span>
+          <div class="mt-1">
+            <Multiselect
+              v-model="committeePresidentId"
+              :options="listLecturers"
+              :searchable="true"
+              :disabled="isView"
+            />
+          </div>
+        </div>
+        <div class="w-3/4">
+          <span class="font-bold text-sm">
+            Thư kí hội đồng
+          </span>
+          <div class="mt-1">
+            <Multiselect
+              v-model="committeeSecretaryId"
+              :options="listLecturers"
+              :searchable="true"
               :disabled="isView"
             />
           </div>
@@ -95,6 +142,34 @@
             />
           </div>
         </div>
+        <FormKit
+          v-model="advisorLecturerGrade"
+          name="limit"
+          type="number"
+          label="Điểm của giảng viên hướng dẫn"
+          :disabled="isView"
+        />
+        <FormKit
+          v-model="criticalLecturerGrade"
+          name="limit"
+          type="number"
+          label="Điểm của giảng viên phản biện"
+          :disabled="isView"
+        />
+        <FormKit
+          v-model="committeePresidentGrade"
+          name="limit"
+          type="number"
+          label="Điểm của chủ tịch hội đồng"
+          :disabled="isView"
+        />
+        <FormKit
+          v-model="committeeSecretaryGrade"
+          name="limit"
+          type="number"
+          label="Điểm của thư ký"
+          :disabled="isView"
+        />
       </div>
       <!-- Modal footer -->
       <div class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200">
@@ -133,6 +208,15 @@ export default {
       lecturerId: '',
       major: '',
       studentIds: [],
+      startDate: '',
+      thesisDefenseDate: '',
+      committeePresidentId: '',
+      committeeSecretaryId: '',
+      criticalLecturerId: '',
+      advisorLecturerGrade: '',
+      committeePresidentGrade: '',
+      committeeSecretaryGrade: '',
+      criticalLecturerGrade: '',
       listStudents: [
         'student1',
         'student2',
@@ -208,6 +292,27 @@ export default {
         if (topic.lecturerId) this.lecturerId = topic.lecturerId._id;
         this.major = topic.major;
         this.studentIds = topic.students;
+        if (topic.startDate) {
+          const date = new Date(topic.startDate);
+          const dateString = new Date(date.getTime() - (date.getTimezoneOffset() * 60000))
+            .toISOString()
+            .split('T')[0];
+          this.startDate = dateString;
+        }
+        if (topic.thesisDefenseDate) {
+          const date = new Date(topic.thesisDefenseDate);
+          const dateString = new Date(date.getTime() - (date.getTimezoneOffset() * 60000))
+            .toISOString()
+            .split('T')[0];
+          this.thesisDefenseDate = dateString;
+        }
+        this.committeePresidentId = topic.committeePresidentId;
+        this.committeeSecretaryId = topic.committeeSecretaryId;
+        this.criticalLecturerId = topic.criticalLecturerId;
+        this.advisorLecturerGrade = topic.advisorLecturerGrade;
+        this.committeePresidentGrade = topic.committeePresidentGrade;
+        this.committeeSecretaryGrade = topic.committeeSecretaryGrade;
+        this.criticalLecturerGrade = topic.criticalLecturerGrade;
       }
     }
   },
@@ -226,6 +331,14 @@ export default {
         major: this.major,
         students: studentIds,
         lecturerId,
+        thesisDefenseDate: this.thesisDefenseDate,
+        committeePresidentId: this.committeePresidentId,
+        committeeSecretaryId: this.committeeSecretaryId,
+        criticalLecturerId: this.criticalLecturerId,
+        advisorLecturerGrade: this.advisorLecturerGrade,
+        committeePresidentGrade: this.committeePresidentGrade,
+        committeeSecretaryGrade: this.committeeSecretaryGrade,
+        criticalLecturerGrade: this.criticalLecturerGrade,
       };
       try {
         if (this.isSave) {

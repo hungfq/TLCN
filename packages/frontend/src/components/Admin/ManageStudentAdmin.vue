@@ -111,8 +111,8 @@ export default {
       'studentId', 'studentEmail', 'student', 'listStudents',
     ]),
   },
-  mounted () {
-    this.$store.dispatch('student/fetchListStudent', this.token);
+  async mounted () {
+    await this.$store.dispatch('student/fetchListStudent', this.token);
     this.students = this.listStudents;
   },
   methods: {

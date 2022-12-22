@@ -7,8 +7,8 @@
     <BannerInfo class="my-10" />
     <BoardTopic
       class="my-10"
-      :name-major="'Công nghệ phần mềm'"
       :url-image="imageUrlCNPM"
+      :list-topics="listTopics"
     />
   </div>
 </template>
@@ -19,12 +19,6 @@ import HeaderPage from '../components/Home/Header.vue';
 import BannerFrame from '../components/Home/BannerFrame.vue';
 import BannerInfo from '../components/Home/BannerInfo.vue';
 import BoardTopic from '../components/Home/BoardTopic.vue';
-import MajorApi from '../utils/api/major';
-import TopicApi from '../utils/api/topic';
-
-const imageUrlCNPM = new URL('../assets/images/Khoa_CNPM.png', import.meta.url).href;
-const imageUrlHTTT = new URL('../assets/images/Khoa_HTTT.jpg', import.meta.url).href;
-const imageUrlATTT = new URL('../assets/images/Khoa_ATTT.png', import.meta.url).href;
 
 export default {
   name: 'HomePage',
@@ -38,11 +32,6 @@ export default {
   },
   data () {
     return {
-      imageUrlCNPM,
-      imageUrlHTTT,
-      imageUrlATTT,
-      listMajor: [],
-      mapTopic: [],
     };
   },
   computed: {
@@ -53,12 +42,15 @@ export default {
     ...mapGetters('auth', [
       'userId', 'userEmail', 'userRole', 'token',
     ]),
+    ...mapGetters('topic', [
+      'listTopics',
+    ]),
   },
   watch: {
     // Note: only simple paths. Expressions are not supported.
   },
   async mounted () {
-
+    await this.$store.dispatch('topic/fetchListTopics', 'huhu');
   },
   methods: {
   },

@@ -79,6 +79,45 @@
             />
           </div>
         </div>
+        <div class="w-3/4">
+          <span class="font-bold text-sm">
+            Giáo viên phản biện
+          </span>
+          <div class="mt-1">
+            <Multiselect
+              v-model="criticalLecturerId"
+              :options="listLecturers"
+              :searchable="true"
+              :disabled="isView"
+            />
+          </div>
+        </div>
+        <div class="w-3/4">
+          <span class="font-bold text-sm">
+            Chủ tịch hội đồng
+          </span>
+          <div class="mt-1">
+            <Multiselect
+              v-model="committeePresidentId"
+              :options="listLecturers"
+              :searchable="true"
+              :disabled="isView"
+            />
+          </div>
+        </div>
+        <div class="w-3/4">
+          <span class="font-bold text-sm">
+            Thư kí hội đồng
+          </span>
+          <div class="mt-1">
+            <Multiselect
+              v-model="committeeSecretaryId"
+              :options="listLecturers"
+              :searchable="true"
+              :disabled="isView"
+            />
+          </div>
+        </div>
         <div class="my-2-1 w-3/4">
           <span class="font-bold text-sm py-4 my-4">
             Sinh viên đăng kí
@@ -133,6 +172,15 @@ export default {
       lecturerId: '',
       major: '',
       studentIds: [],
+      startDate: '',
+      thesisDefenseDate: '',
+      committeePresidentId: '',
+      committeeSecretaryId: '',
+      criticalLecturerId: '',
+      advisorLecturerGrade: '',
+      committeePresidentGrade: '',
+      committeeSecretaryGrade: '',
+      criticalLecturerGrade: '',
       listStudents: [
         'student1',
         'student2',
@@ -207,6 +255,27 @@ export default {
         if (topic.lecturerId) this.lecturerId = topic.lecturerId;
         this.major = topic.major;
         this.studentIds = topic.students;
+        if (topic.startDate) {
+          const date = new Date(topic.startDate);
+          const dateString = new Date(date.getTime() - (date.getTimezoneOffset() * 60000))
+            .toISOString()
+            .split('T')[0];
+          this.startDate = dateString;
+        }
+        if (topic.thesisDefenseDate) {
+          const date = new Date(topic.thesisDefenseDate);
+          const dateString = new Date(date.getTime() - (date.getTimezoneOffset() * 60000))
+            .toISOString()
+            .split('T')[0];
+          this.thesisDefenseDate = dateString;
+        }
+        this.committeePresidentId = topic.committeePresidentId;
+        this.committeeSecretaryId = topic.committeeSecretaryId;
+        this.criticalLecturerId = topic.criticalLecturerId;
+        this.advisorLecturerGrade = topic.advisorLecturerGrade;
+        this.committeePresidentGrade = topic.committeePresidentGrade;
+        this.committeeSecretaryGrade = topic.committeeSecretaryGrade;
+        this.criticalLecturerGrade = topic.criticalLecturerGrade;
       }
     }
   },
@@ -226,6 +295,14 @@ export default {
         major: this.major,
         students: studentIds,
         lecturerId,
+        thesisDefenseDate: this.thesisDefenseDate,
+        committeePresidentId: this.committeePresidentId,
+        committeeSecretaryId: this.committeeSecretaryId,
+        criticalLecturerId: this.criticalLecturerId,
+        advisorLecturerGrade: this.advisorLecturerGrade,
+        committeePresidentGrade: this.committeePresidentGrade,
+        committeeSecretaryGrade: this.committeeSecretaryGrade,
+        criticalLecturerGrade: this.criticalLecturerGrade,
       };
       if (!value.title || !value.code || !value.limit || !value.major || !value.lecturerId || !value.deadline) {
         this.$toast.error('Vui lòng nhập các cột còn thiếu dữ liệu!');
