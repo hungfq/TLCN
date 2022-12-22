@@ -8,6 +8,12 @@
     >
       Add task
     </button>
+    <div class="inline-block w-fit border-2 rounded-md">
+      <SearchInput
+        v-model="searchVal"
+        @keydown.space.enter="search"
+      />
+    </div>
   </template>
   <div class="flex overflow-x-scroll max-w-full">
     <div class="flex p-2 pr-0">
@@ -20,13 +26,13 @@
           {{ column.title }}
         </p>
         <VueDraggableNext
-          :list="listTask"
+          :list="tasks"
           :animation="200"
           ghost-class="ghost-card"
           group="tasks"
           @add="onDragEnd(column)"
         >
-          <template v-for="(task) in listTask">
+          <template v-for="(task) in tasks">
             <task-card
               v-if="task.status === column.value"
               :key="task._id"
@@ -50,6 +56,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import { VueDraggableNext } from 'vue-draggable-next';
+import SearchInput from 'vue-search-input';
 import TaskDetailModalVue from '../Modal/TaskDetailModal.vue';
 import TaskCard from './TaskCard.vue';
 
@@ -59,6 +66,7 @@ export default {
     TaskCard,
     VueDraggableNext,
     TaskDetailModalVue,
+    SearchInput,
   },
 
   data () {
@@ -84,6 +92,8 @@ export default {
         },
       ],
       editTask: null,
+      searchVal: '',
+      tasks: [],
     };
   },
   computed: {
@@ -96,6 +106,16 @@ export default {
     ...mapGetters('task', [
       'listTask', 'topicId',
     ]),
+  },
+  watch: {
+    listTask: {
+      handler () {
+        this.tasks = this.listTask;
+      },
+    },
+  },
+  mounted () {
+    this.tasks = this.listTask;
   },
   methods: {
     showTaskDetailModal (id) {
@@ -129,6 +149,19 @@ export default {
       this.editTask = null;
       this.editTask = task;
       console.log('🚀 ~ file: TaskDraggable.vue:111 ~ handleChange ~ task', task);
+    },
+    search () {
+      if (this.searchVal !== '') {
+        const taskFilters = this.listTask.filter((st) => {
+          const re = new RegExp(`\\b${this.searchVal}`, 'gi');
+          if (st.title.match(re)) return true;
+          if (st.code.match(re)) return true;
+          return false;
+        });
+        this.tasks = taskFilters;
+      } else {
+        this.tasks = this.listTask;
+      }
     },
   },
 };
