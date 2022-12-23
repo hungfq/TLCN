@@ -95,6 +95,11 @@ const getTopicIdByTask = async (taskId) => {
   return task.topicId;
 }
 
+const getStatistics = async (topicId) => {
+  let tasks = await _Task.find({ topicId });
+  return tasks;
+}
+
 module.exports = {
   listTaskByTopic,
   createNewTask,
@@ -110,4 +115,5 @@ module.exports = {
   updateProcess,
   deleteTask,
   getTopicIdByTask,
+  getStatistics,
 };

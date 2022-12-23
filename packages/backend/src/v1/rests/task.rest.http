@@ -96,3 +96,6 @@ Content-Type: application/json
 ###
 DELETE {{host}}/v1/task/638301df6c6ad645905980b8
 Authorization: Bearer {{student_token}}
+###
+GET {{host}}/v1/task-statistics/6376fd1774d9805244156eed
+Authorization: Bearer {{student_token}}

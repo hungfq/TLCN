@@ -6,7 +6,7 @@
         Xin chào, <span class="font-bold text-lg">{{ username }}</span>
       </div>
       <div class="font-medium text-blue-800">
-        Chúc bạn một ngày làm việc và học tập hiệu quả!
+        Chúc bạn một ngày học tập và làm việc thật hiệu quả!
       </div>
     </div>
   </div>

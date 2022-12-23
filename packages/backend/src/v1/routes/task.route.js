@@ -14,6 +14,7 @@ const {
   addCommentTask,
   deleteCommentTask,
   deleteTask,
+  taskStatistics,
 } = require('../controller/task.controller');
 
 const authMiddleware = require('../middlewares/auth.middleware');
@@ -37,6 +38,8 @@ const router = (app) => {
   app.post('/v1/task-comment/:id', isAuth, addCommentTask);
   app.delete('/v1/task-comment/:id', isAuth, deleteCommentTask);
   app.delete('/v1/task/:id', isAuth, deleteTask);
+
+  app.get('/v1/task-statistics/:topicId', isAuth, taskStatistics);
 };
 
 module.exports = router;

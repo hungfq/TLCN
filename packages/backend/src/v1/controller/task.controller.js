@@ -172,6 +172,16 @@ const deleteTask = async (req, res, next) => {
   }
 };
 
+const taskStatistics = async (req, res, next) => {
+  try {
+    const { topicId } = req.params;
+    const task = await taskService.getStatistics(topicId);
+    return res.status(200).send(task);
+  } catch (err) {
+    return next(err);
+  }
+};
+
 module.exports = {
   listTaskByTopic,
   createNewTask,
@@ -187,4 +197,5 @@ module.exports = {
   addCommentTask,
   deleteCommentTask,
   deleteTask,
+  taskStatistics,
 };
