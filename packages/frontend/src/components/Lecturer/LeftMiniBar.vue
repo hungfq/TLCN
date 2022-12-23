@@ -211,6 +211,7 @@ export default {
   methods: {
     async signOut () {
       const { _id } = this.$store.state.auth.userInfo;
+      await this.$store.dispatch('url/clearUrls');
       await this.$store.$socket.emit('logout', _id);
       this.$store.dispatch('auth/signOut');
     },

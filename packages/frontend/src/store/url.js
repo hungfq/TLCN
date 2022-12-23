@@ -17,23 +17,28 @@ const getters = {
 };
 
 const actions = {
-  async updateUrl({ commit, dispatch, rootState }, url) {
+  async updateUrl ({ commit, dispatch, rootState }, url) {
     commit('setUrl', url);
   },
-  async updatePage({ commit, dispatch, rootState }, page) {
+  async updatePage ({ commit, dispatch, rootState }, page) {
     commit('setPage', page);
   },
-  async updateModule({ commit, dispatch, rootState }, module) {
+  async updateModule ({ commit, dispatch, rootState }, module) {
     commit('setModule', module);
   },
-  async updateSubModule({ commit, dispatch, rootState }, subModule) {
+  async updateSubModule ({ commit, dispatch, rootState }, subModule) {
     commit('setSubModule', subModule);
   },
-  async updateSection({ commit, dispatch, rootState }, section) {
+  async updateSection ({ commit, dispatch, rootState }, section) {
     commit('setSection', section);
   },
-  async updateId({ commit, dispatch, rootState }, id) {
+  async updateId ({ commit, dispatch, rootState }, id) {
     commit('setId', id);
+  },
+  clearUrls ({ commit }) {
+    commit('setModule', null);
+    commit('setSubModule', null);
+    commit('setSection', null);
   },
 };
 

@@ -57,10 +57,20 @@ export default {
         await this.$store.$socket.emit('id', _id);
         if (typeLogin === 'ADMIN') {
           this.$router.push('/admin');
+          this.$store.dispatch('url/updatePage', 'management');
+          this.$store.dispatch('url/updateModule', 'student');
+          this.$store.dispatch('url/updateSection', 'student-list');
         } else if (typeLogin === 'STUDENT') {
           this.$router.push('/student');
+          this.$store.dispatch('url/updatePage', 'management');
+          this.$store.dispatch('url/updateModule', 'topic');
+          this.$store.dispatch('url/updateSection', 'topic-list');
         } else if (typeLogin === 'LECTURER') {
           this.$router.push('/lecturer');
+          this.$store.dispatch('url/updatePage', 'management');
+          this.$store.dispatch('url/updateModule', 'topic');
+          this.$store.dispatch('url/updateSubModule', 'topic');
+          this.$store.dispatch('url/updateSection', 'topic-list');
         }
       } catch (err) {
         console.log(err.message);
