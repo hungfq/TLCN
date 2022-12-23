@@ -125,7 +125,7 @@ export default {
       this.$store.dispatch('url/updateModule', 'topic');
       this.$store.dispatch('url/updateSection', 'topic-list');
     }
-    this.$store.dispatch('schedule/fetchListScheduleToday', this.token);
+    await this.$store.dispatch('schedule/fetchListScheduleToday', this.token);
   },
   async created () {
     const { _id } = this.$store.state.auth.userInfo;

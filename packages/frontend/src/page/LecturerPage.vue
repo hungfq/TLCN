@@ -27,13 +27,19 @@
               />
             </template>
             <template v-if="module === 'topic_proposal'">
-              <ManageTopicProposalLecturerVue v-if="section === 'topic_proposal-list'" />
+              <ManageTopicProposalLecturerVue
+                v-if="section === 'topic_proposal-list'"
+                :open="isScheduleApprove"
+              />
               <FormTopicProposalVue
                 v-if="section === 'topic_proposal-update' || section === 'topic_proposal-import' || section === 'topic_proposal-view'"
               />
             </template>
             <template v-if="module === 'topic_proposal_approve'">
-              <ManageApproveProposalLecturerVue v-if="section === 'topic_proposal_approve-list'" />
+              <ManageApproveProposalLecturerVue
+                v-if="section === 'topic_proposal_approve-list'"
+                :open="isScheduleApprove"
+              />
               <FormApproveProposalVue v-if="section === 'topic_proposal_approve-view' || section === 'topic_proposal_approve-update'" />
             </template>
           </template>
@@ -105,6 +111,13 @@ export default {
     ...mapGetters('url', [
       'page', 'module', 'subModule', 'section', 'id',
     ]),
+    ...mapGetters('schedule', [
+      'listScheduleToday',
+    ]),
+    isScheduleApprove () {
+      const check = this.listScheduleToday.find((c) => c.type === 'APPROVE');
+      return !!check;
+    },
   },
   async mounted () {
     if (!this.isAuthenticated || this.userRole !== 'LECTURER') {
@@ -117,6 +130,7 @@ export default {
       this.$store.dispatch('url/updateSubModule', 'topic');
       this.$store.dispatch('url/updateSection', 'topic-list');
     }
+    await this.$store.dispatch('schedule/fetchListScheduleToday', this.token);
   },
   async created () {
     const { _id } = this.$store.state.auth.userInfo;
