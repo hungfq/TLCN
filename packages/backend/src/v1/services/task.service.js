@@ -58,6 +58,14 @@ const addCommentToTask = async (id, commentId) => {
   await task.save();
 };
 
+const removeCommentFromTask = async (id, commentId) => {
+  const task = await _Task.findById(id);
+  task.comment = task.comment.filter(item => item.toString() !== commentId.toString());
+  console.log(task.comment);
+
+  await task.save();
+};
+
 const updateAssignTo = async (id, assignTo) => {
   await _Task.updateOne({ id }, { assignTo });
 };
@@ -93,6 +101,7 @@ module.exports = {
   getOneTask,
   updateOneTask,
   addCommentToTask,
+  removeCommentFromTask,
   updateStatusTask,
   updateAssignTo,
   updateStartTime,

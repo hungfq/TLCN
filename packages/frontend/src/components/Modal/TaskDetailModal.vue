@@ -14,7 +14,7 @@
             <input
               v-model="taskDetail.code"
               class="w-full p-2"
-              placeholder="Code"
+              placeholder="Mã nhiệm vụ..."
             >
           </h2>
           <button
@@ -45,7 +45,7 @@
               <input
                 v-model="taskDetail.title"
                 class="w-full p-2"
-                placeholder="Title"
+                placeholder="Tên nhiệm vụ"
               >
             </div>
             <!-- <div class="font-medium my-4">
@@ -61,28 +61,31 @@
                 v-for="item in taskDetail.comments"
                 :key="item._id"
               >
-                <TaskDetailComment :comment="item" />
+                <TaskDetailComment
+                  :comment="item"
+                  :task-id="taskDetail._id"
+                />
               </template>
             </div>
             <div class="font-normal my-4 flex space-x-1">
               <input
                 v-model="comment"
                 class=" p-2 border-2 rounded-sm flex-1"
-                placeholder="Add a comment..."
+                placeholder="Thêm nhận xét..."
                 @keyup.enter="addComment"
               >
               <button
                 class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded"
                 @click="addComment"
               >
-                Send
+                Gửi
               </button>
             </div>
           </div>
           <!-- Right body -->
           <div class="col-span-3">
             <div class="font-normal my-4">
-              Status:
+              Trạng thái:
               <select
                 v-model="taskDetail.status"
                 class="mt-1 block w-full rounded-md bg-gray-100 border border-gray-300 py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
@@ -97,7 +100,7 @@
               </select>
             </div>
             <div class="font-normal my-4">
-              Assignee:
+              Được phân công:
               <select
                 v-model="taskDetail.assignTo"
                 class="mt-1 block w-full rounded-md bg-gray-100 border border-gray-300 py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
@@ -113,14 +116,24 @@
             </div>
             <template v-if="taskDetail.createdByFilter">
               <div class="font-normal my-4">
-                Created: {{ taskDetail.createdByFilter ? taskDetail.createdByFilter.name : 'none' }}
+                Tạo bởi: {{ taskDetail.createdByFilter ? taskDetail.createdByFilter.name : 'none' }}
+              </div>
+            </template>
+            <template v-if="taskDetail.createdAt">
+              <div class="font-normal my-4">
+                Tạo mới: {{ timeAgo(taskDetail.createdAt) }}
+              </div>
+            </template>
+            <template v-if="taskDetail.updatedAt">
+              <div class="font-normal my-4">
+                Cập nhật: {{ timeAgo(taskDetail.updatedAt) }}
               </div>
             </template>
             <button
               class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full"
               @click="saveHandle(close)"
             >
-              Save
+              Lưu
             </button>
           </div>
         </div>
@@ -131,6 +144,8 @@
 <script>
 import { mapGetters } from 'vuex';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import moment from 'moment';
+import 'moment/dist/locale/vi';
 import TaskDetailComment from '../Lecturer/TaskDetailComment.vue';
 
 export default {
@@ -149,10 +164,10 @@ export default {
       editor: ClassicEditor,
       editorData: '',
       statuses: [
-        { text: 'PENDING', value: 'PENDING' },
-        { text: 'TODO', value: 'TODO' },
-        { text: 'IN PROCESS', value: 'IN_PROCESS' },
-        { text: 'DONE', value: 'DONE' },
+        { text: 'CHƯA GIẢI QUYẾT', value: 'PENDING' },
+        { text: 'SẼ LÀM', value: 'TODO' },
+        { text: 'ĐANG LÀM', value: 'IN_PROCESS' },
+        { text: 'ĐÃ HOÀN THÀNH', value: 'DONE' },
       ],
       comment: '',
     };
@@ -196,6 +211,10 @@ export default {
         await this.$store.dispatch('task/insertComment', { token: this.token, message: this.comment, taskId: this.taskDetail._id });
         this.comment = '';
       }
+    },
+    timeAgo (createdAt) {
+      moment.updateLocale('vi');
+      return moment(createdAt).fromNow();
     },
   },
 };

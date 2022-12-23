@@ -6,7 +6,7 @@
       class=" m-4 bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded"
       @click="addTaskHandler"
     >
-      Add task
+      Thêm nhiệm vụ
     </button>
     <div class="inline-block w-fit border-2 rounded-md">
       <SearchInput
@@ -75,19 +75,19 @@ export default {
       taskId: '',
       columns: [
         {
-          title: 'PENDING',
+          title: 'CHƯA GIẢI QUYẾT',
           value: 'PENDING',
         },
         {
-          title: 'TO DO',
+          title: 'SẼ LÀM',
           value: 'TODO',
         },
         {
-          title: 'IN PROGRESS',
+          title: 'ĐANG LÀM',
           value: 'IN_PROCESS',
         },
         {
-          title: 'DONE',
+          title: 'ĐÃ HOÀN THÀNH',
           value: 'DONE',
         },
       ],

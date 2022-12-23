@@ -12,6 +12,7 @@ const {
   updateInfo,
   getCommentTask,
   addCommentTask,
+  deleteCommentTask,
   deleteTask,
 } = require('../controller/task.controller');
 
@@ -34,6 +35,7 @@ const router = (app) => {
   app.put('/v1/task-info/:id', isAuth, updateInfo);
   app.get('/v1/task-comment/:id', isAuth, getCommentTask);
   app.post('/v1/task-comment/:id', isAuth, addCommentTask);
+  app.delete('/v1/task-comment/:id', isAuth, deleteCommentTask);
   app.delete('/v1/task/:id', isAuth, deleteTask);
 };
 

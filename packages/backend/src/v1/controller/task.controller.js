@@ -148,6 +148,18 @@ const addCommentTask = async (req, res, next) => {
   }
 };
 
+const deleteCommentTask = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { commentId } = req.body;
+    await taskService.removeCommentFromTask(id, commentId);
+    await commentService.deleteComment(commentId);
+    return res.status(200).send('Successfully');
+  } catch (err) {
+    return next(err);
+  }
+};
+
 const deleteTask = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -173,5 +185,6 @@ module.exports = {
   updateInfo,
   getCommentTask,
   addCommentTask,
+  deleteCommentTask,
   deleteTask,
 };

@@ -110,6 +110,15 @@ const actions = {
       throw new Error(e.message);
     }
   },
+  async removeComment ({ dispatch }, payload) {
+    try {
+      const { token, commentId, taskId } = payload;
+      await TaskApi.removeComment(token, commentId, taskId);
+      dispatch('fetchTaskDetail', { token, taskId });
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  },
 };
 
 const mutations = {

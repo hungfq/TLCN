@@ -74,4 +74,16 @@ export default class TaskApi {
     });
     return res.data;
   }
+
+  static async removeComment (token, commentId, taskId) {
+    const res = await axios.delete(`/task-comment/${taskId}`, {
+      headers: {
+        authorization: `bearer ${token}`,
+      },
+      data: {
+        commentId,
+      },
+    });
+    return res.data;
+  }
 }

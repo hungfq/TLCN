@@ -86,6 +86,13 @@ Content-Type: application/json
     "message": "hello"
 }
 ###
+DELETE  {{host}}/v1/task-comment/63a57643ef74271df051bc27
+Authorization: Bearer {{student_token}}
+Content-Type: application/json
 
+{
+    "commentId": "63a584b4ef74271df051c0e0"
+}
+###
 DELETE {{host}}/v1/task/638301df6c6ad645905980b8
 Authorization: Bearer {{student_token}}

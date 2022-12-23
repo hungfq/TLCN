@@ -178,6 +178,7 @@
 <script>
 import { mapState, mapGetters } from 'vuex';
 import moment from 'moment';
+import 'moment/dist/locale/vi';
 
 export default {
   name: 'LeftMiniBar',
@@ -228,6 +229,7 @@ export default {
       this.$store.dispatch('url/updatePage', page);
     },
     timeAgo (createdAt) {
+      moment.updateLocale('vi');
       return moment(createdAt).fromNow();
     },
     unreadCount (listNotifications) {

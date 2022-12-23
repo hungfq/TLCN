@@ -27,6 +27,10 @@ const createComment = async (message, createdBy) => {
   return comment;
 };
 
+const deleteComment = async (commentId) => {
+  await _Comment.deleteOne({ _id: commentId });
+};
+
 const deleteMany = async (ids) => {
   await _Comment.deleteMany({ _id: { $in: ids } });
 };
@@ -35,5 +39,6 @@ module.exports = {
   getMultiComment,
   getMultiCommentWithUserInfo,
   createComment,
+  deleteComment,
   deleteMany,
 };
