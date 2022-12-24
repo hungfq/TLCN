@@ -8,10 +8,8 @@ const _Schedule = require('../models/schedule.model');
 
 const createOne = async (req, res, next) => {
   try {
-    const {
-      name, description, startDate, endDate, type,
-    } = req.body;
-    const schedule = await scheduleService.createOne(name, description, startDate, endDate, type);
+    const value = req.body;
+    const schedule = await scheduleService.createOne(value);
     return res.status(201).send(schedule);
   } catch (err) {
     return next(err);
@@ -31,11 +29,8 @@ const findOne = async (req, res, next) => {
 const updateOne = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const {
-      name, description, startDate, endDate, type,
-    } = req.body;
-    console.log('🚀 ~ file: schedule.controller.js:37 ~ updateOne ~ type', type);
-    await scheduleService.updateOne(id, name, description, startDate, endDate, type);
+    const value = req.body;
+    await scheduleService.updateOne(id, value);
     return res.status(200).send('Successfully');
   } catch (err) {
     return next(err);

@@ -10,14 +10,8 @@ const findOne = async (_id) => {
   return schedule;
 };
 
-const createOne = async (name, description, startDate, endDate, type) => {
-  const schedule = await _Schedule.create({
-    name,
-    description,
-    startDate,
-    endDate,
-    type,
-  });
+const createOne = async (value) => {
+  const schedule = await _Schedule.create(value);
   return schedule;
 };
 
@@ -25,15 +19,8 @@ const removeSchedule = async (id) => {
   await _Schedule.deleteOne({ _id: id });
 };
 
-const updateOne = async (_id, name, description, startDate, endDate, type) => {
-  const value = {
-    name,
-    description,
-    startDate,
-    endDate,
-    type,
-  };
-  await _Schedule.updateOne({ _id }, value);
+const updateOne = async (id, value) => {
+  await _Schedule.updateOne({ _id: id }, value);
 };
 
 const listBetweenTime = async (from, to) => {

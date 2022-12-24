@@ -91,16 +91,6 @@ const listTopic = async (req, res, next) => {
   }
 };
 
-const searchTopic = async (req, res, next) => {
-  try {
-    const { value, type } = req.query;
-    const topics = await topicService.search(value, type);
-    return res.status(200).send(topics);
-  } catch (err) {
-    return next(err);
-  }
-};
-
 const updateTopicStudent = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -406,7 +396,6 @@ module.exports = {
   insertTopic,
   findOneTopic,
   listTopic,
-  searchTopic,
   updateOneTopic,
   deleteOneTopic,
   updateTopicStudent,

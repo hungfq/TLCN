@@ -45,6 +45,12 @@
           Quản lý admin
         </a>
         <a
+          :class="[ isCommittee ? 'flex p-2 items-center w-full space-x-2 text-white bg-indigo-600 rounded-lg' : 'flex p-2   items-center space-x-2 text-indigo-600 transition-colors rounded-lg group hover:bg-indigo-600 hover:text-white']"
+          @click="updateModule('committee')"
+        >
+          Quản lý hội đồng
+        </a>
+        <a
           :class="[ isTopic ? 'flex p-2 items-center w-full space-x-2 text-white bg-indigo-600 rounded-lg' : 'flex p-2   items-center space-x-2 text-indigo-600 transition-colors rounded-lg group hover:bg-indigo-600 hover:text-white']"
           @click="updateModule('topic')"
         >
@@ -101,6 +107,9 @@ export default {
     },
     isTopicProposal () {
       return this.module === 'topic_proposal';
+    },
+    isCommittee () {
+      return this.module === 'committee';
     },
   },
   mounted () {

@@ -17,15 +17,10 @@ const TopicSchema = new mongoose.Schema({
   },
   students: { type: Array, default: [] },
   tasks: { type: Array, default: [] },
-  calendars: { type: Array, default: [] },
-  committeePresidentId: { type: Schema.Types.ObjectId },
-  committeeSecretaryId: { type: Schema.Types.ObjectId },
-  criticalLecturerId: { type: Schema.Types.ObjectId },
   advisorLecturerGrade: { type: String, default: '0' },
   committeePresidentGrade: { type: String, default: '0' },
   committeeSecretaryGrade: { type: String, default: '0' },
   criticalLecturerGrade: { type: String, default: '0' },
-
 });
 
 module.exports = mongoose.model('Topic', TopicSchema);

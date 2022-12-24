@@ -5,13 +5,12 @@ const ScheduleSchema = new mongoose.Schema({
   description: { type: String },
   students: { type: Array },
   topics: { type: Array },
-  startDate: { type: Date },
-  endDate: { type: Date },
-  type: {
-    type: String,
-    enum: ['PROPOSAL', 'APPROVE', 'REGISTER'],
-    default: 'PROPOSAL',
-  },
+  startProposalDate: { type: Date },
+  endProposalDate: { type: Date },
+  startApproveDate: { type: Date },
+  endApproveDate: { type: Date },
+  startRegisterDate: { type: Date },
+  endRegisterDate: { type: Date },
 });
 
 module.exports = mongoose.model('Schedule', ScheduleSchema);

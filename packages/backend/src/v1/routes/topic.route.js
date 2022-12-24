@@ -3,7 +3,7 @@ const fs = require('fs');
 const { upload } = require('../utils/file');
 const {
   importTopics, insertTopic, listTopic, updateOneTopic, deleteOneTopic,
-  findOneTopic, searchTopic, updateTopicStudent, updateTopicLecturer,
+  findOneTopic, updateTopicStudent, updateTopicLecturer,
   addProposalTopic, listProposalTopic, approveProposalTopic, removeProposalTopic,
   listTopicReviewByLecturer, listTopicProposalByCreatedId, updateProposalByUser,
   approveProposalByLecturer, listTopicReviewByAdmin, getListTopicAcceptRegister,
@@ -23,7 +23,6 @@ const router = (app) => {
   app.put('/v1/topic/:id', isAuth, updateOneTopic);
   app.delete('/v1/topic/:id', isAuth, deleteOneTopic);
   app.delete('/v1/register/:id', isAuth, removeRegisterTopicStudent);
-  app.get('/v1/topic-search', isAuth, searchTopic);
   app.put('/v1/topic-student/:id', isAuth, updateTopicStudent);
   app.post('/v1/topic-student/:id', isAuth, addNewRegisterTopicStudent);
   app.put('/v1/topic-lecturer/:id', isAuth, updateTopicLecturer);

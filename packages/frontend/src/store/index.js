@@ -14,6 +14,7 @@ import task from './task';
 import router from '../router';
 import topic_proposal from './topic_proposal';
 import notification from './notification';
+import committee from './committee';
 /**
  * Disable persisted state when in embed mode!
  */
@@ -88,7 +89,17 @@ const websocketPlugin = createWebSocketPlugin(socket);
 
 const store = new Vuex.Store({
   modules: {
-    auth, student, url, lecturer, admin, topic, schedule, topic_proposal, notification, task,
+    auth,
+    student,
+    url,
+    lecturer,
+    admin,
+    topic,
+    schedule,
+    topic_proposal,
+    notification,
+    task,
+    committee,
   },
   plugins: [vuexLocal, websocketPlugin],
 });
