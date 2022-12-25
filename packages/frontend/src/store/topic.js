@@ -70,6 +70,16 @@ const actions = {
     dispatch('fetchListTopicByStudent', token);
     dispatch('fetchListTopics', token);
   },
+  async importTopic ({ dispatch }, payload) {
+    try {
+      const { token, xlsx } = payload;
+      const data = await TopicApi.importTopic(token, xlsx);
+      dispatch('fetchListTopics', token);
+      return data;
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  },
 };
 
 const mutations = {

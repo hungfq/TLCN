@@ -147,4 +147,21 @@ export default class TopicApi {
     });
     return res.data;
   }
+
+  static async importTopic (token, xlsx) {
+    const formData = new FormData();
+
+    formData.append('xlsx', xlsx);
+    const res = await axios.post(
+      '/topic-import',
+      formData,
+      {
+        headers: {
+          authorization: `bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      },
+    );
+    return res;
+  }
 }

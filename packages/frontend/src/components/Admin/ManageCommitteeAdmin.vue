@@ -177,16 +177,16 @@ export default {
       this.removeId = id;
       this.showConfirmModal = true;
     },
-    upload () {
+    async upload () {
       const { files } = this.$refs.uploadBtn;
       if (files.length > 0) {
-        this.$store.dispatch('student/importStudent', { token: this.token, xlsx: files[0] })
+        await this.$store.dispatch('committee/importCommittee', { token: this.token, xlsx: files[0] })
           .then((data) => {
             if (data.status === 201) {
               this.$toast.success('Đã nhập thành công!');
             }
           });
-
+        this.search();
         this.$refs.uploadBtn.value = '';
       } else {
         this.$toast.error('File không tồn tại');
