@@ -107,15 +107,16 @@
         <tr
           v-for="task in tasks"
           :key="task._id"
+          class="bg-slate-300 hover:bg-gray-50"
         >
-          <td class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap">
+          <td class="py-2 px-6 font-medium text-gray-900 whitespace-nowrap">
             <!-- {{ task }} -->
             {{ task.code }}
           </td>
-          <td class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap">
+          <td class="py-2 px-6 font-medium text-gray-900 whitespace-nowrap">
             {{ task.title }}
           </td>
-          <td class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap">
+          <td class="py-2 px-6 font-medium text-gray-900 whitespace-nowrap">
             <select
               v-model="task.status"
               disabled
@@ -130,7 +131,7 @@
               </option>
             </select>
           </td>
-          <td class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap">
+          <td class="py-2 px-6 font-medium text-gray-900 whitespace-nowrap">
             <select
               v-model="task.assignTo"
               disabled
