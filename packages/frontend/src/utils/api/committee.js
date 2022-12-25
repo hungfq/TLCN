@@ -39,4 +39,21 @@ export default class CommitteeApi {
     });
     return res.data;
   }
+
+  static async importCommittee (token, xlsx) {
+    const formData = new FormData();
+
+    formData.append('xlsx', xlsx);
+    const res = await axios.post(
+      '/committee-import',
+      formData,
+      {
+        headers: {
+          authorization: `bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      },
+    );
+    return res;
+  }
 }

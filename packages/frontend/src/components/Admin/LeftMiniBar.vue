@@ -80,12 +80,12 @@
       </button>
       <div
         v-show="miniAvatarShow"
-        class="absolute w-48 py-1 mt-2 origin-bottom-left bg-white rounded-md shadow-lg left-10 bottom-14 focus:outline-none"
+        class="absolute w-48 py-1 mt-2 origin-bottom-left bg-white rounded-md shadow-lg left-16 bottom-2 focus:outline-none"
         role="menu"
         aria-orientation="vertical"
         aria-label="user menu"
       >
-        <a
+        <!-- <a
           href="#"
           class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
           role="menuitem"
@@ -95,13 +95,13 @@
           href="#"
           class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
           role="menuitem"
-        >Settings</a>
+        >Settings</a> -->
 
         <a
           class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
           role="menuitem"
           @click="signOut"
-        >Sign out</a>
+        >Đăng xuất</a>
       </div>
     </div>
   </nav>

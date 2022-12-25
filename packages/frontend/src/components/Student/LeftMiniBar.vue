@@ -155,7 +155,7 @@
         aria-orientation="vertical"
         aria-label="user menu"
       >
-        <a
+        <!-- <a
           href="#"
           class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
           role="menuitem"
@@ -165,13 +165,13 @@
           href="#"
           class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
           role="menuitem"
-        >Settings</a>
+        >Settings</a> -->
 
         <a
           class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
           role="menuitem"
           @click="signOut"
-        >Sign out</a>
+        >Đăng xuất</a>
       </div>
     </div>
   </nav>

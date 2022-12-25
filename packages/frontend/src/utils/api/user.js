@@ -4,7 +4,7 @@ const apiDest = 'http://localhost:5000/v1';
 axios.defaults.baseURL = apiDest;
 
 export default class UserApi {
-  static async getUserInfo(token) {
+  static async getUserInfo (token) {
     const res = await axios.get('/profile', {
       headers: {
         authorization: `bearer ${token}`,
@@ -13,7 +13,7 @@ export default class UserApi {
     return res.data;
   }
 
-  static async editProfile(token, name, code, sex) {
+  static async editProfile (token, name, code, sex) {
     const res = await axios.post('/profile', {
       name, code, sex,
     }, {
@@ -23,7 +23,6 @@ export default class UserApi {
     });
     return res.data;
   }
-
 
   static async getAllUser (token) {
     const res = await axios.get('/user', {

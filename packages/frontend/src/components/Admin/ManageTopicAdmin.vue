@@ -148,6 +148,22 @@ export default {
     displayLecturer (lecturer) {
       return lecturer ? lecturer.name : '';
     },
+    async upload () {
+      const { files } = this.$refs.uploadBtn;
+      if (files.length > 0) {
+        await this.$store.dispatch('topic/importTopic', { token: this.token, xlsx: files[0] })
+          .then((data) => {
+            if (data.status === 201) {
+              this.$toast.success('Đã nhập thành công!');
+            }
+          });
+
+        this.$refs.uploadBtn.value = '';
+        this.search();
+      } else {
+        this.$toast.error('File không tồn tại');
+      }
+    },
     search () {
       if (this.searchVal !== '') {
         const topicFilter = this.listTopics.filter((topic) => {

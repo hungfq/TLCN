@@ -17,20 +17,29 @@ const actions = {
   async addCommittee ({ dispatch }, payload) {
     const { token, value } = payload;
     await CommitteeApi.addCommittee(token, value);
-    dispatch('fetchListCommittee', token);
+    await dispatch('fetchListCommittee', token);
   },
   async updateCommittee ({ dispatch }, payload) {
     const { token, value } = payload;
     const { id } = value;
     await CommitteeApi.updateCommittee(token, id, value);
-    dispatch('fetchListCommittee', token);
+    await dispatch('fetchListCommittee', token);
   },
   async deleteCommittee ({ dispatch }, payload) {
     const { token, id } = payload;
     await CommitteeApi.deleteCommittee(token, id);
-    dispatch('fetchListCommittee', token);
+    await dispatch('fetchListCommittee', token);
   },
-
+  async importCommittee ({ dispatch }, payload) {
+    try {
+      const { token, xlsx } = payload;
+      const data = await CommitteeApi.importCommittee(token, xlsx);
+      await dispatch('fetchListCommittee', token);
+      return data;
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  },
 };
 
 const mutations = {

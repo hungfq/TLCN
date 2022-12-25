@@ -4,6 +4,7 @@ const {
   updateCommittee,
   deleteCommittee,
   listCommittee,
+  importCommittee,
 } = require('../controller/committee.controller');
 
 const { upload } = require('../utils/file');
@@ -27,7 +28,7 @@ const router = (app) => {
     file.pipe(res);
   });
 
-  // app.post('/v1/user-import/', upload.single('xlsx'), importUser);
+  app.post('/v1/committee-import/', upload.single('xlsx'), importCommittee);
 };
 
 module.exports = router;
