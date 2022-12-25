@@ -6,6 +6,7 @@ const topicService = require('../services/topic.service');
 const notificationService = require('../services/notification.service');
 const fileUtils = require('../utils/file');
 const _Schedule = require('../models/schedule.model');
+const _Topic = require('../models/topic.model');
 
 const createOne = async (req, res, next) => {
   try {
@@ -232,16 +233,19 @@ const getScheduleToday = async (req, res, next) => {
 const excelExport = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const topics = await scheduleService.listTopics(id);
+    const schedule = await _Schedule.findById(id);
+    const topicList = await _Topic.find({ code: { $in: schedule.topics } });
+    // const topics = await scheduleService.listTopics(id);
+    const topicConvert = JSON.stringify(topicList);
     // const arr = [['A1', 'B1', 'C1'],
     //   ['A2', 'B2', 'C2'],
     //   ['A3', 'B3', 'C3']];
-    const worksheet = xlsx.utils.json_to_sheet(topics);
+    const worksheet = xlsx.utils.json_to_sheet(topicConvert);
     const workbook = xlsx.utils.book_new();
     xlsx.utils.book_append_sheet(workbook, worksheet);
     xlsx.writeFile(workbook, 'ScheduleReport.xlsx');
     // console.log('🚀 ~ file: schedule.controller.js:240 ~ excelExport ~ file', file);
-    return res.status(200).send(topics);
+    return res.status(200).send(topicConvert);
   } catch (error) {
     return next(error);
   }
