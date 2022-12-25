@@ -35,30 +35,81 @@
           :disabled="isView"
         />
         <FormKit
-          v-model="startDate"
+          v-model="startProposalDate"
           name="startDate"
           type="date"
-          label="Thời gian bắt đầu"
+          label="Thời gian bắt đầu đề xuất"
           validation="required"
           :disabled="isView"
         />
         <FormKit
-          v-model="endDate"
+          v-model="endProposalDate"
           name="endDate"
           type="date"
-          label="Thời gian kết thúc"
+          label="Thời gian kết thúc đề xuất"
+          validation="required"
+          :disabled="isView"
+        />
+        <FormKit
+          v-model="startApproveDate"
+          name="startDate"
+          type="date"
+          label="Thời gian bắt đầu chấp thuận"
+          validation="required"
+          :disabled="isView"
+        />
+        <FormKit
+          v-model="endApproveDate"
+          name="endDate"
+          type="date"
+          label="Thời gian kết thúc chấp thuận"
+          validation="required"
+          :disabled="isView"
+        />
+        <FormKit
+          v-model="startRegisterDate"
+          name="startDate"
+          type="date"
+          label="Thời gian bắt đầu đăng ký"
+          validation="required"
+          :disabled="isView"
+        />
+        <FormKit
+          v-model="endRegisterDate"
+          name="endDate"
+          type="date"
+          label="Thời gian kết thúc đăng ký"
           validation="required"
           :disabled="isView"
         />
         <div class="w-3/4">
           <span class="font-bold text-sm">
-            Loại việc thời gian
+            Đề tài đăng ký
           </span>
           <div class="mt-1">
             <Multiselect
-              v-model="type"
-              :options="listTypes"
+              v-model="topics"
+              mode="tags"
               :close-on-select="false"
+              :searchable="true"
+              :create-option="true"
+              :options="listTopics"
+              :disabled="isView"
+            />
+          </div>
+        </div>
+        <div class="my-2-1 w-3/4">
+          <span class="font-bold text-sm py-4 my-4">
+            Sinh viên đăng kí
+          </span>
+          <div class="mt-1">
+            <Multiselect
+              v-model="students"
+              mode="tags"
+              :close-on-select="false"
+              :searchable="true"
+              :create-option="true"
+              :options="listStudents"
               :disabled="isView"
             />
           </div>
@@ -95,23 +146,16 @@ export default {
     return {
       name: '',
       description: '',
-      startDate: '',
-      endDate: '',
-      type: '',
-      listTypes: [
-        {
-          value: 'PROPOSAL',
-          label: 'Đề xuất đề tài',
-        },
-        {
-          value: 'APPROVE',
-          label: 'Duyệt đề tài',
-        },
-        {
-          value: 'REGISTER',
-          label: 'Đăng ký đề tài',
-        },
-      ],
+      startProposalDate: '',
+      endProposalDate: '',
+      startRegisterDate: '',
+      endRegisterDate: '',
+      startApproveDate: '',
+      endApproveDate: '',
+      topics: [],
+      students: [],
+      listTopics: [],
+      listStudents: [],
     };
   },
   computed: {
@@ -132,6 +176,30 @@ export default {
     },
   },
   async mounted () {
+    await this.$store.dispatch('student/fetchListStudent', this.token);
+    await this.$store.dispatch('topic/fetchListTopics', this.token);
+    const students = this.$store.state.student.listStudents;
+    const topics = this.$store.state.topic.listTopics;
+    this.listStudents = students.map((student) => {
+      let st = {
+        value: student.code,
+        label: student.name,
+      };
+      if (this.isView) {
+        st = { ...st, disabled: true };
+      }
+      return st;
+    });
+    this.listTopics = topics.map((topic) => {
+      let st = {
+        value: topic.code,
+        label: topic.title,
+      };
+      if (this.isView) {
+        st = { ...st, disabled: true };
+      }
+      return st;
+    });
     if (this.isUpdate || this.isView) {
       const { id } = this.$store.state.url;
       const { listSchedules } = this.$store.state.schedule;
@@ -139,9 +207,14 @@ export default {
       if (schedule) {
         this.name = schedule.name;
         this.description = schedule.description;
-        this.startDate = this.formatDate(schedule.startDate);
-        this.endDate = this.formatDate(schedule.endDate);
-        this.type = schedule.type;
+        this.startProposalDate = this.formatDate(schedule.startProposalDate);
+        this.endProposalDate = this.formatDate(schedule.endProposalDate);
+        this.startApproveDate = this.formatDate(schedule.startApproveDate);
+        this.endApproveDate = this.formatDate(schedule.endApproveDate);
+        this.startRegisterDate = this.formatDate(schedule.startRegisterDate);
+        this.endRegisterDate = this.formatDate(schedule.endRegisterDate);
+        this.students = schedule.students;
+        this.topics = schedule.topics;
       }
     }
   },
@@ -151,19 +224,39 @@ export default {
     },
     async handleAddScheduleAdmin () {
       const {
-        name, description, startDate, endDate, type,
+        name, description, startDate, endDate, startProposalDate,
+        endProposalDate, startRegisterDate, endRegisterDate, startApproveDate,
+        endApproveDate, topics, students,
       } = this;
       const value = {
-        name, description, startDate, endDate, type,
+        name,
+        description,
+        startDate,
+        endDate,
+        startProposalDate,
+        endProposalDate,
+        startRegisterDate,
+        endRegisterDate,
+        startApproveDate,
+        endApproveDate,
+        topics,
+        students,
       };
+      console.log(value);
       try {
         if (this.isSave) {
-          await this.$store.dispatch('schedule/addSchedule', { token: this.token, value });
+          if (this.checkDate()) {
+            await this.$store.dispatch('schedule/addSchedule', { token: this.token, value });
+            this.$toast.success('Đã cập nhật một thành công!');
+          }
         } else if (this.isUpdate) {
-          await this.$store.dispatch('schedule/updateSchedule', { token: this.token, value: { ...value, _id: this.id } });
+          if (this.checkDate()) {
+            await this.$store.dispatch('schedule/updateSchedule', { token: this.token, value: { ...value, _id: this.id } });
+            this.$toast.success('Đã cập nhật một thành công!');
+          }
         }
-        this.$toast.success('Đã cập nhật một thành công!');
       } catch (e) {
+        console.log(e);
         this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
       } finally {
         this.rollBack();
@@ -180,6 +273,29 @@ export default {
       } catch (e) {
         return '';
       }
+    },
+    checkDate () {
+      if (this.startProposalDate > this.endProposalDate) {
+        this.$toast.error('Ngày bắt đầu đề xuất phải nhỏ hơn ngày kết thúc đề xuất ');
+        return false;
+      }
+      if (this.endProposalDate > this.startApproveDate) {
+        this.$toast.error('Ngày kết thúc đề xuất phải nhỏ hơn ngày bắt đầu duyệt đề tài ');
+        return false;
+      }
+      if (this.startApproveDate > this.endApproveDate) {
+        this.$toast.error('Ngày bắt đầu duyệt đề tài phải nhỏ hơn ngày kết thúc duyệt đề tài ');
+        return false;
+      }
+      if (this.endApproveDate > this.startRegisterDate) {
+        this.$toast.error('Ngày kết thúc duyệt đề tài phải nhỏ hơn ngày bắt đầu đăng ký đề tài ');
+        return false;
+      }
+      if (this.startApproveDate > this.endApproveDate) {
+        this.$toast.error('Ngày bắt đầu đăng kí đề tài phải nhỏ hơn ngày kết thúc đăng ký đề tài ');
+        return false;
+      }
+      return true;
     },
   },
 };

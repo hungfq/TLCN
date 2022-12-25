@@ -74,7 +74,7 @@
           validation="required"
           :disabled="isView"
         />
-        <div class="w-3/4">
+        <div class="w-2/5">
           <span class="font-bold text-sm">
             Giáo viên hướng dẫn
           </span>
@@ -87,46 +87,20 @@
             />
           </div>
         </div>
-        <div class="w-3/4">
+        <div class="w-2/5">
           <span class="font-bold text-sm">
-            Giáo viên phản biện
+            Mã hội đồng
           </span>
           <div class="mt-1">
             <Multiselect
-              v-model="criticalLecturerId"
-              :options="listLecturers"
+              v-model="committeeId"
+              :options="listCommittees"
               :searchable="true"
               :disabled="isView"
             />
           </div>
         </div>
-        <div class="w-3/4">
-          <span class="font-bold text-sm">
-            Chủ tịch hội đồng
-          </span>
-          <div class="mt-1">
-            <Multiselect
-              v-model="committeePresidentId"
-              :options="listLecturers"
-              :searchable="true"
-              :disabled="isView"
-            />
-          </div>
-        </div>
-        <div class="w-3/4">
-          <span class="font-bold text-sm">
-            Thư kí hội đồng
-          </span>
-          <div class="mt-1">
-            <Multiselect
-              v-model="committeeSecretaryId"
-              :options="listLecturers"
-              :searchable="true"
-              :disabled="isView"
-            />
-          </div>
-        </div>
-        <div class="my-2-1 w-3/4">
+        <div class="my-2-1 w-2/5">
           <span class="font-bold text-sm py-4 my-4">
             Sinh viên đăng kí
           </span>
@@ -209,10 +183,8 @@ export default {
       major: '',
       studentIds: [],
       startDate: '',
+      committeeId: '',
       thesisDefenseDate: '',
-      committeePresidentId: '',
-      committeeSecretaryId: '',
-      criticalLecturerId: '',
       advisorLecturerGrade: '',
       committeePresidentGrade: '',
       committeeSecretaryGrade: '',
@@ -228,6 +200,7 @@ export default {
         'lecturer2',
         'lecturer3',
       ],
+      listCommittees: [],
       messages: '',
     };
   },
@@ -251,8 +224,11 @@ export default {
   async mounted () {
     await this.$store.dispatch('lecturer/fetchListLecturer', this.token);
     await this.$store.dispatch('student/fetchListStudent', this.token);
+    await this.$store.dispatch('committee/fetchListCommittee', this.token);
     const lecturers = this.$store.state.lecturer.listLecturer;
     const students = this.$store.state.student.listStudents;
+    const committees = this.$store.state.committee.listCommittee;
+    this.listCommittees = this.listCommittee;
     this.listLecturers = lecturers.map((lecturer) => {
       let l = {
         value: lecturer._id,
@@ -273,6 +249,16 @@ export default {
       }
       return st;
     });
+    this.listCommittees = committees.map((committee) => {
+      let st = {
+        value: committee._id,
+        label: `${committee.name} - ${committee.code}`,
+      };
+      if (this.isView) {
+        st = { ...st, disabled: true };
+      }
+      return st;
+    });
     if (this.isUpdate || this.isView) {
       const { id } = this.$store.state.url;
       const { listTopics } = this.$store.state.topic;
@@ -282,6 +268,7 @@ export default {
         this.code = topic.code;
         this.description = topic.description;
         this.limit = topic.limit;
+        this.committeeId = topic.committeeId;
         if (topic.deadline) {
           const date = new Date(topic.deadline);
           const dateString = new Date(date.getTime() - (date.getTimezoneOffset() * 60000))
@@ -306,9 +293,6 @@ export default {
             .split('T')[0];
           this.thesisDefenseDate = dateString;
         }
-        this.committeePresidentId = topic.committeePresidentId;
-        this.committeeSecretaryId = topic.committeeSecretaryId;
-        this.criticalLecturerId = topic.criticalLecturerId;
         this.advisorLecturerGrade = topic.advisorLecturerGrade;
         this.committeePresidentGrade = topic.committeePresidentGrade;
         this.committeeSecretaryGrade = topic.committeeSecretaryGrade;
@@ -331,10 +315,8 @@ export default {
         major: this.major,
         students: studentIds,
         lecturerId,
+        committeeId: this.committeeId,
         thesisDefenseDate: this.thesisDefenseDate,
-        committeePresidentId: this.committeePresidentId,
-        committeeSecretaryId: this.committeeSecretaryId,
-        criticalLecturerId: this.criticalLecturerId,
         advisorLecturerGrade: this.advisorLecturerGrade,
         committeePresidentGrade: this.committeePresidentGrade,
         committeeSecretaryGrade: this.committeeSecretaryGrade,

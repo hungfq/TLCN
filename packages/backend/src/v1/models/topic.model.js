@@ -17,6 +17,7 @@ const TopicSchema = new mongoose.Schema({
   },
   students: { type: Array, default: [] },
   tasks: { type: Array, default: [] },
+  committeeId: { type: Schema.Types.ObjectId },
   advisorLecturerGrade: { type: String, default: '0' },
   committeePresidentGrade: { type: String, default: '0' },
   committeeSecretaryGrade: { type: String, default: '0' },
