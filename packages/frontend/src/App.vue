@@ -4,8 +4,6 @@
 </template>
   // This starter template is using Vue 3
 <script setup>
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-// import HelloWorld from './components/HelloWorld.vue';
 import { ModalsContainer } from 'vue-final-modal';
 </script>
 <style scoped>

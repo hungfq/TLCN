@@ -96,6 +96,16 @@
       </tbody>
     </table>
   </div>
+  <ConfirmModal
+    v-model="showConfirmModal"
+    @confirm="confirmRemove"
+    @cancel="showConfirmModal=false"
+  >
+    <template #title>
+      Xác nhận
+    </template>
+    <div>Bạn sẽ xóa  đúng không?</div>
+  </ConfirmModal>
 </template>
 
 <script>
@@ -103,14 +113,18 @@ import { mapState, mapGetters } from 'vuex';
 import SearchInput from 'vue-search-input';
 // Optionally import default styling
 import 'vue-search-input/dist/styles.css';
+import ConfirmModal from '../Modal/ConfirmModal.vue';
 
 export default {
   name: 'ManageScheduleAdmin',
   components: {
     SearchInput,
+    ConfirmModal,
   },
   data () {
     return {
+      showConfirmModal: false,
+      removeId: '',
       schedules: [],
       searchVal: '',
     };
@@ -131,15 +145,9 @@ export default {
     this.schedules = this.listSchedules;
   },
   methods: {
-    async handleUpdateSchedule (id) {
-      await this.$store.dispatch('url/updateSection', 'schedule-update');
-      await this.$store.dispatch('url/updateId', id);
-    },
-    async handleShowSchedule (id) {
-      await this.$store.dispatch('url/updateSection', 'schedule-view');
-      await this.$store.dispatch('url/updateId', id);
-    },
-    async handleRemoveSchedule (id) {
+    async confirmRemove () {
+      const id = this.removeId;
+      this.showConfirmModal = false;
       try {
         const value = {
           id,
@@ -151,6 +159,19 @@ export default {
       } catch (e) {
         this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
       }
+      this.removeId = '';
+    },
+    async handleUpdateSchedule (id) {
+      await this.$store.dispatch('url/updateSection', 'schedule-update');
+      await this.$store.dispatch('url/updateId', id);
+    },
+    async handleShowSchedule (id) {
+      await this.$store.dispatch('url/updateSection', 'schedule-view');
+      await this.$store.dispatch('url/updateId', id);
+    },
+    async handleRemoveSchedule (id) {
+      this.removeId = id;
+      this.showConfirmModal = true;
     },
     formatDay (oldDate) {
       try {

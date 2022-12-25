@@ -85,6 +85,16 @@
       </tbody>
     </table>
   </div>
+  <ConfirmModal
+    v-model="showConfirmModal"
+    @confirm="confirmRemove"
+    @cancel="showConfirmModal=false"
+  >
+    <template #title>
+      Xác nhận
+    </template>
+    <div>Bạn sẽ xóa đề tài đúng không?</div>
+  </ConfirmModal>
 </template>
 
 <script>
@@ -92,14 +102,18 @@ import { mapState, mapGetters } from 'vuex';
 import SearchInput from 'vue-search-input';
 // Optionally import default styling
 import 'vue-search-input/dist/styles.css';
+import ConfirmModal from '../Modal/ConfirmModal.vue';
 
 export default {
   name: 'ManageTopicAdmin',
   components: {
     SearchInput,
+    ConfirmModal,
   },
   data () {
     return {
+      showConfirmModal: false,
+      removeId: '',
       searchVal: '',
       topics: [],
     };
@@ -123,15 +137,9 @@ export default {
     this.topics = this.listTopics;
   },
   methods: {
-    handleUpdateTopic (id) {
-      this.$store.dispatch('url/updateSection', `${this.module}-update`);
-      this.$store.dispatch('url/updateId', id);
-    },
-    handleShowTopic (id) {
-      this.$store.dispatch('url/updateSection', `${this.module}-view`);
-      this.$store.dispatch('url/updateId', id);
-    },
-    async handleRemoveTopic (id) {
+    async confirmRemove () {
+      const id = this.removeId;
+      this.showConfirmModal = false;
       try {
         const value = {
           id,
@@ -144,6 +152,19 @@ export default {
       } catch (e) {
         this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
       }
+      this.removeId = '';
+    },
+    handleUpdateTopic (id) {
+      this.$store.dispatch('url/updateSection', `${this.module}-update`);
+      this.$store.dispatch('url/updateId', id);
+    },
+    handleShowTopic (id) {
+      this.$store.dispatch('url/updateSection', `${this.module}-view`);
+      this.$store.dispatch('url/updateId', id);
+    },
+    async handleRemoveTopic (id) {
+      this.removeId = id;
+      this.showConfirmModal = true;
     },
     displayLecturer (lecturer) {
       return lecturer ? lecturer.name : '';

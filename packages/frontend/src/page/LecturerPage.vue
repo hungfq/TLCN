@@ -115,7 +115,12 @@ export default {
       'listScheduleToday',
     ]),
     isScheduleApprove () {
-      const check = this.listScheduleToday.find((c) => c.type === 'APPROVE');
+      const check = this.listScheduleToday.find((c) => {
+        const now = Date.now();
+        const start = new Date(c.startApproveDate);
+        const end = new Date(c.endApproveDate);
+        return (start < now && now < end);
+      });
       return !!check;
     },
   },
