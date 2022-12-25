@@ -6,30 +6,7 @@
     >
       Thêm đề tài
     </div>
-    <form
-      class="flex items-center justify-center"
-      @submit.prevent="upload"
-    >
-      <input
-        id="upload123"
-        ref="uploadBtn"
-        class="hidden"
-        type="file"
-        accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        @change="handleNewButtonClick"
-      >
-      <label
-        class=" rounded ml-auto mr-4 my-2 bg-blue-800 text-white font-sans font-semibold py-2 px-4 cursor-pointer"
-        for="upload123"
-      >Tải lên tệp excel</label>
-      <button
-        ref="submitBtn"
-        type="submit"
-        class="hidden"
-      >
-        Tải lên tệp excel
-      </button>
-    </form>
+    <UploadButtonVue @uploadFileExcel="upload" />
   </div>
   <div class="shadow-md sm:rounded-lg m-4">
     <SearchInput
@@ -114,12 +91,14 @@ import SearchInput from 'vue-search-input';
 // Optionally import default styling
 import 'vue-search-input/dist/styles.css';
 import ConfirmModal from '../Modal/ConfirmModal.vue';
+import UploadButtonVue from './UploadButton.vue';
 
 export default {
   name: 'ManageTopicAdmin',
   components: {
     SearchInput,
     ConfirmModal,
+    UploadButtonVue,
   },
   data () {
     return {

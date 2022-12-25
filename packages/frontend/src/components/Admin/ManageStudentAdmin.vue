@@ -6,19 +6,7 @@
     >
       Thêm sinh viên
     </div>
-    <form
-      class="flex items-center justify-center"
-      @submit.prevent="upload"
-    >
-      <input
-        ref="uploadBtn"
-        type="file"
-        accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-      >
-      <button type="submit">
-        Tải lên tệp excel
-      </button>
-    </form>
+    <UploadButtonVue @uploadFileExcel="upload" />
   </div>
   <div class="shadow-md sm:rounded-lg m-4">
     <SearchInput
@@ -88,11 +76,13 @@ import { mapState, mapGetters } from 'vuex';
 import SearchInput from 'vue-search-input';
 // Optionally import default styling
 import 'vue-search-input/dist/styles.css';
+import UploadButtonVue from './UploadButton.vue';
 
 export default {
   name: 'ManageStudentAdmin',
   components: {
     SearchInput,
+    UploadButtonVue,
   },
   data () {
     return {
