@@ -74,6 +74,13 @@
           validation="required"
           :disabled="isView"
         />
+        <FormKit
+          v-model="thesisDefenseDate"
+          name="thesisDefenseDate"
+          type="date"
+          label="Thời hạn phản biện"
+          validation="required"
+        />
         <div class="w-2/5">
           <span class="font-bold text-sm">
             Giáo viên hướng dẫn

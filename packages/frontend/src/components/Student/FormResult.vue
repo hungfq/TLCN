@@ -55,6 +55,14 @@
           :disabled="true"
         />
         <FormKit
+          v-model="startDate"
+          name="startDate"
+          type="date"
+          label="Thời hạn bắt đầu"
+          validation="required"
+          :disabled="true"
+        />
+        <FormKit
           v-model="deadline"
           name="deadline"
           type="date"
@@ -90,11 +98,78 @@
             />
           </div>
         </div>
+        <div class="w-3/4">
+          <span class="font-bold text-sm">
+            Giáo viên phản biện
+          </span>
+          <div class="mt-1">
+            <Multiselect
+              v-model="committee.criticalLecturerId"
+              :options="listLecturers"
+              :searchable="true"
+              :disabled="true"
+            />
+          </div>
+        </div>
+        <div class="w-3/4">
+          <span class="font-bold text-sm">
+            Chủ tịch hội đồng
+          </span>
+          <div class="mt-1">
+            <Multiselect
+              v-model="committee.committeePresidentId"
+              :options="listLecturers"
+              :searchable="true"
+              :disabled="true"
+            />
+          </div>
+        </div>
+        <div class="w-3/4">
+          <span class="font-bold text-sm">
+            Thư kí hội đồng
+          </span>
+          <div class="mt-1">
+            <Multiselect
+              v-model="committee.committeeSecretaryId"
+              :options="listLecturers"
+              :searchable="true"
+              :disabled="true"
+            />
+          </div>
+        </div>
+        <FormKit
+          v-model="advisorLecturerGrade"
+          name="limit"
+          type="number"
+          label="Điểm của giảng viên hướng dẫn"
+          :disabled="true"
+        />
+        <FormKit
+          v-model="criticalLecturerGrade"
+          name="criticalLecturerGrade"
+          type="number"
+          label="Điểm của giảng viên phản biện"
+          :disabled="true"
+        />
+        <FormKit
+          v-model="committeePresidentGrade"
+          name="committeePresidentGrade"
+          type="number"
+          label="Điểm của chủ tịch hội đồng"
+          :disabled="true"
+        />
+        <FormKit
+          v-model="committeeSecretaryGrade"
+          name="committeeSecretaryGrade"
+          type="number"
+          label="Điểm của thư ký"
+          :disabled="true"
+        />
       </div>
       <!-- Modal footer -->
       <div class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200">
         <button
-          v-if="isScheduleRegister"
+          v-if="isPermit && isScheduleRegister"
           type="button"
           class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4  focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           @click="handleRemoveTopic"
@@ -132,6 +207,18 @@ export default {
       lecturerId: '',
       major: '',
       studentIds: [],
+      startDate: '',
+      committeeId: '',
+      committee: {
+        committeePresidentId: '',
+        committeeSecretaryId: '',
+        criticalLecturerId: '',
+      },
+      thesisDefenseDate: '',
+      advisorLecturerGrade: '',
+      committeePresidentGrade: '',
+      committeeSecretaryGrade: '',
+      criticalLecturerGrade: '',
       listStudents: [
         'student1',
         'student2',
@@ -156,7 +243,10 @@ export default {
       'token',
     ]),
     ...mapGetters('schedule', [
-      'listSchedules', 'isScheduleRegister',
+      'listSchedules', 'isScheduleRegister', 'isPermit',
+    ]),
+    ...mapGetters('committee', [
+      'listCommittee',
     ]),
     isSave () {
       return this.section === 'topic-import';
@@ -176,6 +266,7 @@ export default {
     await this.$store.dispatch('lecturer/fetchListLecturer', this.token);
     await this.$store.dispatch('student/fetchListStudent', this.token);
     await this.$store.dispatch('schedule/fetchListSchedules', this.token);
+    await this.$store.dispatch('committee/fetchListCommittee', this.token);
     const lecturers = this.$store.state.lecturer.listLecturer;
     const students = this.$store.state.student.listStudents;
     const { code } = this.$store.state.auth.userInfo;
@@ -218,6 +309,35 @@ export default {
       if (topic.lecturerId) this.lecturerId = topic.lecturerId;
       this.major = topic.major;
       this.studentIds = topic.students;
+      if (topic.startDate) {
+        const date = new Date(topic.startDate);
+        const dateString = new Date(date.getTime() - (date.getTimezoneOffset() * 60000))
+          .toISOString()
+          .split('T')[0];
+        this.startDate = dateString;
+      }
+      if (topic.thesisDefenseDate) {
+        const date = new Date(topic.thesisDefenseDate);
+        const dateString = new Date(date.getTime() - (date.getTimezoneOffset() * 60000))
+          .toISOString()
+          .split('T')[0];
+        this.thesisDefenseDate = dateString;
+      }
+      this.advisorLecturerGrade = topic.advisorLecturerGrade;
+      this.committeePresidentGrade = topic.committeePresidentGrade;
+      this.committeeSecretaryGrade = topic.committeeSecretaryGrade;
+      this.criticalLecturerGrade = topic.criticalLecturerGrade;
+      if (topic.committeeId) {
+        const committee = this.listCommittee.find((c) => c._id.toString() === topic.committeeId.toString());
+        const {
+          committeePresidentId,
+          committeeSecretaryId,
+          criticalLecturerId,
+        } = committee;
+        this.committee.committeePresidentId = committeePresidentId ? committeePresidentId._id : '';
+        this.committee.committeeSecretaryId = committeeSecretaryId ? committeeSecretaryId._id : '';
+        this.committee.criticalLecturerId = criticalLecturerId ? criticalLecturerId._id : '';
+      }
     }
   },
   methods: {
