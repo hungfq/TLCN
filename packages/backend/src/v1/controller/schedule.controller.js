@@ -1,4 +1,5 @@
 /* eslint-disable max-len */
+const xlsx = require('xlsx');
 const scheduleService = require('../services/schedule.service');
 const userService = require('../services/user.service');
 const topicService = require('../services/topic.service');
@@ -228,6 +229,24 @@ const getScheduleToday = async (req, res, next) => {
   }
 };
 
+const excelExport = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const topics = await scheduleService.listTopics(id);
+    // const arr = [['A1', 'B1', 'C1'],
+    //   ['A2', 'B2', 'C2'],
+    //   ['A3', 'B3', 'C3']];
+    const worksheet = xlsx.utils.json_to_sheet(topics);
+    const workbook = xlsx.utils.book_new();
+    xlsx.utils.book_append_sheet(workbook, worksheet);
+    xlsx.writeFile(workbook, 'ScheduleReport.xlsx');
+    // console.log('🚀 ~ file: schedule.controller.js:240 ~ excelExport ~ file', file);
+    return res.status(200).send(topics);
+  } catch (error) {
+    return next(error);
+  }
+};
+
 module.exports = {
   createOne,
   findOne,
@@ -242,4 +261,5 @@ module.exports = {
   cancelRegister,
   removeSchedule,
   getScheduleToday,
+  excelExport,
 };

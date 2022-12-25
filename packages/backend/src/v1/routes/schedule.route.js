@@ -13,6 +13,7 @@ const {
   cancelRegister,
   removeSchedule,
   getScheduleToday,
+  excelExport,
 } = require('../controller/schedule.controller');
 
 const { upload } = require('../utils/file');
@@ -40,6 +41,8 @@ const router = (app) => {
 
   app.post('/v1/schedule/:id/topic/:topicId/register', isAuth, register);
   app.delete('/v1/schedule/:id/topic/:topicId/register', isAuth, cancelRegister);
+
+  app.get('/v1/schedule/:id/export', excelExport);
 };
 
 module.exports = router;

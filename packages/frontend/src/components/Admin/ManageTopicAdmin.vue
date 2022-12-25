@@ -11,11 +11,22 @@
       @submit.prevent="upload"
     >
       <input
+        id="upload123"
         ref="uploadBtn"
+        class="hidden"
         type="file"
         accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        @change="handleNewButtonClick"
       >
-      <button type="submit">
+      <label
+        class=" rounded ml-auto mr-4 my-2 bg-blue-800 text-white font-sans font-semibold py-2 px-4 cursor-pointer"
+        for="upload123"
+      >Tải lên tệp excel</label>
+      <button
+        ref="submitBtn"
+        type="submit"
+        class="hidden"
+      >
         Tải lên tệp excel
       </button>
     </form>
@@ -177,6 +188,9 @@ export default {
 
         this.topics = topicFilter;
       } else this.topics = this.listTopics;
+    },
+    handleNewButtonClick () {
+      this.$refs.submitBtn.click();
     },
   },
 };

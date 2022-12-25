@@ -20,13 +20,14 @@ const importTopics = async (req, res, next) => {
         topic.limit,
         topic.deadline,
         topic.major,
-        lecturer._id,
+        lecturer ? lecturer._id : undefined,
       );
     });
 
     return res.status(201).send('Successfully');
   } catch (err) {
-    return next(err);
+    return res.status(400).send('Error');
+    // return next(err);
   }
 };
 const insertTopic = async (req, res, next) => {
