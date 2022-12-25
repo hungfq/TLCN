@@ -53,7 +53,7 @@ const actions = {
   async removeSchedule ({ dispatch, commit }, value) {
     const { token, id } = value;
     await ScheduleApi.removeSchedule(token, id);
-    dispatch('fetchListSchedules', token);
+    await dispatch('fetchListSchedules', token);
   },
 };
 

@@ -102,20 +102,34 @@
       </tbody>
     </table>
   </div>
+  <ConfirmModal
+    v-model="showConfirmModal"
+    @confirm="confirmRemove"
+    @cancel="showConfirmModal=false"
+  >
+    <template #title>
+      Xác nhận
+    </template>
+    <div>Bạn sẽ xóa đúng không?</div>
+  </ConfirmModal>
 </template>
 
 <script>
 import { mapState, mapGetters } from 'vuex';
 import SearchInput from 'vue-search-input';
 import 'vue-search-input/dist/styles.css';
+import ConfirmModal from '../Modal/ConfirmModal.vue';
 
 export default {
   name: 'ManageStudentAdmin',
   components: {
     SearchInput,
+    ConfirmModal,
   },
   data () {
     return {
+      showConfirmModal: false,
+      removeId: '',
       searchVal: '',
       committees: [],
     };
@@ -139,6 +153,18 @@ export default {
     this.committees = this.listCommittee;
   },
   methods: {
+    async confirmRemove () {
+      const id = this.removeId;
+      this.showConfirmModal = false;
+      try {
+        await this.$store.dispatch('committee/deleteCommittee', { token: this.token, id });
+        await this.$store.dispatch('committee/fetchListCommittee', this.token);
+        this.committees = this.listCommittee;
+      } catch (e) {
+        this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
+      }
+      this.removeId = '';
+    },
     handleUpdateStudent (id) {
       this.$store.dispatch('url/updateSection', 'committee-update');
       this.$store.dispatch('url/updateId', id);
@@ -148,9 +174,8 @@ export default {
       this.$store.dispatch('url/updateId', id);
     },
     async handleRemoveStudent (id) {
-      await this.$store.dispatch('committee/deleteCommittee', { token: this.token, id });
-      await this.$store.dispatch('committee/fetchListCommittee', this.token);
-      this.committees = this.listCommittee;
+      this.removeId = id;
+      this.showConfirmModal = true;
     },
     async upload () {
       const { files } = this.$refs.uploadBtn;

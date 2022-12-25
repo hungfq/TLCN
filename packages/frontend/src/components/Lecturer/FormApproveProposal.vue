@@ -39,7 +39,7 @@
           name="limit"
           type="number"
           label="Số thành viên"
-          validation="required"
+          validation="min:1"
           :disabled="isView"
         />
         <FormKit

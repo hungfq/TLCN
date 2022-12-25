@@ -66,6 +66,16 @@
       </tbody>
     </table>
   </div>
+  <ConfirmModal
+    v-model="showConfirmModal"
+    @confirm="confirmRemove"
+    @cancel="showConfirmModal=false"
+  >
+    <template #title>
+      Xác nhận
+    </template>
+    <div>Bạn sẽ từ chối đề tài đúng không?</div>
+  </ConfirmModal>
 </template>
 
 <script>
@@ -73,14 +83,18 @@ import { mapState, mapGetters } from 'vuex';
 import SearchInput from 'vue-search-input';
 // Optionally import default styling
 import 'vue-search-input/dist/styles.css';
+import ConfirmModal from '../Modal/ConfirmModal.vue';
 
 export default {
   name: 'ManageApproveProposalAdmin',
   components: {
     SearchInput,
+    ConfirmModal,
   },
   data () {
     return {
+      showConfirmModal: false,
+      removeId: '',
       searchVal: '',
       topicProposals: [],
     };
@@ -132,6 +146,22 @@ export default {
     this.topicProposals = this.listTopicProposal;
   },
   methods: {
+    async confirmRemove () {
+      const id = this.removeId;
+      this.showConfirmModal = false;
+      try {
+        const value = {
+          id,
+          token: this.token,
+        };
+        await this.$store.dispatch('topic_proposal/removeTopicProposal', value);
+        this.$toast.success('Đã từ chối hướng dẫn đề tài thành công!');
+        this.search();
+      } catch (e) {
+        this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
+      }
+      this.removeId = '';
+    },
     handleUpdateTopic (id) {
       this.$store.dispatch('url/updateSection', `${this.module}-update`);
       this.$store.dispatch('url/updateId', id);
@@ -141,17 +171,8 @@ export default {
       this.$store.dispatch('url/updateId', id);
     },
     async handleRemoveTopicProposal (id) {
-      try {
-        const value = {
-          id,
-          token: this.token,
-        };
-        await this.$store.dispatch('topic_proposal/removeTopicProposal', value);
-
-        this.$toast.success('Đã từ chối hướng dẫn đề tài thành công!');
-      } catch (e) {
-        this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
-      }
+      this.removeId = id;
+      this.showConfirmModal = true;
     },
     async handleApproveTopic (id) {
       try {

@@ -68,10 +68,10 @@
             </div>
           </td>
           <td class="py-4 px-6 text-right">
-            <a
+            <!-- <a
               class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
               @click="handleUpdateTopic(topic._id)"
-            >Sửa</a>
+            >Sửa</a> -->
             <a
               class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
               @click="handleShowTopic(topic._id)"
