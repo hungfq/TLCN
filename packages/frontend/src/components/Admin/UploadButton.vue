@@ -43,7 +43,8 @@ export default {
   },
   methods: {
     upload () {
-      this.$emit('uploadFileExcel');
+      const { files } = this.$refs.uploadBtn;
+      this.$emit('uploadFileExcel', files);
     },
     handleNewButtonClick () {
       this.$refs.submitBtn.click();

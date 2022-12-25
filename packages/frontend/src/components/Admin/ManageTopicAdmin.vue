@@ -159,8 +159,7 @@ export default {
     displayLecturer (lecturer) {
       return lecturer ? lecturer.name : '';
     },
-    async upload () {
-      const { files } = this.$refs.uploadBtn;
+    async upload (files) {
       if (files.length > 0) {
         await this.$store.dispatch('topic/importTopic', { token: this.token, xlsx: files[0] })
           .then((data) => {
