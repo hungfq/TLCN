@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
 const xlsx = require('xlsx');
+const fs = require('fs');
 const scheduleService = require('../services/schedule.service');
 const userService = require('../services/user.service');
 const topicService = require('../services/topic.service');
@@ -234,18 +235,39 @@ const excelExport = async (req, res, next) => {
   try {
     const { id } = req.params;
     const schedule = await _Schedule.findById(id);
-    const topicList = await _Topic.find({ code: { $in: schedule.topics } }).lean();
-    // const topics = await scheduleService.listTopics(id);
-    // const topicConvert = JSON.stringify(topicList);
-    // const arr = [['A1', 'B1', 'C1'],
-    //   ['A2', 'B2', 'C2'],
-    //   ['A3', 'B3', 'C3']];
-    const worksheet = xlsx.utils.json_to_sheet(topicList);
+    const topicList = await _Topic.find({ code: { $in: schedule.topics } })
+      .select('students code title lecturerId -_id')
+      .lean();
+    const result = await Promise.all(topicList.map(async (topic) => {
+      const lecturer = await userService.findOneWithOnlyId(topic.lecturerId);
+      const students = await userService.getStudentByCodes(topic.students);
+      const studentCode = students.map((st) => st.code);
+      const studentName = students.map((st) => st.name);
+      return {
+        student_code: studentCode.toString(),
+        student_name: studentName.toString(),
+        topic_code: topic.code,
+        topic_title: topic.title,
+        lecturer_code: lecturer ? lecturer.code : undefined,
+        lecturer_name: lecturer ? lecturer.name : undefined,
+      };
+    }));
+    const heading = [['STUDENT CODE', 'STUDENT NAME', 'TOPIC CODE', 'TOPIC NAME', 'LECTURER CODE', 'LECTURER NAME']];
+    const worksheet = xlsx.utils.json_to_sheet([]);
+    xlsx.utils.sheet_add_aoa(worksheet, heading);
+    xlsx.utils.sheet_add_json(worksheet, result, { origin: 'A2', skipHeader: true });
     const workbook = xlsx.utils.book_new();
     xlsx.utils.book_append_sheet(workbook, worksheet);
-    xlsx.writeFile(workbook, 'ScheduleReport.xlsx');
-    // console.log('🚀 ~ file: schedule.controller.js:240 ~ excelExport ~ file', file);
-    return res.status(200).send(topicList);
+    // xlsx.writeFile(workbook, 'ScheduleReport.xlsx');
+
+    // return res.status(200).send(xlsx.writeFile(workbook, 'ScheduleReport.xlsx'));
+    const filename = 'ScheduleReport.xlsx';
+    const wbOpts = { bookType: 'xlsx', type: 'buffer' };
+    xlsx.writeFile(workbook, filename, wbOpts);
+
+    res.setHeader('Content-Disposition', 'attachment; filename=ScheduleReport.xlsx');
+    const stream = fs.createReadStream(filename);
+    stream.pipe(res);
   } catch (error) {
     return next(error);
   }
