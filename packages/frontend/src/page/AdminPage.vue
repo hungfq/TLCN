@@ -9,7 +9,7 @@
       </div>
       <div class="flex grow flex-col">
         <HeaderBarVue :username="userName" />
-        <div class="bg-white mx-4 border rounded h-full">
+        <div class="bg-white mx-4 border rounded overflow-scroll">
           <template v-if="module === 'student'">
             <ManageStudentAdminVue v-if="section === 'student-list'" />
             <FormUserVue
