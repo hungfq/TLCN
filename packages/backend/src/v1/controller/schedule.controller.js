@@ -215,14 +215,13 @@ const cancelRegister = async (req, res, next) => {
 const getScheduleToday = async (req, res, next) => {
   try {
     const listSchedule = await _Schedule.find({
-      startDate: {
+      startProposalDate: {
         $lt: Date.now(),
       },
-      endDate: {
+      endRegisterDate: {
         $gte: Date.now(),
       },
     });
-    console.log('🚀 ~ file: schedule.controller.js:230 ~ getScheduleToday ~ listSchedule', listSchedule);
     return res.status(200).send(listSchedule);
   } catch (error) {
     return next(error);

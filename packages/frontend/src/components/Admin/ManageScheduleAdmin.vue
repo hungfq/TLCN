@@ -70,12 +70,12 @@
           </th>
           <td class="py-4 px-6">
             <div class="font-bold cursor-pointer">
-              {{ formatDay(schedule.startDate) }}
+              {{ formatDay(schedule.startProposalDate) }}
             </div>
           </td>
           <td class="py-4 px-6">
             <div class="font-bold cursor-pointer">
-              {{ formatDay(schedule.endDate) }}
+              {{ formatDay(schedule.endRegisterDate) }}
             </div>
           </td>
           <td class="py-4 px-6 text-right">
@@ -147,6 +147,7 @@ export default {
         };
         await this.$store.dispatch('schedule/removeSchedule', value);
         this.$toast.success('Đã xóa thành công!');
+        this.search();
       } catch (e) {
         this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
       }

@@ -242,7 +242,6 @@ export default {
         topics,
         students,
       };
-      console.log(value);
       try {
         if (this.isSave) {
           if (this.checkDate()) {

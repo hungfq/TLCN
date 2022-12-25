@@ -133,7 +133,7 @@ export default {
       'userId', 'userEmail', 'userRole', 'token',
     ]),
     ...mapGetters('topic', [
-      'listTopicByStudent',
+      'listTopicByStudent', 'listTopicPermitRegister',
     ]),
     ...mapGetters('url', [
       'page', 'module', 'section', 'id',
@@ -146,13 +146,15 @@ export default {
     ]),
     listTopicsStudent () {
       if (!this.listTopicByStudent || this.listTopicByStudent.length < 1) return [];
-      return this.listTopicByStudent;
+      const setCheck = new Set(this.listTopicPermitRegister);
+      const listTopic = this.listTopicByStudent.filter((t) => setCheck.has(t.code));
+      return listTopic;
     },
   },
-  mounted () {
-    this.$store.dispatch('topic/fetchListTopicByStudent', this.token);
-    this.$store.dispatch('student/fetchListStudent', this.token);
-    this.$store.dispatch('schedule/fetchListSchedules', this.token);
+  async mounted () {
+    await this.$store.dispatch('topic/fetchListTopicByStudent', this.token);
+    await this.$store.dispatch('student/fetchListStudent', this.token);
+    await this.$store.dispatch('schedule/fetchListSchedules', this.token);
     this.topics = this.listTopicsStudent;
   },
   methods: {

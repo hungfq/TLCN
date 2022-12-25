@@ -98,7 +98,7 @@ export default {
       isAuthenticated: ({ auth: { isAuthenticated } }) => isAuthenticated,
     }),
     ...mapGetters('auth', [
-      'userId', 'userEmail', 'userRole', 'token', 'userName',
+      'userId', 'userInfo', 'userRole', 'token', 'userName',
     ]),
     ...mapGetters('url', [
       'page', 'module', 'section', 'id',
@@ -107,11 +107,37 @@ export default {
       'listScheduleToday',
     ]),
     isScheduleProposal () {
-      const check = this.listScheduleToday.find((c) => c.type === 'PROPOSAL');
+      if (!this.isPermit) return false;
+      const check = this.listScheduleToday.find((c) => {
+        const now = Date.now();
+        const start = new Date(c.startProposalDate);
+        const end = new Date(c.endProposalDate);
+        return (start < now && now < end);
+      });
+      this.$store.commit('schedule/setIsScheduleProposal', !!check);
       return !!check;
     },
     isScheduleRegister () {
-      const check = this.listScheduleToday.find((c) => c.type === 'REGISTER');
+      if (!this.isPermit) return false;
+      const check = this.listScheduleToday.find((c) => {
+        const now = Date.now();
+        const start = new Date(c.startRegisterDate);
+        const end = new Date(c.endRegisterDate);
+        return (start < now && now < end);
+      });
+      if (check) {
+        const topicPermitRegister = check.topics;
+        this.$store.commit('topic/setListTopicRegister', topicPermitRegister);
+      }
+      this.$store.commit('schedule/setIsScheduleRegister', !!check);
+      return !!check;
+    },
+    isPermit () {
+      const check = this.listScheduleToday.find((c) => {
+        const checkExist = c.students.find((st) => st === this.userInfo.code);
+        return !!checkExist;
+      });
+      this.$store.commit('schedule/setIsPermit', !!check);
       return !!check;
     },
   },

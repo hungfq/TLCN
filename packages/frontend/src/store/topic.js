@@ -5,11 +5,13 @@ const initState = {
   listTopicByLecturer: [],
   listTopicByStudent: [],
   topicResult: null,
+  listTopicPermitRegister: [],
 };
 
 const getters = {
   listTopics: (state) => state.listTopics,
   listTopicByStudent: (state) => state.listTopicByStudent,
+  listTopicPermitRegister: (state) => state.listTopicPermitRegister,
 };
 
 const actions = {
@@ -82,6 +84,9 @@ const mutations = {
   },
   setTopicResult: (state, topicResult) => {
     state.topicResult = topicResult;
+  },
+  setListTopicRegister: (state, listTopicPermitRegister) => {
+    state.listTopicPermitRegister = listTopicPermitRegister;
   },
 };
 

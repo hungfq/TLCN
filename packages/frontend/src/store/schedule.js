@@ -3,11 +3,19 @@ import ScheduleApi from '../utils/api/schedule';
 const initState = {
   listSchedules: [],
   listScheduleToday: [],
+  isPermit: false,
+  isScheduleProposal: false,
+  isScheduleRegister: false,
+  isScheduleApprove: false,
 };
 
 const getters = {
   listSchedules: (state) => state.listSchedules,
   listScheduleToday: (state) => state.listScheduleToday,
+  isPermit: (state) => state.isPermit,
+  isScheduleProposal: (state) => state.isScheduleProposal,
+  isScheduleRegister: (state) => state.isScheduleRegister,
+  isScheduleApprove: (state) => state.isScheduleApprove,
 };
 
 const actions = {
@@ -55,6 +63,18 @@ const mutations = {
   },
   setListScheduleToday: (state, listScheduleToday) => {
     state.listScheduleToday = listScheduleToday;
+  },
+  setIsScheduleProposal: (state, value) => {
+    state.isScheduleProposal = value;
+  },
+  setIsScheduleRegister: (state, value) => {
+    state.isScheduleRegister = value;
+  },
+  setIsScheduleApprove: (state, value) => {
+    state.isScheduleApprove = value;
+  },
+  setIsPermit: (state, value) => {
+    state.isPermit = value;
   },
 };
 
