@@ -234,18 +234,18 @@ const excelExport = async (req, res, next) => {
   try {
     const { id } = req.params;
     const schedule = await _Schedule.findById(id);
-    const topicList = await _Topic.find({ code: { $in: schedule.topics } });
+    const topicList = await _Topic.find({ code: { $in: schedule.topics } }).lean();
     // const topics = await scheduleService.listTopics(id);
-    const topicConvert = JSON.stringify(topicList);
+    // const topicConvert = JSON.stringify(topicList);
     // const arr = [['A1', 'B1', 'C1'],
     //   ['A2', 'B2', 'C2'],
     //   ['A3', 'B3', 'C3']];
-    const worksheet = xlsx.utils.json_to_sheet(topicConvert);
+    const worksheet = xlsx.utils.json_to_sheet(topicList);
     const workbook = xlsx.utils.book_new();
     xlsx.utils.book_append_sheet(workbook, worksheet);
     xlsx.writeFile(workbook, 'ScheduleReport.xlsx');
     // console.log('🚀 ~ file: schedule.controller.js:240 ~ excelExport ~ file', file);
-    return res.status(200).send(topicConvert);
+    return res.status(200).send(topicList);
   } catch (error) {
     return next(error);
   }

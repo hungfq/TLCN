@@ -107,6 +107,14 @@ const checkStudentInTopic = async (user, schedule) => {
   return flag;
 };
 
+const updateStudents = async (_id, students) => {
+  await _Schedule.updateOne({ _id }, { students });
+};
+
+const updateTopics = async (_id, topics) => {
+  await _Schedule.updateOne({ _id }, { topics });
+};
+
 module.exports = {
   findOne,
   createOne,
@@ -119,4 +127,6 @@ module.exports = {
   listTopicLecturer,
   checkStudentInTopic,
   removeSchedule,
+  updateStudents,
+  updateTopics,
 };
