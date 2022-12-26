@@ -6,7 +6,7 @@
     >
       Thêm đợt đăng ký
     </div>
-    <form
+    <!-- <form
       class="flex items-center justify-center"
       @submit.prevent="upload"
     >
@@ -23,21 +23,26 @@
       <button type="submit">
         Tải lên tệp excel
       </button>
-    </form>
+    </form> -->
     <form
       class="flex"
-      @submit.prevent="upload1(schedule._id)"
+      @submit.prevent="upload"
     >
       <input
         id="upload123"
-        ref="uploadBtn1"
+        ref="uploadBtn"
         class="hidden"
         type="file"
         accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        @change="handleNewStudent"
+        @change="handleNewButtonClick"
       >
+      <label
+        ref="labelBtn"
+        class="hidden"
+        for="upload123"
+      >ss</label>
       <button
-        ref="submitBtn1"
+        ref="submitBtn"
         type="submit"
         class="hidden"
       >
@@ -110,14 +115,16 @@
             </div>
           </td>
           <td class="py-4 px-6">
-            <a
-              class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
-              @click="handleClickStudent(schedule._id)"
-            >Nhập sinh viên bằng file excel</a>
-            <a
-              class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
-              @click="handleClickTopic(schedule._id)"
-            >Nhập đề tài bằng file excel</a>
+            <div class="flex flex-col">
+              <a
+                class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
+                @click="handleClickStudent(schedule._id)"
+              >Nhập sinh viên bằng file excel</a>
+              <a
+                class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
+                @click="handleClickTopic(schedule._id)"
+              >Nhập đề tài bằng file excel</a>
+            </div>
           </td>
           <td class="py-4 px-6 text-right">
             <a
@@ -199,18 +206,21 @@ export default {
       this.importType = 'topic';
       this.$refs.labelBtn.click();
     },
+    handleNewButtonClick () {
+      this.$refs.submitBtn.click();
+    },
     async upload () {
       const { files } = this.$refs.uploadBtn;
       if (files.length > 0) {
         if (this.importType === 'student') {
-          await this.$store.dispatch('schedule/importTopic', { token: this.token, id: this.importId, xlsx: files[0] })
+          await this.$store.dispatch('schedule/importStudent', { token: this.token, id: this.importId, xlsx: files[0] })
             .then((data) => {
               if (data.status === 201) {
                 this.$toast.success('Đã nhập thành công!');
               }
             });
         } else if (this.importType === 'topic') {
-          await this.$store.dispatch('schedule/importStudent', { token: this.token, id: this.importId, xlsx: files[0] })
+          await this.$store.dispatch('schedule/importTopic', { token: this.token, id: this.importId, xlsx: files[0] })
             .then((data) => {
               if (data.status === 201) {
                 this.$toast.success('Đã nhập thành công!');

@@ -57,7 +57,7 @@ const importStudents = async (req, res, next) => {
 
     const students = await Promise.all(jsonData.map(async (user) => {
       await userService.upsertOne('STUDENT', user.CODE, user.NAME, user.EMAIL, user.GENDER);
-      return user.code;
+      return user.CODE;
     }));
 
     await scheduleService.updateStudents(id, students);
@@ -91,9 +91,9 @@ const importTopics = async (req, res, next) => {
         topic.LIMIT,
         topic.DEADLINE,
         topic.MAJOR,
-        lecturer._id,
+        lecturer ? lecturer._id : null,
       );
-      return topic.code;
+      return topic.CODE;
     }));
 
     await scheduleService.updateTopics(id, topics);

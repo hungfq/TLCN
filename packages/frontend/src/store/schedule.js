@@ -59,7 +59,7 @@ const actions = {
     try {
       const { token, id, xlsx } = payload;
       const data = await ScheduleApi.importTopic(token, id, xlsx);
-      await dispatch('fetchListTopics', token);
+      await dispatch('fetchListSchedules', token);
       return data;
     } catch (e) {
       throw new Error(e.message);
@@ -68,8 +68,8 @@ const actions = {
   async importStudent ({ dispatch }, payload) {
     try {
       const { token, id, xlsx } = payload;
-      const data = await ScheduleApi.importTopic(token, id, xlsx);
-      await dispatch('fetchListTopics', token);
+      const data = await ScheduleApi.importStudent(token, id, xlsx);
+      await dispatch('fetchListSchedules', token);
       return data;
     } catch (e) {
       throw new Error(e.message);

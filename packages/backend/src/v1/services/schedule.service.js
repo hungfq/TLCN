@@ -108,11 +108,15 @@ const checkStudentInTopic = async (user, schedule) => {
 };
 
 const updateStudents = async (_id, students) => {
-  await _Schedule.updateOne({ _id }, { students });
+  const schedule = await _Schedule.findById(_id);
+  schedule.students = students;
+  await schedule.save();
 };
 
 const updateTopics = async (_id, topics) => {
-  await _Schedule.updateOne({ _id }, { topics });
+  const schedule = await _Schedule.findById(_id);
+  schedule.topics = topics;
+  await schedule.save();
 };
 
 module.exports = {
