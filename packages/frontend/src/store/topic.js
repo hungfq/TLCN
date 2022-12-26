@@ -38,7 +38,7 @@ const actions = {
     try {
       const { token, value } = payload;
       await TopicApi.createTopic(token, value);
-      dispatch('fetchListTopics', token);
+      await dispatch('fetchListTopics', token);
     } catch (e) {
       throw new Error(e.message);
     }
@@ -47,7 +47,7 @@ const actions = {
     try {
       const { token, value } = payload;
       await TopicApi.updateTopicById(token, value);
-      dispatch('fetchListTopics', token);
+      await dispatch('fetchListTopics', token);
     } catch (e) {
       throw new Error(e.message);
     }
@@ -55,26 +55,26 @@ const actions = {
   async removeTopic ({ dispatch, commit }, value) {
     const { token, id } = value;
     await TopicApi.deleteTopicById(token, id);
-    dispatch('fetchListTopics', token);
+    await dispatch('fetchListTopics', token);
   },
   async addRegisterTopic ({ dispatch, commit }, value) {
     const { token, id } = value;
     await TopicApi.addRegisterTopic(token, id);
-    dispatch('fetchListTopicByStudent', token);
+    await dispatch('fetchListTopicByStudent', token);
   },
 
   async removeRegisterTopicStudent ({ dispatch, commit }, value) {
     const { token, id } = value;
     await TopicApi.removeRegisterTopicStudent(token, id);
-    dispatch('fetchTopicResult', token);
-    dispatch('fetchListTopicByStudent', token);
-    dispatch('fetchListTopics', token);
+    await dispatch('fetchTopicResult', token);
+    await dispatch('fetchListTopicByStudent', token);
+    await dispatch('fetchListTopics', token);
   },
   async importTopic ({ dispatch }, payload) {
     try {
       const { token, xlsx } = payload;
       const data = await TopicApi.importTopic(token, xlsx);
-      dispatch('fetchListTopics', token);
+      await dispatch('fetchListTopics', token);
       return data;
     } catch (e) {
       throw new Error(e.message);

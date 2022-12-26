@@ -182,22 +182,36 @@
       Chưa tồn tại đăng ký của bạn
     </div>
   </div>
+  <ConfirmModal
+    v-model="showConfirmModal"
+    @confirm="confirmRemove"
+    @cancel="showConfirmModal=false"
+  >
+    <template #title>
+      Xác nhận
+    </template>
+    <div>Bạn sẽ xóa  đúng không?</div>
+  </ConfirmModal>
 </template>
 
 <script>
 import Multiselect from '@vueform/multiselect';
 import { getValidationMessages } from '@formkit/validation';
 import { mapState, mapGetters } from 'vuex';
+import ConfirmModal from '../Modal/ConfirmModal.vue';
 
 export default {
   name: 'FormTopic',
   components: {
     Multiselect,
+    ConfirmModal,
   },
   props: {
   },
   data () {
     return {
+      showConfirmModal: false,
+      removeId: '',
       id: '',
       title: '',
       code: '',
@@ -341,10 +355,9 @@ export default {
     }
   },
   methods: {
-    rollBack () {
-      this.$store.dispatch('url/updateSection', `${this.module}-list`);
-    },
-    async handleRemoveTopic () {
+    async confirmRemove () {
+      const id = this.removeId;
+      this.showConfirmModal = false;
       try {
         const value = {
           id: this.id,
@@ -357,6 +370,15 @@ export default {
       } catch (e) {
         this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
       }
+      this.removeId = '';
+      this.search();
+    },
+    rollBack () {
+      this.$store.dispatch('url/updateSection', `${this.module}-list`);
+    },
+    async handleRemoveTopic () {
+      this.removeId = this.id;
+      this.showConfirmModal = true;
     },
   },
 };

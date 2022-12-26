@@ -77,6 +77,16 @@
       </table>
     </div>
   </template>
+  <ConfirmModal
+    v-model="showConfirmModal"
+    @confirm="confirmRemove"
+    @cancel="showConfirmModal=false"
+  >
+    <template #title>
+      Xác nhận
+    </template>
+    <div>Bạn sẽ xóa  đúng không?</div>
+  </ConfirmModal>
 </template>
 
 <script>
@@ -84,11 +94,13 @@ import { mapState, mapGetters } from 'vuex';
 import SearchInput from 'vue-search-input';
 // Optionally import default styling
 import 'vue-search-input/dist/styles.css';
+import ConfirmModal from '../Modal/ConfirmModal.vue';
 
 export default {
   name: 'ManageApproveProposalLecturer',
   components: {
     SearchInput,
+    ConfirmModal,
   },
   props: {
     open: {
@@ -98,6 +110,8 @@ export default {
   },
   data () {
     return {
+      showConfirmModal: false,
+      removeId: '',
       searchVal: '',
       topics: [],
     };
@@ -133,15 +147,9 @@ export default {
     this.topics = this.listTopicProposal;
   },
   methods: {
-    handleUpdateTopic (id) {
-      this.$store.dispatch('url/updateSection', `${this.module}-update`);
-      this.$store.dispatch('url/updateId', id);
-    },
-    handleShowTopic (id) {
-      this.$store.dispatch('url/updateSection', `${this.module}-view`);
-      this.$store.dispatch('url/updateId', id);
-    },
-    async handleRemoveTopicProposal (id) {
+    async confirmRemove () {
+      const id = this.removeId;
+      this.showConfirmModal = false;
       try {
         const value = {
           id,
@@ -154,6 +162,20 @@ export default {
       } catch (e) {
         this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
       }
+      this.removeId = '';
+      this.search();
+    },
+    handleUpdateTopic (id) {
+      this.$store.dispatch('url/updateSection', `${this.module}-update`);
+      this.$store.dispatch('url/updateId', id);
+    },
+    handleShowTopic (id) {
+      this.$store.dispatch('url/updateSection', `${this.module}-view`);
+      this.$store.dispatch('url/updateId', id);
+    },
+    async handleRemoveTopicProposal (id) {
+      this.removeId = id;
+      this.showConfirmModal = true;
     },
     async handleApproveTopic (id) {
       try {

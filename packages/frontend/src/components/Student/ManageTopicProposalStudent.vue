@@ -103,17 +103,29 @@
       </table>
     </div>
   </template>
+  <ConfirmModal
+    v-model="showConfirmModal"
+    @confirm="confirmRemove"
+    @cancel="showConfirmModal=false"
+  >
+    <template #title>
+      Xác nhận
+    </template>
+    <div>Bạn sẽ xóa  đúng không?</div>
+  </ConfirmModal>
 </template>
 
 <script>
 import { mapState, mapGetters } from 'vuex';
 import SearchInput from 'vue-search-input';
 import 'vue-search-input/dist/styles.css';
+import ConfirmModal from '../Modal/ConfirmModal.vue';
 
 export default {
   name: 'ManageTopicProposalStudent',
   components: {
     SearchInput,
+    ConfirmModal,
   },
   props: {
     open: {
@@ -123,6 +135,8 @@ export default {
   },
   data () {
     return {
+      showConfirmModal: false,
+      removeId: '',
       searchVal: '',
       topics: [],
     };
@@ -154,15 +168,9 @@ export default {
     this.topics = this.listTopicProposal;
   },
   methods: {
-    handleUpdateTopicProposal (id) {
-      this.$store.dispatch('url/updateSection', `${this.module}-update`);
-      this.$store.dispatch('url/updateId', id);
-    },
-    handleShowTopicProposal (id) {
-      this.$store.dispatch('url/updateSection', `${this.module}-view`);
-      this.$store.dispatch('url/updateId', id);
-    },
-    async handleRemoveTopicProposal (id) {
+    async confirmRemove () {
+      const id = this.removeId;
+      this.showConfirmModal = false;
       try {
         const value = {
           id,
@@ -173,6 +181,20 @@ export default {
       } catch (e) {
         this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
       }
+      this.removeId = '';
+      this.search();
+    },
+    handleUpdateTopicProposal (id) {
+      this.$store.dispatch('url/updateSection', `${this.module}-update`);
+      this.$store.dispatch('url/updateId', id);
+    },
+    handleShowTopicProposal (id) {
+      this.$store.dispatch('url/updateSection', `${this.module}-view`);
+      this.$store.dispatch('url/updateId', id);
+    },
+    async handleRemoveTopicProposal (id) {
+      this.removeId = id;
+      this.showConfirmModal = true;
     },
     displayLecturer (lecturer) {
       return lecturer ? lecturer.name : '';

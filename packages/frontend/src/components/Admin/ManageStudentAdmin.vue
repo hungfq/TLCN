@@ -114,8 +114,8 @@ export default {
       this.$store.dispatch('url/updateSection', 'student-view');
       this.$store.dispatch('url/updateId', id);
     },
-    upload () {
-      const { files } = this.$refs.uploadBtn;
+    upload (files) {
+      // const { files } = this.$refs.uploadBtn;
       if (files.length > 0) {
         this.$store.dispatch('student/importStudent', { token: this.token, xlsx: files[0] })
           .then((data) => {

@@ -55,6 +55,26 @@ const actions = {
     await ScheduleApi.removeSchedule(token, id);
     await dispatch('fetchListSchedules', token);
   },
+  async importTopic ({ dispatch }, payload) {
+    try {
+      const { token, id, xlsx } = payload;
+      const data = await ScheduleApi.importTopic(token, id, xlsx);
+      await dispatch('fetchListTopics', token);
+      return data;
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  },
+  async importStudent ({ dispatch }, payload) {
+    try {
+      const { token, id, xlsx } = payload;
+      const data = await ScheduleApi.importTopic(token, id, xlsx);
+      await dispatch('fetchListTopics', token);
+      return data;
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  },
 };
 
 const mutations = {
