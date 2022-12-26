@@ -15,8 +15,33 @@
         type="file"
         accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
       >
+      <label
+        ref="labelBtn"
+        class=" rounded ml-auto mr-4 my-2 bg-blue-800 text-white font-sans font-semibold py-2 px-4 cursor-pointer"
+        for="upload123"
+      >Tải lên tệp excel</label>
       <button type="submit">
         Tải lên tệp excel
+      </button>
+    </form>
+    <form
+      class="flex"
+      @submit.prevent="upload1(schedule._id)"
+    >
+      <input
+        id="upload123"
+        ref="uploadBtn1"
+        class="hidden"
+        type="file"
+        accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        @change="handleNewStudent"
+      >
+      <button
+        ref="submitBtn1"
+        type="submit"
+        class="hidden"
+      >
+        student
       </button>
     </form>
   </div>
@@ -51,6 +76,12 @@
             scope="col"
             class="py-3 px-6"
           >
+            <span class="sr-only">import</span>
+          </th>
+          <th
+            scope="col"
+            class="py-3 px-6"
+          >
             <span class="sr-only">Edit</span>
           </th>
         </tr>
@@ -77,6 +108,16 @@
             <div class="font-bold cursor-pointer">
               {{ formatDay(schedule.endRegisterDate) }}
             </div>
+          </td>
+          <td class="py-4 px-6">
+            <a
+              class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
+              @click="handleClickStudent(schedule._id)"
+            >Nhập sinh viên bằng file excel</a>
+            <a
+              class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
+              @click="handleClickTopic(schedule._id)"
+            >Nhập đề tài bằng file excel</a>
           </td>
           <td class="py-4 px-6 text-right">
             <a
@@ -114,6 +155,7 @@ import SearchInput from 'vue-search-input';
 // Optionally import default styling
 import 'vue-search-input/dist/styles.css';
 import ConfirmModal from '../Modal/ConfirmModal.vue';
+// import UploadButtonVue from './UploadButton.vue';
 
 export default {
   name: 'ManageScheduleAdmin',
@@ -127,6 +169,8 @@ export default {
       removeId: '',
       schedules: [],
       searchVal: '',
+      importType: '',
+      importId: '',
     };
   },
   computed: {
@@ -145,6 +189,43 @@ export default {
     this.schedules = this.listSchedules;
   },
   methods: {
+    handleClickStudent (id) {
+      this.importId = id;
+      this.importType = 'student';
+      this.$refs.labelBtn.click();
+    },
+    handleClickTopic (id) {
+      this.importId = id;
+      this.importType = 'topic';
+      this.$refs.labelBtn.click();
+    },
+    async upload () {
+      const { files } = this.$refs.uploadBtn;
+      if (files.length > 0) {
+        if (this.importType === 'student') {
+          await this.$store.dispatch('schedule/importTopic', { token: this.token, id: this.importId, xlsx: files[0] })
+            .then((data) => {
+              if (data.status === 201) {
+                this.$toast.success('Đã nhập thành công!');
+              }
+            });
+        } else if (this.importType === 'topic') {
+          await this.$store.dispatch('schedule/importStudent', { token: this.token, id: this.importId, xlsx: files[0] })
+            .then((data) => {
+              if (data.status === 201) {
+                this.$toast.success('Đã nhập thành công!');
+              }
+            });
+        }
+        this.importId = '';
+        this.importType = '';
+        this.$refs.uploadBtn.value = '';
+        this.search();
+      } else {
+        this.$toast.error('File không tồn tại');
+      }
+    },
+
     async confirmRemove () {
       const id = this.removeId;
       this.showConfirmModal = false;
