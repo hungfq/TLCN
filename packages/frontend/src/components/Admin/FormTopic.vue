@@ -23,23 +23,17 @@
           label="Tiêu đề"
           help="Vd: Xây dụng web thương mại điện tử e-shop"
           validation="required"
+          :validation-messages="{ required: 'Vui lòng điền thông tin vào ô này' }"
           :disabled="isView"
         />
         <FormKit
+          v-if="isView"
           v-model="code"
           name="code"
           type="text"
           label="Mã đề tài"
           validation="required"
-          :disabled="isView"
-        />
-        <FormKit
-          v-model="description"
-          name="description"
-          type="textarea"
-          label="Mô tả"
-          help="Ghi các thông tin chi tiết tại đây"
-          validation="required"
+          :validation-messages="{ required: 'Vui lòng điền thông tin vào ô này' }"
           :disabled="isView"
         />
         <FormKit
@@ -47,39 +41,19 @@
           name="limit"
           type="number"
           label="Số thành viên"
-          validation="min:1"
+          validation="min:1|max:3"
           :disabled="isView"
+          :validation-messages="{ min: 'Phải có ít nhất 1 thành viên', max:'Có tối đa 3 thành viên' }"
         />
         <FormKit
-          v-model="major"
-          name="major"
-          type="text"
-          label="Chuyên ngành"
-          validation="required"
-          :disabled="isView"
-        />
-        <FormKit
-          v-model="startDate"
-          name="startDate"
-          type="date"
-          label="Thời hạn bắt đầu"
-          validation="required"
-          :disabled="isView"
-        />
-        <FormKit
-          v-model="deadline"
-          name="deadline"
-          type="date"
-          label="Thời hạn hoàn thành"
-          validation="required"
-          :disabled="isView"
-        />
-        <FormKit
-          v-model="thesisDefenseDate"
+          v-model="
+            thesisDefenseDate"
           name="thesisDefenseDate"
           type="date"
           label="Thời hạn phản biện"
           validation="required"
+          :disabled="isView"
+          :validation-messages="{ required: 'Vui lòng điền thông tin vào ô này' }"
         />
         <div class="w-2/5">
           <span class="font-bold text-sm">
@@ -96,12 +70,12 @@
         </div>
         <div class="w-2/5">
           <span class="font-bold text-sm">
-            Mã hội đồng
+            Giáo viên phản biện
           </span>
           <div class="mt-1">
             <Multiselect
-              v-model="committeeId"
-              :options="listCommittees"
+              v-model="criticalLecturerId"
+              :options="listLecturers"
               :searchable="true"
               :disabled="isView"
             />
@@ -123,23 +97,33 @@
             />
           </div>
         </div>
+        <div class="my-2-1 w-2/5">
+          <span class="font-bold text-sm py-4 my-4">
+            Đợt đăng ký
+          </span>
+          <div class="mt-1">
+            <Multiselect
+              v-model="scheduleId"
+              :options="listSchedules"
+              :searchable="true"
+              :disabled="isView"
+            />
+          </div>
+        </div>
         <FormKit
           v-model="advisorLecturerGrade"
-          name="limit"
           type="number"
           label="Điểm của giảng viên hướng dẫn"
           :disabled="isView"
         />
         <FormKit
           v-model="criticalLecturerGrade"
-          name="limit"
           type="number"
           label="Điểm của giảng viên phản biện"
           :disabled="isView"
         />
         <FormKit
           v-model="committeePresidentGrade"
-          name="limit"
           type="number"
           label="Điểm của chủ tịch hội đồng"
           :disabled="isView"
@@ -149,6 +133,16 @@
           name="limit"
           type="number"
           label="Điểm của thư ký"
+          :disabled="isView"
+        />
+        <FormKit
+          v-model="description"
+          name="description"
+          type="textarea"
+          label="Mô tả"
+          help="Ghi các thông tin chi tiết tại đây"
+          validation="required"
+          :validation-messages="{ required: 'Vui lòng điền thông tin vào ô này' }"
           :disabled="isView"
         />
       </div>
@@ -185,12 +179,10 @@ export default {
       code: '',
       description: '',
       limit: '',
-      deadline: '',
       lecturerId: '',
-      major: '',
+      criticalLecturerId: '',
       studentIds: [],
-      startDate: '',
-      committeeId: '',
+      scheduleId: '',
       thesisDefenseDate: '',
       advisorLecturerGrade: '',
       committeePresidentGrade: '',
@@ -207,7 +199,7 @@ export default {
         'lecturer2',
         'lecturer3',
       ],
-      listCommittees: [],
+      listSchedules: [],
       messages: '',
     };
   },
@@ -231,11 +223,10 @@ export default {
   async mounted () {
     await this.$store.dispatch('lecturer/fetchListLecturer', this.token);
     await this.$store.dispatch('student/fetchListStudent', this.token);
-    await this.$store.dispatch('committee/fetchListCommittee', this.token);
+    await this.$store.dispatch('schedule/fetchListSchedules', this.token);
     const lecturers = this.$store.state.lecturer.listLecturer;
     const students = this.$store.state.student.listStudents;
-    const committees = this.$store.state.committee.listCommittee;
-    this.listCommittees = this.listCommittee;
+    const schedules = this.$store.state.schedule.listSchedules;
     this.listLecturers = lecturers.map((lecturer) => {
       let l = {
         value: lecturer._id,
@@ -256,10 +247,10 @@ export default {
       }
       return st;
     });
-    this.listCommittees = committees.map((committee) => {
+    this.listSchedules = schedules.map((schedule) => {
       let st = {
-        value: committee._id,
-        label: `${committee.name} - ${committee.code}`,
+        value: schedule._id,
+        label: schedule.code,
       };
       if (this.isView) {
         st = { ...st, disabled: true };
@@ -276,23 +267,10 @@ export default {
         this.description = topic.description;
         this.limit = topic.limit;
         this.committeeId = topic.committeeId;
-        if (topic.deadline) {
-          const date = new Date(topic.deadline);
-          const dateString = new Date(date.getTime() - (date.getTimezoneOffset() * 60000))
-            .toISOString()
-            .split('T')[0];
-          this.deadline = dateString;
-        }
         if (topic.lecturerId) this.lecturerId = topic.lecturerId._id;
-        this.major = topic.major;
+        if (topic.criticalLecturerId) this.criticalLecturerId = topic.criticalLecturerId._id;
+        if (topic.scheduleId) this.scheduleId = topic.scheduleId._id;
         this.studentIds = topic.students;
-        if (topic.startDate) {
-          const date = new Date(topic.startDate);
-          const dateString = new Date(date.getTime() - (date.getTimezoneOffset() * 60000))
-            .toISOString()
-            .split('T')[0];
-          this.startDate = dateString;
-        }
         if (topic.thesisDefenseDate) {
           const date = new Date(topic.thesisDefenseDate);
           const dateString = new Date(date.getTime() - (date.getTimezoneOffset() * 60000))
@@ -312,17 +290,18 @@ export default {
       this.$store.dispatch('url/updateSection', `${this.module}-list`);
     },
     async handleAddTopicAdmin () {
-      const { studentIds, lecturerId } = this;
+      const {
+        scheduleId, studentIds, lecturerId, criticalLecturerId,
+      } = this;
       const value = {
         title: this.title,
         description: this.description,
         code: this.code,
         limit: this.limit,
-        deadline: this.deadline,
-        major: this.major,
         students: studentIds,
         lecturerId,
-        committeeId: this.committeeId,
+        scheduleId,
+        criticalLecturerId,
         thesisDefenseDate: this.thesisDefenseDate,
         advisorLecturerGrade: this.advisorLecturerGrade,
         committeePresidentGrade: this.committeePresidentGrade,

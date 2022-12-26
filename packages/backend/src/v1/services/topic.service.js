@@ -5,9 +5,24 @@ const _ = require('lodash');
 const _Topic = require('../models/topic.model');
 const _TopicProposal = require('../models/topic_proposal.model');
 const _Lecturer = require('../models/lecturer.model');
+const _Schedule = require('../models/schedule.model');
 const userService = require('./user.service');
 
 const createOne = async (value) => {
+  let prefix = '';
+  let serial = '';
+  const lastLastVersion = await _Topic.findOne().sort({ $natural: -1 }).limit(1);
+  const schedule = await _Schedule.findById(value.scheduleId);
+  if (!schedule) prefix = 'NONAME';
+  else prefix = `${schedule.code}`;
+  if (!lastLastVersion) serial = 1;
+  else {
+    const oldCode = lastLastVersion.code.split('-');
+    const size = oldCode.length;
+    serial = Number(oldCode[size - 1]);
+    serial += 1;
+  }
+  value.code = `${prefix}-${serial}`;
   const topic = await _Topic.create(value);
   return topic;
 };
@@ -97,7 +112,9 @@ const list = async (lecturerId) => {
       .populate({ path: 'lecturerId', select: 'name _id' });
   } else {
     listTopic = await _Topic.find({})
-      .populate({ path: 'lecturerId', select: 'name _id' });
+      .populate({ path: 'lecturerId', select: 'name _id' })
+      .populate({ path: 'criticalLecturerId', select: 'name _id' })
+      .populate({ path: 'scheduleId' });
   }
 
   const results = listTopic.map((topic) => {

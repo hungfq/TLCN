@@ -6,24 +6,6 @@
     >
       Thêm đợt đăng ký
     </div>
-    <!-- <form
-      class="flex items-center justify-center"
-      @submit.prevent="upload"
-    >
-      <input
-        ref="uploadBtn"
-        type="file"
-        accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-      >
-      <label
-        ref="labelBtn"
-        class=" rounded ml-auto mr-4 my-2 bg-blue-800 text-white font-sans font-semibold py-2 px-4 cursor-pointer"
-        for="upload123"
-      >Tải lên tệp excel</label>
-      <button type="submit">
-        Tải lên tệp excel
-      </button>
-    </form> -->
     <form
       class="flex"
       @submit.prevent="upload"
@@ -120,10 +102,6 @@
                 class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
                 @click="handleClickStudent(schedule._id)"
               >Nhập sinh viên bằng file excel</a>
-              <a
-                class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
-                @click="handleClickTopic(schedule._id)"
-              >Nhập đề tài bằng file excel</a>
             </div>
           </td>
           <td class="py-4 text-right">

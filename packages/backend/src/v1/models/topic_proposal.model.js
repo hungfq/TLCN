@@ -9,8 +9,10 @@ const TopicProposalSchema = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: 'Lecturer',
   },
-  major: { type: String },
-  deadline: { type: Date, default: Date.now() },
+  scheduleId: {
+    type: Schema.Types.ObjectId,
+    ref: 'Schedule',
+  },
   limit: { type: Number, default: 0 },
   students: { type: Array },
   status: {

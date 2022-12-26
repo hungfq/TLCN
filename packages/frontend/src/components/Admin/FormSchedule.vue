@@ -26,11 +26,26 @@
           :disabled="isView"
         />
         <FormKit
-          v-model="description"
+          v-model="code"
           name="description"
-          type="textarea"
-          label="Mô tả"
-          help="Ghi các thông tin chi tiết tại đây"
+          type="text"
+          label="Mã đợt"
+          validation="required"
+          :disabled="isView"
+        />
+        <FormKit
+          v-model="startDate"
+          name="startDate"
+          type="date"
+          label="Thời gian bắt đầu làm đề tài"
+          validation="required"
+          :disabled="isView"
+        />
+        <FormKit
+          v-model="deadline"
+          name="startDate"
+          type="date"
+          label="Thời gian kết thúc làm đề tài"
           validation="required"
           :disabled="isView"
         />
@@ -82,22 +97,6 @@
           validation="required"
           :disabled="isView"
         />
-        <div class="w-3/4">
-          <span class="font-bold text-sm">
-            Đề tài đăng ký
-          </span>
-          <div class="mt-1">
-            <Multiselect
-              v-model="topics"
-              mode="tags"
-              :close-on-select="false"
-              :searchable="true"
-              :create-option="true"
-              :options="listTopics"
-              :disabled="isView"
-            />
-          </div>
-        </div>
         <div class="my-2-1 w-3/4">
           <span class="font-bold text-sm py-4 my-4">
             Sinh viên đăng kí
@@ -114,6 +113,15 @@
             />
           </div>
         </div>
+        <FormKit
+          v-model="description"
+          name="description"
+          type="textarea"
+          label="Mô tả"
+          help="Ghi các thông tin chi tiết tại đây"
+          validation="required"
+          :disabled="isView"
+        />
       </div>
       <!-- Modal footer -->
       <div class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200">
@@ -145,6 +153,9 @@ export default {
   data () {
     return {
       name: '',
+      code: '',
+      startDate: '',
+      deadline: '',
       description: '',
       startProposalDate: '',
       endProposalDate: '',
@@ -207,6 +218,9 @@ export default {
       if (schedule) {
         this.name = schedule.name;
         this.description = schedule.description;
+        this.code = schedule.code;
+        this.startDate = this.formatDate(schedule.startProposalDate);
+        this.deadline = this.formatDate(schedule.startProposalDate);
         this.startProposalDate = this.formatDate(schedule.startProposalDate);
         this.endProposalDate = this.formatDate(schedule.endProposalDate);
         this.startApproveDate = this.formatDate(schedule.startApproveDate);
@@ -224,15 +238,16 @@ export default {
     },
     async handleAddScheduleAdmin () {
       const {
-        name, description, startDate, endDate, startProposalDate,
+        name, description, startDate, deadline, startProposalDate,
         endProposalDate, startRegisterDate, endRegisterDate, startApproveDate,
-        endApproveDate, topics, students,
+        endApproveDate, topics, students, code,
       } = this;
+      console.log(this.code);
       const value = {
         name,
         description,
         startDate,
-        endDate,
+        deadline,
         startProposalDate,
         endProposalDate,
         startRegisterDate,
@@ -241,6 +256,7 @@ export default {
         endApproveDate,
         topics,
         students,
+        code,
       };
       try {
         if (this.isSave) {
@@ -255,7 +271,6 @@ export default {
           }
         }
       } catch (e) {
-        console.log(e);
         this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
       } finally {
         this.rollBack();
