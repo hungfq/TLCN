@@ -75,6 +75,15 @@ const actions = {
       throw new Error(e.message);
     }
   },
+  async exportExcel ({ }, payload) {
+    try {
+      const { token, id } = payload;
+      const data = await ScheduleApi.exportExcel(token, id);
+      return data;
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  },
 };
 
 const mutations = {

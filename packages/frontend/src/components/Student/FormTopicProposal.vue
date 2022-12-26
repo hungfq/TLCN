@@ -223,16 +223,21 @@ export default {
         status: 'LECTURER',
       };
       try {
-        if (this.isSave) {
-          await this.$store.dispatch('topic_proposal/addTopicProposal', { token: this.token, value });
-        } else if (this.isUpdate) {
-          await this.$store.dispatch('topic_proposal/updateTopicProposal', { token: this.token, value: { ...value, _id: this.id } });
+        if (value.lecturerId !== '' && !!value.lecturerId) {
+          if (this.isSave) {
+            await this.$store.dispatch('topic_proposal/addTopicProposal', { token: this.token, value });
+            this.$toast.success('Đã cập nhật một thành công!');
+            this.rollBack();
+          } else if (this.isUpdate) {
+            await this.$store.dispatch('topic_proposal/updateTopicProposal', { token: this.token, value: { ...value, _id: this.id } });
+            this.$toast.success('Đã cập nhật một thành công!');
+            this.rollBack();
+          }
+        } else {
+          this.$toast.error('Vui lòng chọn GVHD');
         }
-        this.$toast.success('Đã cập nhật một thành công!');
       } catch (e) {
         this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
-      } finally {
-        this.rollBack();
       }
     },
   },

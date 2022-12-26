@@ -12,16 +12,6 @@
       >
         Thêm đề xuất đề tài
       </div>
-      <form @submit.prevent="upload">
-        <input
-          ref="uploadBtn"
-          type="file"
-          accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        >
-        <button type="submit">
-          Tải lên tệp excel
-        </button>
-      </form>
     </div>
     <div class="shadow-md sm:rounded-lg m-4">
       <SearchInput

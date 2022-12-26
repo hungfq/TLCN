@@ -134,7 +134,7 @@ export default {
     },
     isPermit () {
       const check = this.listScheduleToday.find((c) => {
-        const checkExist = c.students.find((st) => st === this.userInfo.code);
+        const checkExist = c.students.find((st) => st.toString() === this.userInfo.code.toString());
         return !!checkExist;
       });
       this.$store.commit('schedule/setIsPermit', !!check);

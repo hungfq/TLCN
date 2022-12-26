@@ -126,7 +126,11 @@
               >Nhập đề tài bằng file excel</a>
             </div>
           </td>
-          <td class="py-4 px-6 text-right">
+          <td class="py-4 text-right">
+            <a
+              class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
+              :href="getLink(schedule._id)"
+            >Xuất báo cáo</a>
             <a
               class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
               @click="handleUpdateSchedule(schedule._id)"
@@ -256,6 +260,12 @@ export default {
       await this.$store.dispatch('url/updateSection', 'schedule-update');
       await this.$store.dispatch('url/updateId', id);
     },
+    getLink (id) {
+      return `http://localhost:5000/v1/schedule/${id}/export`;
+    },
+    // async handleExportSchedule (id) {
+    //   await this.$store.dispatch('schedule/exportExcel', { token: this.token, id });
+    // },
     async handleShowSchedule (id) {
       await this.$store.dispatch('url/updateSection', 'schedule-view');
       await this.$store.dispatch('url/updateId', id);

@@ -264,7 +264,7 @@ const excelExport = async (req, res, next) => {
     const filename = 'ScheduleReport.xlsx';
     const wbOpts = { bookType: 'xlsx', type: 'buffer' };
     xlsx.writeFile(workbook, filename, wbOpts);
-
+    res.setHeader('Content-Type', 'application/xml');
     res.setHeader('Content-Disposition', 'attachment; filename=ScheduleReport.xlsx');
     const stream = fs.createReadStream(filename);
     stream.pipe(res);
