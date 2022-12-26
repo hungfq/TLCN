@@ -12,14 +12,14 @@ const importTopics = async (req, res, next) => {
     const jsonData = fileUtils.excelToJson(req.file.path);
 
     jsonData.forEach(async (topic) => {
-      const lecturer = await userService.findOneByCode('LECTURER', topic.lecturerCode);
+      const lecturer = await userService.findOneByCode('LECTURER', topic.LECTURER_CODE);
       await topicService.upsertOne(
-        topic.code,
-        topic.title,
-        topic.description,
-        topic.limit,
-        topic.deadline,
-        topic.major,
+        topic.CODE,
+        topic.TITLE,
+        topic.DESCRIPTION,
+        topic.LIMIT,
+        topic.DEADLINE,
+        topic.MAJOR,
         lecturer ? lecturer._id : undefined,
       );
     });

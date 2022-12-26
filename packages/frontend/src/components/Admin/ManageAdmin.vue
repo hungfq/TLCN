@@ -6,19 +6,7 @@
     >
       Thêm
     </div>
-    <form
-      class="flex items-center justify-center"
-      @submit.prevent="upload"
-    >
-      <input
-        ref="uploadBtn"
-        type="file"
-        accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-      >
-      <button type="submit">
-        Tải lên tệp excel
-      </button>
-    </form>
+    <UploadButtonVue @uploadFileExcel="upload" />
   </div>
   <div class="shadow-md sm:rounded-lg m-4">
     <SearchInput
@@ -88,11 +76,13 @@ import { mapState, mapGetters } from 'vuex';
 import SearchInput from 'vue-search-input';
 // Optionally import default styling
 import 'vue-search-input/dist/styles.css';
+import UploadButtonVue from './UploadButton.vue';
 
 export default {
   name: 'ManageAdmin',
   components: {
     SearchInput,
+    UploadButtonVue,
   },
   data () {
     return {
@@ -124,18 +114,16 @@ export default {
       this.$store.dispatch('url/updateSection', 'admin-view');
       this.$store.dispatch('url/updateId', id);
     },
-    upload () {
-      const { files } = this.$refs.uploadBtn;
-
+    async upload (files) {
       if (files.length > 0) {
-        this.$store.dispatch('admin/importAdmin', { token: this.token, xlsx: files[0] })
+        await this.$store.dispatch('admin/importAdmin', { token: this.token, xlsx: files[0] })
           .then((data) => {
             if (data.status === 201) {
               this.$toast.success('Đã nhập thành công!');
             }
           });
 
-        this.$refs.uploadBtn.value = '';
+        this.search();
       } else {
         this.$toast.error('File không tồn tại');
       }

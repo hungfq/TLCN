@@ -74,7 +74,7 @@ const actions = {
     try {
       const { token, xlsx } = payload;
       const data = await TopicApi.importTopic(token, xlsx);
-      dispatch('fetchListTopics', token);
+      await dispatch('fetchListTopics', token);
       return data;
     } catch (e) {
       throw new Error(e.message);

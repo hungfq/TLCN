@@ -91,7 +91,7 @@ const importUser = async (req, res, next) => {
     }
     const jsonData = fileUtils.excelToJson(req.file.path);
     jsonData.forEach(async (user) => {
-      await userService.upsertOne(type, user.code, user.name, user.email, user.gender);
+      await userService.upsertOne(type, user.CODE, user.NAME, user.EMAIL, user.GENDER);
     });
     return res.status(201).send('Successfully');
   } catch (err) {

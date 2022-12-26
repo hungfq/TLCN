@@ -114,17 +114,16 @@ export default {
       this.$store.dispatch('url/updateSection', 'student-view');
       this.$store.dispatch('url/updateId', id);
     },
-    upload () {
-      const { files } = this.$refs.uploadBtn;
+    async upload (files) {
       if (files.length > 0) {
-        this.$store.dispatch('student/importStudent', { token: this.token, xlsx: files[0] })
+        await this.$store.dispatch('student/importStudent', { token: this.token, xlsx: files[0] })
           .then((data) => {
             if (data.status === 201) {
               this.$toast.success('Đã nhập thành công!');
             }
           });
 
-        this.$refs.uploadBtn.value = '';
+        this.search();
       } else {
         this.$toast.error('File không tồn tại');
       }

@@ -6,19 +6,7 @@
     >
       Thêm hội đồng
     </div>
-    <form
-      class="flex items-center justify-center"
-      @submit.prevent="upload"
-    >
-      <input
-        ref="uploadBtn"
-        type="file"
-        accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-      >
-      <button type="submit">
-        Tải lên tệp excel
-      </button>
-    </form>
+    <UploadButtonVue @uploadFileExcel="upload" />
   </div>
   <div class="shadow-md sm:rounded-lg m-4">
     <SearchInput
@@ -119,12 +107,14 @@ import { mapState, mapGetters } from 'vuex';
 import SearchInput from 'vue-search-input';
 import 'vue-search-input/dist/styles.css';
 import ConfirmModal from '../Modal/ConfirmModal.vue';
+import UploadButtonVue from './UploadButton.vue';
 
 export default {
   name: 'ManageStudentAdmin',
   components: {
     SearchInput,
     ConfirmModal,
+    UploadButtonVue,
   },
   data () {
     return {
@@ -177,8 +167,7 @@ export default {
       this.removeId = id;
       this.showConfirmModal = true;
     },
-    async upload () {
-      const { files } = this.$refs.uploadBtn;
+    async upload (files) {
       if (files.length > 0) {
         await this.$store.dispatch('committee/importCommittee', { token: this.token, xlsx: files[0] })
           .then((data) => {
@@ -187,7 +176,6 @@ export default {
             }
           });
         this.search();
-        this.$refs.uploadBtn.value = '';
       } else {
         this.$toast.error('File không tồn tại');
       }

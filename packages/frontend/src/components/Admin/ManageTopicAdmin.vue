@@ -168,7 +168,6 @@ export default {
             }
           });
 
-        this.$refs.uploadBtn.value = '';
         this.search();
       } else {
         this.$toast.error('File không tồn tại');

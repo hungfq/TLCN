@@ -36,7 +36,7 @@ const actions = {
     try {
       const { token, xlsx } = payload;
       const data = await LectureApi.importLecturer(token, xlsx);
-      dispatch('fetchListLecturer', token);
+      await dispatch('fetchListLecturer', token);
       return data;
     } catch (e) {
       throw new Error(e.message);

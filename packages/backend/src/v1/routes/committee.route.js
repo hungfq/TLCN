@@ -19,12 +19,12 @@ const router = (app) => {
   app.put('/v1/committee/:id', isAuth, updateCommittee);
   app.delete('/v1/committee/:id', isAuth, deleteCommittee);
 
-  app.get('/template/User', (req, res) => {
-    const file = fs.createReadStream('public/template/UserTemplate.xlsx');
-    const stat = fs.statSync('public/template/UserTemplate.xlsx');
+  app.get('/template/Committee', (req, res) => {
+    const file = fs.createReadStream('public/template/CommitteeTemplate.xlsx');
+    const stat = fs.statSync('public/template/CommitteeTemplate.xlsx');
     res.setHeader('Content-Length', stat.size);
     res.setHeader('Content-Type', 'application/xml');
-    res.setHeader('Content-Disposition', 'attachment; filename=User.xlsx');
+    res.setHeader('Content-Disposition', 'attachment; filename=Committee.xlsx');
     file.pipe(res);
   });
 

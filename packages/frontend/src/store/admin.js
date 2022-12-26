@@ -36,7 +36,7 @@ const actions = {
     try {
       const { token, xlsx } = payload;
       const data = await AdminApi.importAdmin(token, xlsx);
-      dispatch('fetchListAdmins', token);
+      await dispatch('fetchListAdmins', token);
       return data;
     } catch (e) {
       throw new Error(e.message);
