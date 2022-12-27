@@ -2,7 +2,7 @@
   <div class="flex h-[60px] shadow-2xl rounded">
     <img
       class="h-[40px] my-auto ml-5 w-[50px]"
-      src="https://fit.hcmute.edu.vn/Resources/Images/SubDomain/fit/logo-cntt2021.png"
+      src="/fit.png"
     >
     <div class="grow flex">
       <div class="grow" />

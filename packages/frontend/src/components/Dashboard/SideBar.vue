@@ -4,7 +4,7 @@
   <div class="rounded-xl flex flex-col bg-white px-2 shadow-2xl h-[1000px] w-[350px] m-2">
     <img
       class="m-4"
-      src="https://fit.hcmute.edu.vn/Resources/Images/SubDomain/fit/logo-cntt2021.png"
+      src="/fit.png"
     >
     <hr class="px-2 my-4">
     <template v-if="role==='STUDENT'">

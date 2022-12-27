@@ -10,7 +10,7 @@
       <a href="#">
         <img
           class="h-[40px] my-auto w-[50px]"
-          src="https://fit.hcmute.edu.vn/Resources/Images/SubDomain/fit/logo-cntt2021.png"
+          src="/fit.png"
         >
       </a>
     </div>
@@ -142,9 +142,10 @@
         @click="clickNotifyOrInfo('avatar')"
       >
         <img
+          referrerpolicy="no-referrer"
           class="w-10 h-10 rounded-lg shadow-md"
-          src="https://avatars.githubusercontent.com/u/57622665?s=460&u=8f581f4c4acd4c18c33a87b3e6476112325e8b38&v=4"
-          alt="Ahmed Kamel"
+          :src="userInfo ? userInfo.picture : '/default_avatar.png'"
+          alt="Avatar"
         >
         <span class="sr-only">User menu</span>
       </button>
@@ -199,7 +200,7 @@ export default {
       isAuthenticated: ({ auth: { isAuthenticated } }) => isAuthenticated,
     }),
     ...mapGetters('auth', [
-      'userId', 'userEmail', 'userRole', 'token',
+      'userId', 'userEmail', 'userRole', 'token', 'userInfo',
     ]),
     ...mapGetters('notification', [
       'listNotifications',

@@ -19,7 +19,7 @@
         <a href="#">
           <img
             class="w-2/3 mx-auto"
-            src="https://fit.hcmute.edu.vn/Resources/Images/SubDomain/fit/logo-cntt2021.png"
+            src="/fit.png"
           >
         </a>
       </div>
