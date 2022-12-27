@@ -14,8 +14,9 @@ const getters = {
 };
 
 const actions = {
-  async fetchListTopicProposalByLectures ({ commit }, token) {
-    const listTopics = await TopicProposalApi.listAllTopicsByLecturer(token);
+  async fetchListTopicProposalByLectures ({ commit }, payload) {
+    const { token, scheduleId } = payload;
+    const listTopics = await TopicProposalApi.listAllTopicsByLecturer(token, scheduleId);
     commit('setListTopicProposalByLecturer', listTopics);
   },
 
@@ -47,9 +48,9 @@ const actions = {
     await dispatch('fetchListTopicProposalAdmin', token);
   },
   async approveTopicProposalByLecturer ({ dispatch }, payload) {
-    const { token, id } = payload;
+    const { token, id, scheduleId } = payload;
     await TopicProposalApi.approveTopicProposalByLecturer(token, id);
-    await dispatch('fetchListTopicProposalByLectures', token);
+    await dispatch('fetchListTopicProposalByLectures', { token, scheduleId });
   },
   async approveTopicProposalByAdmin ({ dispatch }, payload) {
     const { token, value } = payload;

@@ -14,6 +14,7 @@ const {
   removeSchedule,
   getScheduleToday,
   excelExport,
+  listScheduleApproveLecturer,
 } = require('../controller/schedule.controller');
 
 const { upload } = require('../utils/file');
@@ -38,6 +39,7 @@ const router = (app) => {
   app.get('/v1/schedule-topic-lecturer', isAuth, listScheduleTopicLecturer); // only lecturer call
   app.get('/v1/schedule-topic-lecturer/short', isAuth, listScheduleTopicLecturerShort); // only lecturer call
   app.get('/v1/schedule/:id/topic-lecturer/:lecturerId', isAuth, listTopicLecturer);
+  app.get('/v1/schedule-lecturer', isAuth, listScheduleApproveLecturer);
 
   app.post('/v1/schedule/:id/topic/:topicId/register', isAuth, register);
   app.delete('/v1/schedule/:id/topic/:topicId/register', isAuth, cancelRegister);

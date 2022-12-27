@@ -7,7 +7,7 @@
         @change="selectHandler"
       >
         <option
-          v-for="option in listSchedules"
+          v-for="option in listScheduleApproveLecturer"
           :key="`key-${option._id}`"
           :value="option._id"
         >
@@ -16,7 +16,7 @@
       </select>
     </div>
   </div>
-  <template v-if="!canEdit">
+  <template v-if="!open">
     <div class="py-2 mx-2 font-medium text-red-600 ">
       Hiện tại đang không có đợt duyệt đề tài, vui lòng chọn mục khác!
     </div>
@@ -122,7 +122,7 @@ export default {
   props: {
     open: {
       type: Boolean,
-      default: false,
+      default: true,
     },
   },
   data () {
@@ -152,7 +152,7 @@ export default {
       'listTopicProposalByLecturer',
     ]),
     ...mapGetters('schedule', [
-      'listSchedules',
+      'listScheduleApproveLecturer',
     ]),
     listTopicProposal () {
       const listTopics = this.listTopicProposalByLecturer.map((t) => {
@@ -164,11 +164,14 @@ export default {
     },
   },
   async mounted () {
-    await this.$store.dispatch('topic_proposal/fetchListTopicProposalByLectures', this.token);
     await this.$store.dispatch('student/fetchListStudent', this.token);
+    await this.$store.dispatch('schedule/fetchListScheduleApproveLecturer', this.token);
     this.topics = this.listTopicProposal;
-    this.selectVal = this.listSchedules ? this.listSchedules[0]._id : null;
-    this.checkCanEdit(this.selectVal);
+    this.selectVal = this.listScheduleApproveLecturer[0] ? this.listScheduleApproveLecturer[0]._id : null;
+    if (this.selectVal) {
+      await this.$store.dispatch('topic_proposal/fetchListTopicProposalByLectures', { token: this.token, scheduleId: this.selectVal });
+    }
+    this.search();
   },
   methods: {
     async confirmRemove () {
@@ -180,7 +183,7 @@ export default {
           token: this.token,
         };
         await this.$store.dispatch('topic_proposal/removeTopicProposal', value);
-        await this.$store.dispatch('topic_proposal/fetchListTopicProposalByLectures', this.token);
+        await this.$store.dispatch('topic_proposal/fetchListTopicProposalByLectures', { token: this.token, scheduleId: this.selectVal });
 
         this.$toast.success('Đã từ chối hướng dẫn đề tài thành công!');
       } catch (e) {
@@ -207,8 +210,8 @@ export default {
           id,
           token: this.token,
         };
-        await this.$store.dispatch('topic_proposal/approveTopicProposalByLecturer', value);
-        await this.$store.dispatch('topic_proposal/fetchListTopicProposalByLectures', this.token);
+        await this.$store.dispatch('topic_proposal/approveTopicProposalByLecturer', value, this.selectVal);
+        await this.$store.dispatch('topic_proposal/fetchListTopicProposalByLectures', { token: this.token, scheduleId: this.selectVal });
 
         this.$toast.success('Đã từ gửi đề tài lên khoa thành công!');
       } catch (e) {
@@ -233,18 +236,9 @@ export default {
       } else this.topics = this.listTopicProposal;
     },
     async selectHandler () {
-      this.checkCanEdit(this.selectVal);
       await this.$store.commit('topic/setTopicScheduleId', this.selectVal);
-      await this.$store.dispatch('topic_proposal/fetchListTopicProposalByLectures', this.token);
-    },
-    checkCanEdit (scheduleId) {
-      const schedule = this.listSchedules.filter((sc) => sc._id === scheduleId)[0];
-      if (schedule) {
-        const now = Date.now();
-        const start = new Date(schedule.startApproveDate);
-        const end = new Date(schedule.endApproveDate);
-        this.canEdit = (start < now && now < end);
-      }
+      await this.$store.dispatch('topic_proposal/fetchListTopicProposalByLectures', { token: this.token, scheduleId: this.selectVal });
+      this.search();
     },
   },
 };
