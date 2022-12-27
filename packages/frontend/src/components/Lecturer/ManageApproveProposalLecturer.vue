@@ -1,5 +1,22 @@
 <template>
-  <template v-if="!open">
+  <div class="flex">
+    <div class="inline-block p-2 rounded-md">
+      <select
+        v-model="selectVal"
+        class="mt-1 block w-full rounded-md bg-gray-100 border border-gray-300 py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+        @change="selectHandler"
+      >
+        <option
+          v-for="option in listSchedules"
+          :key="`key-${option._id}`"
+          :value="option._id"
+        >
+          {{ option.code }} : {{ option.name }}
+        </option>
+      </select>
+    </div>
+  </div>
+  <template v-if="!canEdit">
     <div class="py-2 mx-2 font-medium text-red-600 ">
       Hiện tại đang không có đợt duyệt đề tài, vui lòng chọn mục khác!
     </div>
@@ -114,6 +131,8 @@ export default {
       removeId: '',
       searchVal: '',
       topics: [],
+      selectVal: '',
+      canEdit: false,
     };
   },
   computed: {
@@ -132,6 +151,9 @@ export default {
     ...mapGetters('topic_proposal', [
       'listTopicProposalByLecturer',
     ]),
+    ...mapGetters('schedule', [
+      'listSchedules',
+    ]),
     listTopicProposal () {
       const listTopics = this.listTopicProposalByLecturer.map((t) => {
         let user = this.listStudents.find((u) => u._id.toString() === t.createdBy.toString());
@@ -141,10 +163,12 @@ export default {
       return listTopics;
     },
   },
-  mounted () {
-    this.$store.dispatch('topic_proposal/fetchListTopicProposalByLectures', this.token);
-    this.$store.dispatch('student/fetchListStudent', this.token);
+  async mounted () {
+    await this.$store.dispatch('topic_proposal/fetchListTopicProposalByLectures', this.token);
+    await this.$store.dispatch('student/fetchListStudent', this.token);
     this.topics = this.listTopicProposal;
+    this.selectVal = this.listSchedules ? this.listSchedules[0]._id : null;
+    this.checkCanEdit(this.selectVal);
   },
   methods: {
     async confirmRemove () {
@@ -207,6 +231,20 @@ export default {
         });
         this.topics = topicFilter;
       } else this.topics = this.listTopicProposal;
+    },
+    async selectHandler () {
+      this.checkCanEdit(this.selectVal);
+      await this.$store.commit('topic/setTopicScheduleId', this.selectVal);
+      await this.$store.dispatch('topic_proposal/fetchListTopicProposalByLectures', this.token);
+    },
+    checkCanEdit (scheduleId) {
+      const schedule = this.listSchedules.filter((sc) => sc._id === scheduleId)[0];
+      if (schedule) {
+        const now = Date.now();
+        const start = new Date(schedule.startApproveDate);
+        const end = new Date(schedule.endApproveDate);
+        this.canEdit = (start < now && now < end);
+      }
     },
   },
 };

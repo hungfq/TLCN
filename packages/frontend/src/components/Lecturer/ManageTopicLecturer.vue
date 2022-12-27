@@ -188,23 +188,23 @@ export default {
       },
     },
   },
-  mounted () {
-    this.$store.dispatch('student/fetchListStudent', this.token);
-    this.$store.dispatch('schedule/fetchListSchedules', this.token);
+  async mounted () {
+    await this.$store.dispatch('student/fetchListStudent', this.token);
+    await this.$store.dispatch('schedule/fetchListSchedules', this.token);
     this.topics = this.listTopicsLecturer;
     this.selectVal = this.listSchedules ? this.listSchedules[0]._id : null;
     this.$store.commit('topic/setTopicScheduleId', this.selectVal);
-    this.$store.dispatch('topic/fetchListTopicByLecturerSchedule', { token: this.token, lecturerId: this.userId, scheduleId: this.selectVal });
+    await this.$store.dispatch('topic/fetchListTopicByLecturerSchedule', { token: this.token, lecturerId: this.userId, scheduleId: this.selectVal });
     this.checkCanEdit(this.selectVal);
   },
   methods: {
-    handleUpdateTopic (id) {
-      this.$store.dispatch('url/updateSection', `${this.module}-update`);
-      this.$store.dispatch('url/updateId', id);
+    async handleUpdateTopic (id) {
+      await this.$store.dispatch('url/updateSection', `${this.module}-update`);
+      await this.$store.dispatch('url/updateId', id);
     },
-    handleShowTopic (id) {
-      this.$store.dispatch('url/updateSection', `${this.module}-view`);
-      this.$store.dispatch('url/updateId', id);
+    async handleShowTopic (id) {
+      await this.$store.dispatch('url/updateSection', `${this.module}-view`);
+      await this.$store.dispatch('url/updateId', id);
     },
     async handleRemoveTopic (id) {
       try {
@@ -213,7 +213,7 @@ export default {
           token: this.token,
         };
         await this.$store.dispatch('topic/removeTopic', value);
-        this.$store.dispatch('topic/fetchListTopicByLecturerSchedule', { token: this.token, lecturerId: this.userId, scheduleId: this.selectVal });
+        await this.$store.dispatch('topic/fetchListTopicByLecturerSchedule', { token: this.token, lecturerId: this.userId, scheduleId: this.selectVal });
         this.$toast.success('Đã xóa thành công!');
       } catch (e) {
         this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
@@ -239,10 +239,10 @@ export default {
         this.topics = topicFilter;
       } else this.topics = this.listTopicsLecturer;
     },
-    selectHandler () {
+    async selectHandler () {
       this.checkCanEdit(this.selectVal);
       this.$store.commit('topic/setTopicScheduleId', this.selectVal);
-      this.$store.dispatch('topic/fetchListTopicByLecturerSchedule', { token: this.token, lecturerId: this.userId, scheduleId: this.selectVal });
+      await this.$store.dispatch('topic/fetchListTopicByLecturerSchedule', { token: this.token, lecturerId: this.userId, scheduleId: this.selectVal });
     },
     checkCanEdit (scheduleId) {
       const schedule = this.listSchedules.filter((sc) => sc._id === scheduleId)[0];
