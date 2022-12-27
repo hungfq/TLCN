@@ -21,8 +21,8 @@ Content-Type: application/json
 }
 ###
 GET {{host}}/v1/schedule
-?startDate=2022-08-10
-&endDate=2022-12-31
+?startDate=
+&endDate=
 Authorization: Bearer {{student_token}}
 ###
 GET {{host}}/v1/schedule/638ab9a345a87774343b2781

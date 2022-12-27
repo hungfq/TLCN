@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable max-len */
 /* eslint-disable no-case-declarations */
 const _ = require('lodash');
@@ -23,6 +24,9 @@ const createOne = async (value) => {
     serial += 1;
   }
   value.code = `${prefix}-${serial}`;
+  if (value.criticalLecturerId === '') {
+    delete value.criticalLecturerId;
+  }
   const topic = await _Topic.create(value);
   return topic;
 };
@@ -34,6 +38,9 @@ const findOne = async (_id) => {
 };
 
 const updateOne = async (_id, value) => {
+  if (value.criticalLecturerId === '') {
+    delete value.criticalLecturerId;
+  }
   await _Topic.updateOne({ _id }, value);
 };
 

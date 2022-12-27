@@ -163,8 +163,7 @@
 
 <script>
 import Multiselect from '@vueform/multiselect';
-import { getValidationMessages } from '@formkit/validation';
-import { mapState, mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'FormTopic',
@@ -250,7 +249,7 @@ export default {
     this.listSchedules = schedules.map((schedule) => {
       let st = {
         value: schedule._id,
-        label: schedule.code,
+        label: `${schedule.code} : ${schedule.name}`,
       };
       if (this.isView) {
         st = { ...st, disabled: true };

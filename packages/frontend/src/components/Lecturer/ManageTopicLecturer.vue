@@ -1,4 +1,31 @@
 <template>
+  <div class="flex">
+    <div class="inline-block p-2 rounded-md">
+      <select
+        v-model="selectVal"
+        class="mt-1 block w-full rounded-md bg-gray-100 border border-gray-300 py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+        @change="selectHandler"
+      >
+        <!-- <option
+          :key="`key-null`"
+          :value="''"
+        /> -->
+        <option
+          v-for="option in listSchedules"
+          :key="`key-${option._id}`"
+          :value="option._id"
+        >
+          {{ option.code }} : {{ option.name }}
+        </option>
+      </select>
+    </div>
+    <div
+      class=" rounded ml-auto mr-4 my-2 bg-blue-800 text-white font-sans font-semibold py-2 px-4 cursor-pointer"
+      @click="$store.dispatch('url/updateSection', 'topic-import')"
+    >
+      Thêm đề tài
+    </div>
+  </div>
   <div class="shadow-md sm:rounded-lg m-4">
     <SearchInput
       v-model="searchVal"
@@ -12,13 +39,19 @@
             scope="col"
             class="py-3 px-6"
           >
+            Mã đề tài
+          </th>
+          <th
+            scope="col"
+            class="py-3 px-6"
+          >
             Tên đề tài
           </th>
           <th
             scope="col"
             class="py-3 px-6"
           >
-            Mã đề tài
+            Mô tả
           </th>
           <th
             scope="col"
@@ -45,14 +78,21 @@
             scope="row"
             class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap "
           >
-            {{ topic.title }}
+            {{ topic.code }}
           </th>
           <th
             :key="`topic-${topic._id}`"
             scope="row"
             class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap "
           >
-            {{ topic.code }}
+            {{ topic.title }}
+          </th>
+          <th
+            :key="`topic-${topic._id}`"
+            scope="row"
+            class="py-4 px-6 font-medium text-gray-900 w-4"
+          >
+            {{ topic.description }}
           </th>
           <td class="py-4 px-6">
             <div class="font-mono cursor-pointer">
@@ -68,14 +108,20 @@
             </div>
           </td>
           <td class="py-4 px-6 text-right">
-            <!-- <a
-              class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
-              @click="handleUpdateTopic(topic._id)"
-            >Sửa</a> -->
             <a
               class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
               @click="handleShowTopic(topic._id)"
             >Xem chi tiết</a>
+            <a
+              v-if="canEdit"
+              class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
+              @click="handleUpdateTopic(topic._id)"
+            >Sửa</a>
+            <a
+              v-if="canEdit"
+              class="font-medium text-red-600 dark:text-red-500 hover:underline mx-2"
+              @click="handleRemoveTopic(topic._id)"
+            >Xóa</a>
           </td>
         </tr>
       </tbody>
@@ -96,8 +142,10 @@ export default {
   },
   data () {
     return {
+      selectVal: '',
       searchVal: '',
       topics: [],
+      canEdit: false,
     };
   },
   computed: {
@@ -108,7 +156,7 @@ export default {
       'userId', 'userEmail', 'userRole', 'token',
     ]),
     ...mapGetters('topic', [
-      'listTopics',
+      'listTopicsByLecturerSchedule',
     ]),
     ...mapGetters('url', [
       'page', 'module', 'section', 'id',
@@ -120,7 +168,7 @@ export default {
       'listSchedules',
     ]),
     listTopicsLecturer () {
-      const list = this.listTopics.map((t) => {
+      const list = this.listTopicsByLecturerSchedule.map((t) => {
         const listStudents = t.students.map((s) => this.listStudents.find((st) => st.code.toString() === s.toString()));
         return {
           ...t, studentInfo: listStudents,
@@ -133,11 +181,21 @@ export default {
       return newList;
     },
   },
+  watch: {
+    listTopicsByLecturerSchedule: {
+      handler () {
+        this.topics = this.listTopicsLecturer;
+      },
+    },
+  },
   mounted () {
-    this.$store.dispatch('topic/fetchListTopics', this.token);
     this.$store.dispatch('student/fetchListStudent', this.token);
     this.$store.dispatch('schedule/fetchListSchedules', this.token);
     this.topics = this.listTopicsLecturer;
+    this.selectVal = this.listSchedules ? this.listSchedules[0]._id : null;
+    this.$store.commit('topic/setTopicScheduleId', this.selectVal);
+    this.$store.dispatch('topic/fetchListTopicByLecturerSchedule', { token: this.token, lecturerId: this.userId, scheduleId: this.selectVal });
+    this.checkCanEdit(this.selectVal);
   },
   methods: {
     handleUpdateTopic (id) {
@@ -155,6 +213,7 @@ export default {
           token: this.token,
         };
         await this.$store.dispatch('topic/removeTopic', value);
+        this.$store.dispatch('topic/fetchListTopicByLecturerSchedule', { token: this.token, lecturerId: this.userId, scheduleId: this.selectVal });
         this.$toast.success('Đã xóa thành công!');
       } catch (e) {
         this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
@@ -179,6 +238,20 @@ export default {
         });
         this.topics = topicFilter;
       } else this.topics = this.listTopicsLecturer;
+    },
+    selectHandler () {
+      this.checkCanEdit(this.selectVal);
+      this.$store.commit('topic/setTopicScheduleId', this.selectVal);
+      this.$store.dispatch('topic/fetchListTopicByLecturerSchedule', { token: this.token, lecturerId: this.userId, scheduleId: this.selectVal });
+    },
+    checkCanEdit (scheduleId) {
+      const schedule = this.listSchedules.filter((sc) => sc._id === scheduleId)[0];
+      if (schedule) {
+        const now = Date.now();
+        const start = new Date(schedule.startApproveDate);
+        const end = new Date(schedule.endApproveDate);
+        this.canEdit = (start < now && now < end);
+      }
     },
   },
 };

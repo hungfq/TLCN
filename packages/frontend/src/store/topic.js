@@ -3,15 +3,19 @@ import TopicApi from '../utils/api/topic';
 const initState = {
   listTopics: [],
   listTopicByLecturer: [],
+  listTopicsByLecturerSchedule: [],
   listTopicByStudent: [],
   topicResult: null,
   listTopicPermitRegister: [],
+  topicScheduleId: null,
 };
 
 const getters = {
   listTopics: (state) => state.listTopics,
   listTopicByStudent: (state) => state.listTopicByStudent,
   listTopicPermitRegister: (state) => state.listTopicPermitRegister,
+  listTopicsByLecturerSchedule: (state) => state.listTopicsByLecturerSchedule,
+  topicScheduleId: (state) => state.topicScheduleId,
 };
 
 const actions = {
@@ -27,6 +31,11 @@ const actions = {
     const { token, lecturerId } = value;
     const listTopics = await TopicApi.listAllTopicsByLecturerId(token, lecturerId);
     commit('setListTopicsByLecturer', listTopics);
+  },
+  async fetchListTopicByLecturerSchedule ({ commit }, value) {
+    const { token, lecturerId, scheduleId } = value;
+    const listTopics = await TopicApi.listAllTopicsByLecturerIdAndScheduleId(token, lecturerId, scheduleId);
+    commit('setListTopicsByLecturerSchedule', listTopics);
   },
 
   async fetchTopicResult ({ commit }, token) {
@@ -88,6 +97,12 @@ const mutations = {
   },
   setListTopicsByLecturer: (state, listTopicByLecturer) => {
     state.listTopicByLecturer = listTopicByLecturer;
+  },
+  setListTopicsByLecturerSchedule: (state, listTopicsByLecturerSchedule) => {
+    state.listTopicsByLecturerSchedule = listTopicsByLecturerSchedule;
+  },
+  setTopicScheduleId: (state, topicScheduleId) => {
+    state.topicScheduleId = topicScheduleId;
   },
   setListTopicsByStudent: (state, listTopicByStudent) => {
     state.listTopicByStudent = listTopicByStudent;

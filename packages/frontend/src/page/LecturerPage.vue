@@ -26,7 +26,7 @@
                 v-if="section === 'topic-update' || section === 'topic-import' || section === 'topic-view'"
               />
             </template>
-            <template v-if="module === 'topic_proposal'">
+            <!-- <template v-if="module === 'topic_proposal'">
               <ManageTopicProposalLecturerVue
                 v-if="section === 'topic_proposal-list'"
                 :open="isScheduleApprove"
@@ -34,7 +34,7 @@
               <FormTopicProposalVue
                 v-if="section === 'topic_proposal-update' || section === 'topic_proposal-import' || section === 'topic_proposal-view'"
               />
-            </template>
+            </template> -->
             <template v-if="module === 'topic_proposal_approve'">
               <ManageApproveProposalLecturerVue
                 v-if="section === 'topic_proposal_approve-list'"
@@ -66,9 +66,9 @@ import ManageBarLecturerVue from '../components/Lecturer/ManageBarLecturer.vue';
 import HeaderBarVue from '../components/Admin/HeaderBar.vue';
 import MiniHeaderBarVue from '../components/Lecturer/MiniHeaderBar.vue';
 import ManageTopicLecturerVue from '../components/Lecturer/ManageTopicLecturer.vue';
-import ManageTopicProposalLecturerVue from '../components/Lecturer/ManageTopicProposalLecturer.vue';
+// import ManageTopicProposalLecturerVue from '../components/Lecturer/ManageTopicProposalLecturer.vue';
 import ManageApproveProposalLecturerVue from '../components/Lecturer/ManageApproveProposalLecturer.vue';
-import FormTopicProposalVue from '../components/Lecturer/FormTopicProposal.vue';
+// import FormTopicProposalVue from '../components/Lecturer/FormTopicProposal.vue';
 import FormTopicVue from '../components/Lecturer/FormTopic.vue';
 import FormApproveProposalVue from '../components/Lecturer/FormApproveProposal.vue';
 import TaskBarScheduleVue from '../components/Lecturer/TaskBarSchedule.vue';
@@ -85,8 +85,8 @@ export default {
     MiniHeaderBarVue,
     ManageTopicLecturerVue,
     FormTopicVue,
-    ManageTopicProposalLecturerVue,
-    FormTopicProposalVue,
+    // ManageTopicProposalLecturerVue,
+    // FormTopicProposalVue,
     ManageApproveProposalLecturerVue,
     FormApproveProposalVue,
     TaskBarScheduleVue,
