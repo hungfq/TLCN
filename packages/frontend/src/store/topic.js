@@ -8,6 +8,7 @@ const initState = {
   topicResult: null,
   listTopicPermitRegister: [],
   topicScheduleId: null,
+  listTopicByScheduleStudent: [],
 };
 
 const getters = {
@@ -16,6 +17,7 @@ const getters = {
   listTopicPermitRegister: (state) => state.listTopicPermitRegister,
   listTopicsByLecturerSchedule: (state) => state.listTopicsByLecturerSchedule,
   topicScheduleId: (state) => state.topicScheduleId,
+  listTopicByScheduleStudent: (state) => state.listTopicByScheduleStudent,
 };
 
 const actions = {
@@ -36,6 +38,12 @@ const actions = {
     const { token, lecturerId, scheduleId } = value;
     const listTopics = await TopicApi.listAllTopicsByLecturerIdAndScheduleId(token, lecturerId, scheduleId);
     commit('setListTopicsByLecturerSchedule', listTopics);
+  },
+
+  async fetchListTopicBySchedule ({ commit }, value) {
+    const { token, scheduleId } = value;
+    const listTopics = await TopicApi.listAllTopicsByScheduleId(token, scheduleId);
+    commit('setListTopicByScheduleStudent', listTopics);
   },
 
   async fetchTopicResult ({ commit }, token) {
@@ -112,6 +120,9 @@ const mutations = {
   },
   setListTopicRegister: (state, listTopicPermitRegister) => {
     state.listTopicPermitRegister = listTopicPermitRegister;
+  },
+  setListTopicByScheduleStudent: (state, listTopicByScheduleStudent) => {
+    state.listTopicByScheduleStudent = listTopicByScheduleStudent;
   },
 };
 

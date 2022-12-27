@@ -42,8 +42,7 @@ const updateOne = async (req, res, next) => {
 
 const listSchedules = async (req, res, next) => {
   try {
-    const { startDate, endDate } = req.query;
-    const schedule = await scheduleService.listBetweenTime(startDate, endDate);
+    const schedule = await _Schedule.find({});
     return res.status(200).send(schedule);
   } catch (err) {
     return next(err);
@@ -217,15 +216,30 @@ const cancelRegister = async (req, res, next) => {
 
 const getScheduleToday = async (req, res, next) => {
   try {
-    const listSchedule = await _Schedule.find({
+    const { code } = req.user;
+    const listScheduleProposal = await _Schedule.find({
       startProposalDate: {
         $lt: Date.now(),
+      },
+      endProposalDate: {
+        $gte: Date.now(),
+      },
+      students: {
+        $in: [code],
+      },
+    });
+    const listScheduleRegister = await _Schedule.find({
+      startRegisterDate: {
+        $lte: Date.now(),
       },
       endRegisterDate: {
         $gte: Date.now(),
       },
+      students: {
+        $in: [code],
+      },
     });
-    return res.status(200).send(listSchedule);
+    return res.status(200).send({ proposal: listScheduleProposal, register: listScheduleRegister });
   } catch (error) {
     return next(error);
   }

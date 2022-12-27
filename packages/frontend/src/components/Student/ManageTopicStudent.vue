@@ -8,6 +8,14 @@
     <div
       class="shadow-md sm:rounded-lg m-4"
     >
+      <div class="my-4">
+        <Multiselect
+          v-model="currentScheduleId"
+          :options="listSchedules"
+          @change="handleChange"
+        />
+      </div>
+
       <SearchInput
         v-model="searchVal"
         :search-icon="true"
@@ -107,11 +115,13 @@ import { mapState, mapGetters } from 'vuex';
 import SearchInput from 'vue-search-input';
 // Optionally import default styling
 import 'vue-search-input/dist/styles.css';
+import Multiselect from '@vueform/multiselect';
 
 export default {
   name: 'ManageTopicStudent',
   components: {
     SearchInput,
+    Multiselect,
   },
   props: {
     open: {
@@ -122,6 +132,8 @@ export default {
   data () {
     return {
       searchVal: '',
+      currentScheduleId: '',
+      listSchedules: [],
       topics: [],
     };
   },
@@ -133,7 +145,7 @@ export default {
       'userId', 'userEmail', 'userRole', 'token',
     ]),
     ...mapGetters('topic', [
-      'listTopicByStudent', 'listTopicPermitRegister',
+      'listTopicByScheduleStudent',
     ]),
     ...mapGetters('url', [
       'page', 'module', 'section', 'id',
@@ -142,20 +154,22 @@ export default {
       'studentId', 'studentEmail', 'student', 'listStudents',
     ]),
     ...mapGetters('schedule', [
-      'listSchedules',
+      'listScheduleRegisterStudent',
     ]),
-    listTopicsStudent () {
-      if (!this.listTopicByStudent || this.listTopicByStudent.length < 1) return [];
-      const setCheck = new Set(this.listTopicPermitRegister);
-      const listTopic = this.listTopicByStudent.filter((t) => setCheck.has(t.code));
-      return listTopic;
-    },
   },
   async mounted () {
-    await this.$store.dispatch('topic/fetchListTopicByStudent', this.token);
     await this.$store.dispatch('student/fetchListStudent', this.token);
-    await this.$store.dispatch('schedule/fetchListSchedules', this.token);
-    this.topics = this.listTopicsStudent;
+    await this.$store.dispatch('schedule/fetchListScheduleToday', this.token);
+    this.currentScheduleId = this.listScheduleRegisterStudent[0]._id;
+    this.listSchedules = this.listScheduleRegisterStudent.map((schedule) => {
+      const st = {
+        value: schedule._id,
+        label: `${schedule.code}: ${schedule.name}`,
+      };
+      return st;
+    });
+    await this.$store.dispatch('topic/fetchListTopicBySchedule', { token: this.token, scheduleId: this.currentScheduleId });
+    this.topics = this.listTopicByScheduleStudent || [];
   },
   methods: {
     async handleRegisterTopic (id) {
@@ -174,6 +188,14 @@ export default {
         else if (e.response.status === 404) this.$toast.error('Không tồn tại đề tài, vui lòng kiểm tra lại');
         else if (e.response.status === 422) this.$toast.error('Đã hết lượt đăng ký, vui lòng thử lại');
         else this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
+      }
+    },
+    async handleChange () {
+      console.log('change');
+      if (this.currentScheduleId) {
+        console.log('🚀 ~ file: ManageTopicStudent.vue:196 ~ handleChange ~ this.currentScheduleId', this.currentScheduleId);
+        await this.$store.dispatch('topic/fetchListTopicBySchedule', { token: this.token, scheduleId: this.currentScheduleId });
+        this.topics = this.listTopicByScheduleStudent || [];
       }
     },
     handleShowTopic (id) {
@@ -197,7 +219,7 @@ export default {
     },
     search () {
       if (this.searchVal !== '') {
-        const topicFilter = this.listTopicsStudent.filter((topic) => {
+        const topicFilter = this.listScheduleRegisterStudent.filter((topic) => {
           const re = new RegExp(`\\b${this.searchVal}`, 'gi');
           if (topic.title.match(re)) return true;
           if (topic.code.match(re)) return true;
@@ -205,7 +227,6 @@ export default {
           if (topic.lecturerId.name.match(re)) return true;
           return false;
         });
-
         this.topics = topicFilter;
       } else this.topics = this.listTopicsStudent;
     },

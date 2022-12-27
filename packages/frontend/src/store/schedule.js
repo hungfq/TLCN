@@ -2,7 +2,8 @@ import ScheduleApi from '../utils/api/schedule';
 
 const initState = {
   listSchedules: [],
-  listScheduleToday: [],
+  listScheduleProposalStudent: [],
+  listScheduleRegisterStudent: [],
   isPermit: false,
   isScheduleProposal: false,
   isScheduleRegister: false,
@@ -11,7 +12,8 @@ const initState = {
 
 const getters = {
   listSchedules: (state) => state.listSchedules,
-  listScheduleToday: (state) => state.listScheduleToday,
+  listScheduleRegisterStudent: (state) => state.listScheduleRegisterStudent,
+  listScheduleProposalStudent: (state) => state.listScheduleProposalStudent,
   isPermit: (state) => state.isPermit,
   isScheduleProposal: (state) => state.isScheduleProposal,
   isScheduleRegister: (state) => state.isScheduleRegister,
@@ -91,7 +93,8 @@ const mutations = {
     state.listSchedules = listSchedules;
   },
   setListScheduleToday: (state, listScheduleToday) => {
-    state.listScheduleToday = listScheduleToday;
+    state.listScheduleProposalStudent = listScheduleToday.proposal;
+    state.listScheduleRegisterStudent = listScheduleToday.register;
   },
   setIsScheduleProposal: (state, value) => {
     state.isScheduleProposal = value;

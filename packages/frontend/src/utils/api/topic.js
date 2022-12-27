@@ -31,6 +31,15 @@ export default class TopicApi {
     return res.data;
   }
 
+  static async listAllTopicsByScheduleId (token, scheduleId) {
+    const res = await axios.get(`/topic?scheduleId=${scheduleId}`, {
+      headers: {
+        authorization: `bearer ${token}`,
+      },
+    });
+    return res.data;
+  }
+
   static async listTopicWithName (token, value, type) {
     const res = await axios.get(`/topic-search?value=${value}&type=${type}`, {
       headers: {
