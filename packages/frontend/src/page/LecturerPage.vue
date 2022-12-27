@@ -38,7 +38,6 @@
             <template v-if="module === 'topic_proposal_approve'">
               <ManageApproveProposalLecturerVue
                 v-if="section === 'topic_proposal_approve-list'"
-                :open="isScheduleApprove"
               />
               <FormApproveProposalVue v-if="section === 'topic_proposal_approve-view' || section === 'topic_proposal_approve-update'" />
             </template>
@@ -114,15 +113,15 @@ export default {
     ...mapGetters('schedule', [
       'listScheduleToday',
     ]),
-    isScheduleApprove () {
-      const check = this.listScheduleToday.find((c) => {
-        const now = Date.now();
-        const start = new Date(c.startApproveDate);
-        const end = new Date(c.endApproveDate);
-        return (start < now && now < end);
-      });
-      return !!check;
-    },
+    // isScheduleApprove () {
+    //   const check = this.listScheduleToday.find((c) => {
+    //     const now = Date.now();
+    //     const start = new Date(c.startApproveDate);
+    //     const end = new Date(c.endApproveDate);
+    //     return (start < now && now < end);
+    //   });
+    //   return !!check;
+    // },
   },
   async mounted () {
     if (!this.isAuthenticated || this.userRole !== 'LECTURER') {
