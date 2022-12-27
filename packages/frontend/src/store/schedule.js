@@ -4,6 +4,7 @@ const initState = {
   listSchedules: [],
   listScheduleProposalStudent: [],
   listScheduleRegisterStudent: [],
+  listScheduleApproveLecturer: [],
   isPermit: false,
   isScheduleProposal: false,
   isScheduleRegister: false,
@@ -14,6 +15,7 @@ const getters = {
   listSchedules: (state) => state.listSchedules,
   listScheduleRegisterStudent: (state) => state.listScheduleRegisterStudent,
   listScheduleProposalStudent: (state) => state.listScheduleProposalStudent,
+  listScheduleApproveLecturer: (state) => state.listScheduleApproveLecturer,
   isPermit: (state) => state.isPermit,
   isScheduleProposal: (state) => state.isScheduleProposal,
   isScheduleRegister: (state) => state.isScheduleRegister,
@@ -33,6 +35,14 @@ const actions = {
     try {
       const listSchedules = await ScheduleApi.listScheduleToday(token);
       commit('setListScheduleToday', listSchedules);
+    } catch (e) {
+      console.log(e.message);
+    }
+  },
+  async fetchListScheduleApproveLecturer ({ commit }, token) {
+    try {
+      const listSchedules = await ScheduleApi.listScheduleApproveLecturer(token);
+      commit('setListScheduleApproveLecturer', listSchedules);
     } catch (e) {
       console.log(e.message);
     }
@@ -91,6 +101,9 @@ const actions = {
 const mutations = {
   setListSchedules: (state, listSchedules) => {
     state.listSchedules = listSchedules;
+  },
+  setListScheduleApproveLecturer: (state, listScheduleApproveLecturer) => {
+    state.listScheduleApproveLecturer = listScheduleApproveLecturer;
   },
   setListScheduleToday: (state, listScheduleToday) => {
     state.listScheduleProposalStudent = listScheduleToday.proposal;

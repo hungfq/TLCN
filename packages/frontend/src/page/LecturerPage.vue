@@ -38,6 +38,7 @@
             <template v-if="module === 'topic_proposal_approve'">
               <ManageApproveProposalLecturerVue
                 v-if="section === 'topic_proposal_approve-list'"
+                :open="isScheduleApprove"
               />
               <FormApproveProposalVue v-if="section === 'topic_proposal_approve-view' || section === 'topic_proposal_approve-update'" />
             </template>
@@ -111,17 +112,12 @@ export default {
       'page', 'module', 'subModule', 'section', 'id',
     ]),
     ...mapGetters('schedule', [
-      'listScheduleToday',
+      'listScheduleApproveLecturer',
     ]),
-    // isScheduleApprove () {
-    //   const check = this.listScheduleToday.find((c) => {
-    //     const now = Date.now();
-    //     const start = new Date(c.startApproveDate);
-    //     const end = new Date(c.endApproveDate);
-    //     return (start < now && now < end);
-    //   });
-    //   return !!check;
-    // },
+    isScheduleApprove () {
+      if (!this.listScheduleApproveLecturer && this.listScheduleApproveLecturer.length < 1) return false;
+      return true;
+    },
   },
   async mounted () {
     if (!this.isAuthenticated || this.userRole !== 'LECTURER') {
@@ -134,7 +130,7 @@ export default {
       this.$store.dispatch('url/updateSubModule', 'topic');
       this.$store.dispatch('url/updateSection', 'topic-list');
     }
-    await this.$store.dispatch('schedule/fetchListScheduleToday', this.token);
+    await this.$store.dispatch('schedule/fetchListScheduleApproveLecturer', this.token);
   },
   async created () {
     const { _id } = this.$store.state.auth.userInfo;

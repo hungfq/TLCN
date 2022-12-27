@@ -112,6 +112,21 @@ const listScheduleTopicLecturer = async (req, res, next) => {
     return next(err);
   }
 };
+const listScheduleApproveLecturer = async (req, res, next) => {
+  try {
+    const listScheduleProposal = await _Schedule.find({
+      startApproveDate: {
+        $lt: Date.now(),
+      },
+      endApproveDate: {
+        $gte: Date.now(),
+      },
+    });
+    return res.status(200).send(listScheduleProposal);
+  } catch (err) {
+    return next(err);
+  }
+};
 
 const listScheduleTopicLecturerShort = async (req, res, next) => {
   try {
@@ -302,4 +317,5 @@ module.exports = {
   removeSchedule,
   getScheduleToday,
   excelExport,
+  listScheduleApproveLecturer,
 };

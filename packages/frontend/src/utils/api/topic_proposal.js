@@ -4,8 +4,8 @@ const apiDest = 'http://localhost:5000/v1';
 axios.defaults.baseURL = apiDest;
 
 export default class TopicProposalApi {
-  static async listAllTopicsByLecturer (token) {
-    const res = await axios.get('/topic-proposal/lecturer', {
+  static async listAllTopicsByLecturer (token, scheduleId) {
+    const res = await axios.get(`/topic-proposal/lecturer?scheduleId=${scheduleId}`, {
       headers: {
         authorization: `bearer ${token}`,
       },

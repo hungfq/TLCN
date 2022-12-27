@@ -22,6 +22,15 @@ export default class ScheduleApi {
     return res.data;
   }
 
+  static async listScheduleApproveLecturer (token) {
+    const res = await axios.get('/schedule-lecturer', {
+      headers: {
+        authorization: `bearer ${token}`,
+      },
+    });
+    return res.data;
+  }
+
   static async addSchedule (token, value) {
     const res = await axios.post('/schedule', value, {
       headers: {

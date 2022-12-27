@@ -224,10 +224,13 @@ const listProposalTopic = async (req, res, next) => {
 const listTopicReviewByLecturer = async (req, res, next) => {
   try {
     const lecturerId = req.user._id;
-    // TODO: need to refactor function isAuth in middleware
-    // const lecturer = await _Lecturer.findById(lecturerId);
-    // if (!lecturer) return res.status(401).send('Access Denied');
-    const listTopics = await _TopicProposal.find({ lecturerId, status: 'LECTURER' });
+    const { scheduleId } = req.query;
+    let listTopics = [];
+    if (scheduleId) {
+      listTopics = await _TopicProposal.find({ lecturerId, scheduleId });
+    } else {
+      listTopics = await _TopicProposal.find({ lecturerId });
+    }
     return res.status(200).send(listTopics);
   } catch (err) {
     return next(err);
