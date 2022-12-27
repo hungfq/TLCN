@@ -84,8 +84,8 @@ const deleteOneTopic = async (req, res, next) => {
 
 const listTopic = async (req, res, next) => {
   try {
-    const { lecturerId } = req.query;
-    const topics = await topicService.list(lecturerId);
+    const { lecturerId, scheduleId } = req.query;
+    const topics = await topicService.list(lecturerId, scheduleId);
     return res.status(200).send(topics);
   } catch (err) {
     return next(err);

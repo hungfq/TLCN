@@ -105,13 +105,25 @@ const searchAndSort = async (value, type, sortField, sortType) => {
   return results;
 };
 
-const list = async (lecturerId) => {
+const list = async (lecturerId, scheduleId) => {
   let listTopic;
-  if (lecturerId) {
+  if (lecturerId && !scheduleId) {
     listTopic = await _Topic.find({ lecturerId })
-      .populate({ path: 'lecturerId', select: 'name _id' });
+      .populate({ path: 'lecturerId', select: 'name _id' })
+      .populate({ path: 'criticalLecturerId', select: 'name _id' })
+      .populate({ path: 'scheduleId' });
+  } else if (!lecturerId && scheduleId) {
+    listTopic = await _Topic.find({ scheduleId })
+      .populate({ path: 'lecturerId', select: 'name _id' })
+      .populate({ path: 'criticalLecturerId', select: 'name _id' })
+      .populate({ path: 'scheduleId' });
+  } else if (lecturerId && scheduleId) {
+    listTopic = await _Topic.find({ scheduleId, lecturerId })
+      .populate({ path: 'lecturerId', select: 'name _id' })
+      .populate({ path: 'criticalLecturerId', select: 'name _id' })
+      .populate({ path: 'scheduleId' });
   } else {
-    listTopic = await _Topic.find({})
+    listTopic = await _Topic.find({ })
       .populate({ path: 'lecturerId', select: 'name _id' })
       .populate({ path: 'criticalLecturerId', select: 'name _id' })
       .populate({ path: 'scheduleId' });
