@@ -16,13 +16,6 @@ const TaskSchema = new mongoose.Schema(
       enum: ['TODO', 'PENDING', 'IN_PROCESS', 'DONE'],
       default: 'PENDING',
     },
-    process: {
-      type: String,
-      enum: ['APPROVED', 'NOT_APPROVE'],
-      default: 'NOT_APPROVE',
-    },
-    startTime: { type: Date },
-    endTime: { type: Date },
     comment: { type: Array },
     createdBy: { type: Schema.Types.ObjectId },
     assignTo: { type: Schema.Types.ObjectId },

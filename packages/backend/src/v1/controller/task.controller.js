@@ -19,10 +19,10 @@ const listTaskByTopic = async (req, res, next) => {
 const createNewTask = async (req, res, next) => {
   try {
     const {
-      topicId, code, title, description, status, process, startTime, endTime, assignTo,
+      topicId, code, title, description, status, assignTo,
     } = req.body;
     const createdBy = req.user._id;
-    const task = await taskService.createNewTask(topicId, code, title, description, status, process, startTime, endTime, createdBy, assignTo);
+    const task = await taskService.createNewTask(topicId, code, title, description, status, createdBy, assignTo);
     await notifyService.sendTaskRefreshSocket(topicId);
     return res.status(201).send(task);
   } catch (err) {
@@ -44,22 +44,9 @@ const updateOneTask = async (req, res, next) => {
   try {
     const { taskId } = req.params;
     const {
-      code, title, description, status, process, assignTo,
+      code, title, description, status, assignTo,
     } = req.body;
-    await taskService.updateOneTask(taskId, code, title, description, status, process, assignTo);
-    const topicId = await taskService.getTopicIdByTask(taskId);
-    await notifyService.sendTaskRefreshSocket(topicId);
-    return res.status(200).send('Successfully');
-  } catch (err) {
-    return next(err);
-  }
-};
-
-const updateProcess = async (req, res, next) => {
-  try {
-    const { taskId } = req.params;
-    const { process } = req.body;
-    await taskService.updateProcess(taskId, process);
+    await taskService.updateOneTask(taskId, code, title, description, status, assignTo);
     const topicId = await taskService.getTopicIdByTask(taskId);
     await notifyService.sendTaskRefreshSocket(topicId);
     return res.status(200).send('Successfully');
@@ -86,28 +73,6 @@ const updateAssignTo = async (req, res, next) => {
     const { taskId } = req.params;
     const { assignTo } = req.body;
     await taskService.updateAssignTo(taskId, assignTo);
-    return res.status(200).send('Successfully');
-  } catch (err) {
-    return next(err);
-  }
-};
-
-const updateStartTime = async (req, res, next) => {
-  try {
-    const { taskId } = req.params;
-    const { startTime } = req.body;
-    await taskService.updateStartTime(taskId, startTime);
-    return res.status(200).send('Successfully');
-  } catch (err) {
-    return next(err);
-  }
-};
-
-const updateEndTime = async (req, res, next) => {
-  try {
-    const { taskId } = req.params;
-    const { endTime } = req.body;
-    await taskService.updateEndTime(taskId, endTime);
     return res.status(200).send('Successfully');
   } catch (err) {
     return next(err);
@@ -187,11 +152,8 @@ module.exports = {
   createNewTask,
   getOneTask,
   updateOneTask,
-  updateProcess,
   updateStatusTask,
   updateAssignTo,
-  updateStartTime,
-  updateEndTime,
   updateInfo,
   getCommentTask,
   addCommentTask,
