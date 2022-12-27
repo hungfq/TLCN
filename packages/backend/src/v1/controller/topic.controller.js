@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 /* eslint-disable max-len */
 const topicService = require('../services/topic.service');
 const userService = require('../services/user.service');
@@ -135,8 +136,7 @@ const getTopicMember = async (req, res, next) => {
 const addProposalTopic = async (req, res, next) => {
   try {
     let {
-      // eslint-disable-next-line prefer-const
-      title, description, lecturerId, limit, students, status, deadline, major,
+      title, description, lecturerId, limit, students, scheduleId,
     } = req.body;
 
     if (!title) return res.status(400).send('Not valid title');
@@ -145,12 +145,19 @@ const addProposalTopic = async (req, res, next) => {
     // const lecturer = await _Lecturer.findById(lecturerId);
     // if (!lecturer) return res.status(400).send('Not valid lecturerId');
     if (!limit) limit = 0;
+    if (!scheduleId) scheduleId = '';
     if (!students) students = [];
     const createdBy = req.user._id;
 
-    const topic = await _TopicProposal.create({
-      title, description, lecturerId, limit, students, createdBy, status, deadline, major,
-    });
+    const value = {
+      title, description, lecturerId, limit, students, createdBy, scheduleId,
+    };
+
+    if (!value.createdBy) {
+      delete value.createdBy;
+    }
+
+    const topic = await _TopicProposal.create(value);
     if (lecturerId) {
       const notification = await notificationService.addNotification(
         'ĐỀ XUẤT ĐỀ TÀI',
@@ -242,10 +249,8 @@ const listTopicReviewByAdmin = async (req, res, next) => {
 const listTopicProposalByCreatedId = async (req, res, next) => {
   try {
     const createdBy = req.user._id;
-    // TODO: need to refactor function isAuth in middleware
-    // const lecturer = await _Lecturer.findById(lecturerId);
-    // if (!lecturer) return res.status(401).send('Access Denied');
-    const listTopics = await _TopicProposal.find({ createdBy }).populate({ path: 'lecturerId', select: 'name _id' });
+    const { scheduleId } = req.query;
+    const listTopics = await _TopicProposal.find({ createdBy, scheduleId }).populate({ path: 'lecturerId', select: 'name _id' });
     return res.status(200).send(listTopics);
   } catch (err) {
     return next(err);
@@ -355,6 +360,39 @@ const addNewRegisterTopicStudent = async (req, res, next) => {
     return next(err);
   }
 };
+const addNewRegisterTopicStudentNew = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { code } = req.user;
+    const topicOld = await _Topic.findById(id);
+    if (!topicOld) return res.status(404).send('Topic not found');
+    const isRegister = await _Topic.findOne({
+      students: {
+        $in: [code],
+      },
+      scheduleId: {
+        $in: [topicOld.scheduleId],
+      },
+    });
+    if (isRegister) return res.status(400).send('Register is exist');
+    if (topicOld.students.length >= topicOld.limit) return res.status(422).send('The register is out of limit');
+    const oldStudent = topicOld.students;
+    topicOld.students = [...oldStudent, code];
+    await topicOld.save();
+    const notification = await notificationService.addNotification(
+      'ĐĂNG KÝ ĐỀ TÀI',
+      `Có đăng ký mới trong đề tài: ${topicOld.code}`,
+      req.user._id,
+      null,
+    );
+    if (topicOld.lecturerId) {
+      await notificationService.sendNotification(topicOld.lecturerId._id, notification);
+    }
+    return res.status(200).send('Register success');
+  } catch (err) {
+    return next(err);
+  }
+};
 const removeRegisterTopicStudent = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -417,4 +455,5 @@ module.exports = {
   getListTopicAcceptRegister,
   addNewRegisterTopicStudent,
   removeRegisterTopicStudent,
+  addNewRegisterTopicStudentNew,
 };

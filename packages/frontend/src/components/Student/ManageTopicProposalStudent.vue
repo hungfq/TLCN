@@ -6,6 +6,21 @@
   </template>
   <template v-if="open">
     <div class="flex">
+      <div class="inline-block p-2 rounded-md">
+        <select
+          v-model="currentScheduleId"
+          class="mt-1 block w-full rounded-md bg-gray-100 border border-gray-300 py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+          @change="handleChange"
+        >
+          <option
+            v-for="option in listSchedules"
+            :key="`key-${option._id}`"
+            :value="option._id"
+          >
+            {{ option.code }} : {{ option.name }}
+          </option>
+        </select>
+      </div>
       <div
         class=" rounded ml-auto mr-4 my-2 bg-blue-800 text-white font-sans font-semibold py-2 px-4 cursor-pointer"
         @click="$store.dispatch('url/updateSection', 'topic_proposal-import')"
@@ -129,6 +144,8 @@ export default {
       removeId: '',
       searchVal: '',
       topics: [],
+      currentScheduleId: '',
+      listSchedules: [],
     };
   },
   computed: {
@@ -145,17 +162,21 @@ export default {
       'page', 'module', 'section', 'id',
     ]),
     ...mapGetters('topic_proposal', [
-      'listTopicProposalCreated',
+      'listTopicProposalCreated', 'topicScheduleId',
     ]),
-    listTopicProposal () {
-      const listTopics = this.listTopicProposalCreated;
-      return listTopics;
-    },
+    ...mapGetters('schedule', [
+      'listScheduleProposalStudent',
+    ]),
   },
-  mounted () {
-    this.$store.dispatch('topic_proposal/fetchListTopicProposalCreated', this.token);
-    this.$store.dispatch('student/fetchListStudent', this.token);
-    this.topics = this.listTopicProposal;
+  async mounted () {
+    if (this.open) {
+      await this.$store.dispatch('student/fetchListStudent', this.token);
+      this.listSchedules = this.listScheduleProposalStudent;
+      this.currentScheduleId = this.listScheduleProposalStudent[0]._id;
+      this.$store.commit('topic_proposal/setTopicScheduleId', this.currentScheduleId);
+      await this.$store.dispatch('topic_proposal/fetchListTopicProposalCreated', { token: this.token, scheduleId: this.currentScheduleId });
+      this.topics = this.listTopicProposalCreated;
+    }
   },
   methods: {
     async confirmRemove () {
@@ -174,13 +195,13 @@ export default {
       this.removeId = '';
       this.search();
     },
-    handleUpdateTopicProposal (id) {
-      this.$store.dispatch('url/updateSection', `${this.module}-update`);
-      this.$store.dispatch('url/updateId', id);
+    async handleUpdateTopicProposal (id) {
+      await this.$store.dispatch('url/updateSection', `${this.module}-update`);
+      await this.$store.dispatch('url/updateId', id);
     },
-    handleShowTopicProposal (id) {
-      this.$store.dispatch('url/updateSection', `${this.module}-view`);
-      this.$store.dispatch('url/updateId', id);
+    async handleShowTopicProposal (id) {
+      await this.$store.dispatch('url/updateSection', `${this.module}-view`);
+      await this.$store.dispatch('url/updateId', id);
     },
     async handleRemoveTopicProposal (id) {
       this.removeId = id;
@@ -191,7 +212,7 @@ export default {
     },
     search () {
       if (this.searchVal !== '') {
-        const topicFilter = this.listTopicProposal.filter((topic) => {
+        const topicFilter = this.listTopicProposalCreated.filter((topic) => {
           const re = new RegExp(`\\b${this.searchVal}`, 'gi');
           if (topic.title.match(re)) return true;
           if (!topic.lecturerId) return false;
@@ -200,7 +221,14 @@ export default {
         });
 
         this.topics = topicFilter;
-      } else this.topics = this.listTopicProposal;
+      } else this.topics = this.listTopicProposalCreated;
+    },
+    async handleChange () {
+      if (this.currentScheduleId) {
+        this.$store.commit('topic_proposal/setTopicScheduleId', this.currentScheduleId);
+        await this.$store.dispatch('topic_proposal/fetchListTopicProposalCreated', { token: this.token, scheduleId: this.currentScheduleId });
+        this.topics = this.listTopicProposalCreated || [];
+      }
     },
   },
 };

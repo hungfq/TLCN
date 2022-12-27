@@ -8,6 +8,7 @@ const {
   listTopicReviewByLecturer, listTopicProposalByCreatedId, updateProposalByUser,
   approveProposalByLecturer, listTopicReviewByAdmin, getListTopicAcceptRegister,
   addNewRegisterTopicStudent, getResultRegister, getTopicMember, removeRegisterTopicStudent,
+  addNewRegisterTopicStudentNew,
 } = require('../controller/topic.controller');
 
 const authMiddleware = require('../middlewares/auth.middleware');
@@ -23,6 +24,7 @@ const router = (app) => {
   app.put('/v1/topic/:id', isAuth, updateOneTopic);
   app.delete('/v1/topic/:id', isAuth, deleteOneTopic);
   app.delete('/v1/register/:id', isAuth, removeRegisterTopicStudent);
+  app.post('/v1/register/:id', isAuth, addNewRegisterTopicStudentNew);
   app.put('/v1/topic-student/:id', isAuth, updateTopicStudent);
   app.post('/v1/topic-student/:id', isAuth, addNewRegisterTopicStudent);
   app.put('/v1/topic-lecturer/:id', isAuth, updateTopicLecturer);

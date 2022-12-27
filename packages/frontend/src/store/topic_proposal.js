@@ -5,12 +5,14 @@ const initState = {
   listTopicProposalByLecturer: [],
   listTopicProposalCreated: [],
   listTopicProposalAdmin: [],
+  topicScheduleId: '',
 };
 
 const getters = {
   listTopicProposalByLecturer: (state) => state.listTopicProposalByLecturer,
   listTopicProposalCreated: (state) => state.listTopicProposalCreated,
   listTopicProposalAdmin: (state) => state.listTopicProposalAdmin,
+  topicScheduleId: (state) => state.topicScheduleId,
 };
 
 const actions = {
@@ -19,8 +21,9 @@ const actions = {
     commit('setListTopicProposalByLecturer', listTopics);
   },
 
-  async fetchListTopicProposalCreated ({ commit }, token) {
-    const listTopics = await TopicProposalApi.listAllTopicsByCreated(token);
+  async fetchListTopicProposalCreated ({ commit }, payload) {
+    const { token, scheduleId } = payload;
+    const listTopics = await TopicProposalApi.listAllTopicsByCreated(token, scheduleId);
     commit('setListTopicProposalCreated', listTopics);
   },
 
@@ -29,21 +32,21 @@ const actions = {
     commit('setListTopicProposalAdmin', listTopics);
   },
 
-  async addTopicProposal ({ dispatch }, payload) {
+  async addTopicProposal ({ dispatch, state }, payload) {
     const { token, value } = payload;
     await TopicProposalApi.addTopicProposal(token, value);
-    await dispatch('fetchListTopicProposalCreated', token);
+    await dispatch('fetchListTopicProposalCreated', { token, scheduleId: state.topicScheduleId });
   },
 
-  async updateTopicProposal ({ dispatch }, payload) {
+  async updateTopicProposal ({ dispatch, state }, payload) {
     const { token, value } = payload;
     await TopicProposalApi.updateTopicProposal(token, value);
-    await dispatch('fetchListTopicProposalCreated', token);
+    await dispatch('fetchListTopicProposalCreated', { token, scheduleId: state.topicScheduleId });
   },
-  async removeTopicProposal ({ dispatch }, payload) {
+  async removeTopicProposal ({ dispatch, state }, payload) {
     const { token, id } = payload;
     await TopicProposalApi.removeTopicProposal(token, id);
-    await dispatch('fetchListTopicProposalCreated', token);
+    await dispatch('fetchListTopicProposalCreated', { token, scheduleId: state.topicScheduleId });
     await dispatch('fetchListTopicProposalAdmin', token);
   },
   async approveTopicProposalByLecturer ({ dispatch }, payload) {
@@ -70,6 +73,9 @@ const mutations = {
   },
   setListTopicProposalAdmin: (state, listTopicProposalAdmin) => {
     state.listTopicProposalAdmin = listTopicProposalAdmin;
+  },
+  setTopicScheduleId: (state, topicScheduleId) => {
+    state.topicScheduleId = topicScheduleId;
   },
 
 };

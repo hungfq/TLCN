@@ -22,8 +22,8 @@ export default class TopicProposalApi {
     return res.data;
   }
 
-  static async listAllTopicsByCreated (token) {
-    const res = await axios.get('/topic-proposal/created', {
+  static async listAllTopicsByCreated (token, scheduleId) {
+    const res = await axios.get(`/topic-proposal/created?scheduleId=${scheduleId}`, {
       headers: {
         authorization: `bearer ${token}`,
       },

@@ -139,6 +139,15 @@ export default class TopicApi {
     return res.data;
   }
 
+  static async addRegisterTopicNew (token, id) {
+    const res = await axios.post(`/register/${id}`, {}, {
+      headers: {
+        authorization: `bearer ${token}`,
+      },
+    });
+    return res.data;
+  }
+
   static async removeRegisterTopicStudent (token, id) {
     const res = await axios.delete(`/register/${id}`, {
       headers: {

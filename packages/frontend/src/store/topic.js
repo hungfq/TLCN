@@ -79,6 +79,11 @@ const actions = {
     await TopicApi.addRegisterTopic(token, id);
     await dispatch('fetchListTopicByStudent', token);
   },
+  async addRegisterTopicNew ({ dispatch, commit }, value) {
+    const { token, id } = value;
+    await TopicApi.addRegisterTopicNew(token, id);
+    await dispatch('fetchListTopicByStudent', token);
+  },
 
   async removeRegisterTopicStudent ({ dispatch, commit }, value) {
     const { token, id } = value;

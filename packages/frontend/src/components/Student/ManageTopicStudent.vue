@@ -8,14 +8,36 @@
     <div
       class="shadow-md sm:rounded-lg m-4"
     >
-      <div class="my-4">
+      <!-- <div class="my-4">
         <Multiselect
           v-model="currentScheduleId"
           :options="listSchedules"
           @change="handleChange"
         />
+      </div> -->
+      <div class="flex">
+        <div class="inline-block p-2 rounded-md">
+          <select
+            v-model="currentScheduleId"
+            class="mt-1 block w-full rounded-md bg-gray-100 border border-gray-300 py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+            @change="handleChange"
+          >
+            <option
+              v-for="option in listSchedules"
+              :key="`key-${option._id}`"
+              :value="option._id"
+            >
+              {{ option.code }} : {{ option.name }}
+            </option>
+          </select>
+        </div>
+        <div
+          class=" rounded ml-auto mr-4 my-2 bg-blue-800 text-white font-sans font-semibold py-2 px-4 cursor-pointer"
+          @click="$store.dispatch('url/updateSection', 'topic-import')"
+        >
+          Thêm đề tài
+        </div>
       </div>
-
       <SearchInput
         v-model="searchVal"
         :search-icon="true"
@@ -115,13 +137,11 @@ import { mapState, mapGetters } from 'vuex';
 import SearchInput from 'vue-search-input';
 // Optionally import default styling
 import 'vue-search-input/dist/styles.css';
-import Multiselect from '@vueform/multiselect';
 
 export default {
   name: 'ManageTopicStudent',
   components: {
     SearchInput,
-    Multiselect,
   },
   props: {
     open: {
@@ -158,25 +178,21 @@ export default {
     ]),
   },
   async mounted () {
-    await this.$store.dispatch('student/fetchListStudent', this.token);
-    await this.$store.dispatch('schedule/fetchListScheduleToday', this.token);
-    this.currentScheduleId = this.listScheduleRegisterStudent[0]._id;
-    this.listSchedules = this.listScheduleRegisterStudent.map((schedule) => {
-      const st = {
-        value: schedule._id,
-        label: `${schedule.code}: ${schedule.name}`,
-      };
-      return st;
-    });
-    await this.$store.dispatch('topic/fetchListTopicBySchedule', { token: this.token, scheduleId: this.currentScheduleId });
-    this.topics = this.listTopicByScheduleStudent || [];
+    if (this.open) {
+      await this.$store.dispatch('student/fetchListStudent', this.token);
+      await this.$store.dispatch('schedule/fetchListScheduleToday', this.token);
+      this.currentScheduleId = this.listScheduleRegisterStudent[0] ? this.listScheduleRegisterStudent[0]._id : '';
+      this.listSchedules = this.listScheduleRegisterStudent;
+      await this.$store.dispatch('topic/fetchListTopicBySchedule', { token: this.token, scheduleId: this.currentScheduleId });
+      this.topics = this.listTopicByScheduleStudent || [];
+    }
   },
   methods: {
     async handleRegisterTopic (id) {
       try {
-        await this.$store.dispatch('topic/addRegisterTopic', { token: this.token, id });
+        await this.$store.dispatch('topic/addRegisterTopicNew', { token: this.token, id });
         this.$toast.success('Đã đăng ký thành công!');
-        this.topics = this.listTopicsStudent.map((c) => {
+        this.topics = this.listTopicByScheduleStudent.map((c) => {
           if (c._id.toString() === id.toString()) {
             c.students.push(this.userId);
           }
@@ -191,9 +207,7 @@ export default {
       }
     },
     async handleChange () {
-      console.log('change');
       if (this.currentScheduleId) {
-        console.log('🚀 ~ file: ManageTopicStudent.vue:196 ~ handleChange ~ this.currentScheduleId', this.currentScheduleId);
         await this.$store.dispatch('topic/fetchListTopicBySchedule', { token: this.token, scheduleId: this.currentScheduleId });
         this.topics = this.listTopicByScheduleStudent || [];
       }

@@ -371,7 +371,6 @@ export default {
         this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
       }
       this.removeId = '';
-      this.search();
     },
     rollBack () {
       this.$store.dispatch('url/updateSection', `${this.module}-list`);
