@@ -14,6 +14,7 @@ const {
   topicAdvisorApprove,
   topicCriticalApprove,
   declineProposalTopic,
+  listTopicCommitteeApprove,
 } = require('../controller/topic.controller');
 
 const authMiddleware = require('../middlewares/auth.middleware');
@@ -53,6 +54,7 @@ const router = (app) => {
   app.get('/v1/topic-advisor/approve/:id', isAuth, topicAdvisorApprove);
   app.get('/v1/topic-critical', isAuth, listTopicCriticalApprove);
   app.get('/v1/topic-critical/approve/:id', isAuth, topicCriticalApprove);
+  app.get('/v1/topic-committee/:id', isAuth, listTopicCommitteeApprove);
   app.get('/template/Topic', (req, res) => {
     const file = fs.createReadStream('public/template/TopicTemplate.xlsx');
     const stat = fs.statSync('public/template/TopicTemplate.xlsx');

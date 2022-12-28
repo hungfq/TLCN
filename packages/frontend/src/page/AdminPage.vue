@@ -41,6 +41,7 @@
           <template v-if="module === 'committee'">
             <ManageCommitteeAdminVue v-if="section === 'committee-list'" />
             <FormCommitteeVue v-if="section === 'committee-update' || section === 'committee-import' || section === 'committee-view'" />
+            <FormTopicCommitteeVue v-if="section === 'committee-add-topic'" />
           </template>
         </div>
       </div>
@@ -71,6 +72,7 @@ import FormTopicVue from '../components/Admin/FormTopic.vue';
 import FormScheduleVue from '../components/Admin/FormSchedule.vue';
 import FormApproveVue from '../components/Admin/FormApprove.vue';
 import FormCommitteeVue from '../components/Admin/FormCommittee.vue';
+import FormTopicCommitteeVue from '../components/Admin/FormTopicCommittee.vue';
 
 export default {
   name: 'AdminPage',
@@ -91,6 +93,7 @@ export default {
     FormApproveVue,
     ManageCommitteeAdminVue,
     FormCommitteeVue,
+    FormTopicCommitteeVue,
   },
   props: {
   },

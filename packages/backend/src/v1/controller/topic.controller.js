@@ -542,6 +542,22 @@ const listTopicCriticalApprove = async (req, res, next) => {
     return next(err);
   }
 };
+const listTopicCommitteeApprove = async (req, res, next) => {
+  try {
+    const criticalLecturerId = req.params.id;
+    const topic = await _Topic.find({
+      advisorLecturerApprove: true,
+      criticalLecturerApprove: true,
+      criticalLecturerId,
+    }).populate({ path: 'lecturerId', select: 'name _id' })
+      .populate({ path: 'criticalLecturerId', select: 'name _id' })
+      .populate({ path: 'scheduleId' });
+
+    return res.status(200).send(topic);
+  } catch (err) {
+    return next(err);
+  }
+};
 
 module.exports = {
   importTopics,
@@ -574,4 +590,5 @@ module.exports = {
   listTopicCriticalApprove,
   topicAdvisorApprove,
   topicCriticalApprove,
+  listTopicCommitteeApprove,
 };

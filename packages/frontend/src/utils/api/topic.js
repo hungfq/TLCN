@@ -220,6 +220,15 @@ export default class TopicApi {
     return res.data;
   }
 
+  static async topicCommitteeByCritical (token, id) {
+    const res = await axios.get(`/topic-committee/${id}`, {
+      headers: {
+        authorization: `bearer ${token}`,
+      },
+    });
+    return res.data;
+  }
+
   static async importTopic (token, xlsx) {
     const formData = new FormData();
 
