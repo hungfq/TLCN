@@ -9,22 +9,23 @@ const _TopicProposal = require('../models/topic_proposal.model');
 const _Schedule = require('../models/schedule.model');
 const _Topic = require('../models/topic.model');
 
-const importTopics = async (req, res, next) => {
+const importTopics = async (req, res) => {
   try {
     const jsonData = fileUtils.excelToJson(req.file.path);
 
     jsonData.forEach(async (topic) => {
       const lecturer = await userService.findOneByCode('LECTURER', topic.LECTURER_CODE);
+      const critical = await userService.findOneByCode('LECTURER', topic.CRITICAL_CODE);
       const schedule = await scheduleService.findOneByCode(topic.SCHEDULE);
       await topicService.upsertOne(
         topic.CODE,
         topic.TITLE,
         topic.DESCRIPTION,
         topic.LIMIT,
-        topic.DEADLINE,
-        topic.MAJOR,
+        topic.THESIS_DEFENSE_DATE ? Date.parse(topic.THESIS_DEFENSE_DATE) : null,
         lecturer ? lecturer._id : undefined,
         schedule ? schedule._id : undefined,
+        critical ? critical._id : undefined,
       );
     });
 
@@ -509,6 +510,24 @@ const listTopicAdvisorApprove = async (req, res, next) => {
     return next(err);
   }
 };
+
+const notifyToAdminIfBothApproved = async (id) => {
+  const topic = await _Topic.findById(id);
+  if (topic.advisorLecturerApprove && topic.criticalLecturerApprove) {
+    const listAdmin = await userService.getAllAdmin();
+    const listAdminIds = listAdmin.map((s) => s._id);
+    const notification = await notificationService.addNotification(
+      'DUYỆT HỘI ĐỒNG',
+      `Đề tài ${topic.code} đã được giảng viên hướng dẫn và giảng viên phản biện duyệt.`,
+      null,
+      listAdminIds,
+    );
+    listAdminIds.forEach(async (t) => {
+      await notificationService.sendNotification(t, notification);
+    });
+  }
+};
+
 const topicAdvisorApprove = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -529,6 +548,8 @@ const topicAdvisorApprove = async (req, res, next) => {
     notificationTo.forEach(async (t) => {
       await notificationService.sendNotification(t, notification);
     });
+
+    notifyToAdminIfBothApproved(id);
 
     return res.status(200).send(topic);
   } catch (err) {
@@ -554,6 +575,8 @@ const topicCriticalApprove = async (req, res, next) => {
     notificationTo.forEach(async (t) => {
       await notificationService.sendNotification(t, notification);
     });
+    notifyToAdminIfBothApproved(id);
+
     return res.status(200).send(topic);
   } catch (err) {
     return next(err);

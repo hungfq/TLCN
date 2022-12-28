@@ -154,11 +154,25 @@ const updateLecturer = async (_id, lecturerId) => {
   await _Topic.updateOne({ _id }, { lecturerId });
 };
 
-const upsertOne = async (code, title, description, limit, deadline, major, lecturerId, scheduleId) => {
+const upsertOne = async (code, title, description, limit, thesisDefenseDate, lecturerId, scheduleId, criticalLecturerId) => {
   const query = { code };
   const upsert = {
     $set: {
-      code, title, description, limit, deadline, major, lecturerId, students: [], scheduleId,
+      code,
+      title,
+      description,
+      limit,
+      thesisDefenseDate,
+      lecturerId,
+      students: [],
+      scheduleId,
+      criticalLecturerId,
+      advisorLecturerApprove: false,
+      criticalLecturerApprove: false,
+      advisorLecturerGrade: '0',
+      committeePresidentGrade: '0',
+      committeeSecretaryGrade: '0',
+      criticalLecturerGrade: '0',
     },
   };
   const options = { upsert: true };

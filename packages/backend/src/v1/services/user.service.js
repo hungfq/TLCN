@@ -116,6 +116,11 @@ const getStudentByCodes = async (students) => {
   return studentList;
 };
 
+const getAllAdmin = async () => {
+  const user = await _Admin.find({});
+  return user;
+};
+
 const upsertOne = async (type, code, name, email, gender) => {
   const User = getRoleFromType(type);
 
@@ -139,5 +144,6 @@ module.exports = {
   addNotificationByType,
   getStudentByCodes,
   findOneWithOnlyId,
+  getAllAdmin,
   upsertOne,
 };
