@@ -45,7 +45,6 @@ const listCommittee = async (req, res, next) => {
 };
 
 const upsertOne = async (code, name, committeePresidentId, committeeSecretaryId, criticalLecturerId) => {
-  console.log('🚀 ~ file: committee.controller.js:48 ~ upsertOne ~ code, name, committeePresidentId, committeeSecretaryId, criticalLecturerId', code, name, committeePresidentId, committeeSecretaryId, criticalLecturerId);
   const query = { code };
   const upsert = {
     $set: {

@@ -91,6 +91,7 @@
 import Multiselect from '@vueform/multiselect';
 import { getValidationMessages } from '@formkit/validation';
 import { mapState, mapGetters } from 'vuex';
+import TopicApi from '../../utils/api/topic';
 
 export default {
   name: 'FormTopic',

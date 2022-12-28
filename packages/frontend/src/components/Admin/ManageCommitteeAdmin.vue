@@ -75,6 +75,10 @@
           <td class="py-4 px-6 text-right">
             <a
               class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
+              @click="handleAddTopic(committee._id)"
+            >Cập nhật đề tài </a>
+            <a
+              class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
               @click="handleUpdateStudent(committee._id)"
             >Sửa</a>
             <a
@@ -154,6 +158,10 @@ export default {
         this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
       }
       this.removeId = '';
+    },
+    handleAddTopic (id) {
+      this.$store.dispatch('url/updateSection', 'committee-add-topic');
+      this.$store.dispatch('url/updateId', id);
     },
     handleUpdateStudent (id) {
       this.$store.dispatch('url/updateSection', 'committee-update');
