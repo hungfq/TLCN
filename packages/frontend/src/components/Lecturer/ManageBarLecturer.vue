@@ -44,6 +44,18 @@
         >
           Yêu cầu hướng dẫn
         </a>
+        <a
+          :class="[ isTopicAdvisorApprove ? 'flex p-2 items-center w-full space-x-2 text-white bg-indigo-600 rounded-lg' : 'flex p-2   items-center space-x-2 text-indigo-600 transition-colors rounded-lg group hover:bg-indigo-600 hover:text-white']"
+          @click="updateModule('topic_advisor_approve')"
+        >
+          Phê duyệt đề tài hướng dẫn
+        </a>
+        <a
+          :class="[ isTopicCriticalApprove ? 'flex p-2 items-center w-full space-x-2 text-white bg-indigo-600 rounded-lg' : 'flex p-2   items-center space-x-2 text-indigo-600 transition-colors rounded-lg group hover:bg-indigo-600 hover:text-white']"
+          @click="updateModule('topic_critical_approve')"
+        >
+          Phê duyệt đề tài phản biện
+        </a>
       </div>
     </nav>
   </div>
@@ -74,6 +86,12 @@ export default {
     },
     isTopicProposalApprove () {
       return this.module === 'topic_proposal_approve';
+    },
+    isTopicAdvisorApprove () {
+      return this.module === 'topic_advisor_approve';
+    },
+    isTopicCriticalApprove () {
+      return this.module === 'topic_critical_approve';
     },
   },
   mounted () {

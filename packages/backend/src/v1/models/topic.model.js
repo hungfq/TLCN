@@ -25,6 +25,8 @@ const TopicSchema = new mongoose.Schema({
   committeePresidentGrade: { type: String, default: '0' },
   committeeSecretaryGrade: { type: String, default: '0' },
   criticalLecturerGrade: { type: String, default: '0' },
+  criticalLecturerApprove: { type: Boolean, default: false },
+  advisorLecturerApprove: { type: Boolean, default: false },
 });
 
 module.exports = mongoose.model('Topic', TopicSchema);

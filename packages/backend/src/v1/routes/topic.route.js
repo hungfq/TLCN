@@ -9,6 +9,10 @@ const {
   approveProposalByLecturer, listTopicReviewByAdmin, getListTopicAcceptRegister,
   addNewRegisterTopicStudent, getResultRegister, getTopicMember, removeRegisterTopicStudent,
   addNewRegisterTopicStudentNew, getTopicStudent,
+  listTopicAdvisorApprove,
+  listTopicCriticalApprove,
+  topicAdvisorApprove,
+  topicCriticalApprove,
 } = require('../controller/topic.controller');
 
 const authMiddleware = require('../middlewares/auth.middleware');
@@ -43,6 +47,10 @@ const router = (app) => {
   app.get('/v1/topic/student/result', isAuth, getResultRegister);
   app.get('/v1/approve/:id', isAuth, approveProposalByLecturer);
   app.get('/v1/topic-proposal/created', isAuth, listTopicProposalByCreatedId);
+  app.get('/v1/topic-advisor', isAuth, listTopicAdvisorApprove);
+  app.get('/v1/topic-advisor/approve/:id', isAuth, topicAdvisorApprove);
+  app.get('/v1/topic-critical', isAuth, listTopicCriticalApprove);
+  app.get('/v1/topic-critical/approve/:id', isAuth, topicCriticalApprove);
   app.get('/template/Topic', (req, res) => {
     const file = fs.createReadStream('public/template/TopicTemplate.xlsx');
     const stat = fs.statSync('public/template/TopicTemplate.xlsx');

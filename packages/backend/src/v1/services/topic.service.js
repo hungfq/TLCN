@@ -27,6 +27,8 @@ const createOne = async (value) => {
   if (value.criticalLecturerId === '') {
     delete value.criticalLecturerId;
   }
+  value.criticalLecturerApprove = false;
+  value.advisorLecturerApprove = false;
   const topic = await _Topic.create(value);
   return topic;
 };

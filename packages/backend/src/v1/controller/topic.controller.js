@@ -446,6 +446,57 @@ const getResultRegister = async (req, res, next) => {
     return next(err);
   }
 };
+const listTopicAdvisorApprove = async (req, res, next) => {
+  try {
+    const lecturerId = req.user._id;
+    const topic = await _Topic.find({
+      lecturerId,
+      advisorLecturerApprove: false,
+    }).populate({ path: 'lecturerId', select: 'name _id' })
+      .populate({ path: 'criticalLecturerId', select: 'name _id' })
+      .populate({ path: 'scheduleId' });
+    return res.status(200).send(topic);
+  } catch (err) {
+    return next(err);
+  }
+};
+const topicAdvisorApprove = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const topic = await _Topic.updateOne({ _id: id }, {
+      advisorLecturerApprove: true,
+    });
+    return res.status(200).send(topic);
+  } catch (err) {
+    return next(err);
+  }
+};
+const topicCriticalApprove = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const topic = await _Topic.updateOne({ _id: id }, {
+      criticalLecturerApprove: true,
+    });
+    return res.status(200).send(topic);
+  } catch (err) {
+    return next(err);
+  }
+};
+const listTopicCriticalApprove = async (req, res, next) => {
+  try {
+    const criticalLecturerId = req.user._id;
+    const topic = await _Topic.find({
+      criticalLecturerId,
+      criticalLecturerApprove: false,
+    }).populate({ path: 'lecturerId', select: 'name _id' })
+      .populate({ path: 'criticalLecturerId', select: 'name _id' })
+      .populate({ path: 'scheduleId' });
+    return res.status(200).send(topic);
+  } catch (err) {
+    return next(err);
+  }
+};
+
 module.exports = {
   importTopics,
   insertTopic,
@@ -472,4 +523,8 @@ module.exports = {
   addNewRegisterTopicStudent,
   removeRegisterTopicStudent,
   addNewRegisterTopicStudentNew,
+  listTopicAdvisorApprove,
+  listTopicCriticalApprove,
+  topicAdvisorApprove,
+  topicCriticalApprove,
 };

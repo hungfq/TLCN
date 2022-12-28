@@ -42,6 +42,16 @@
               />
               <FormApproveProposalVue v-if="section === 'topic_proposal_approve-view' || section === 'topic_proposal_approve-update'" />
             </template>
+            <template v-if="module === 'topic_advisor_approve'">
+              <ManageTopicAdvisorLecturerVue
+                v-if="section === 'topic_advisor_approve-list'"
+              />
+            </template>
+            <template v-if="module === 'topic_critical_approve'">
+              <ManageTopicCriticalLecturerVue
+                v-if="section === 'topic_critical_approve-list'"
+              />
+            </template>
           </template>
           <template v-if="page === 'task'">
             <TaskDraggableVue />
@@ -68,6 +78,8 @@ import MiniHeaderBarVue from '../components/Lecturer/MiniHeaderBar.vue';
 import ManageTopicLecturerVue from '../components/Lecturer/ManageTopicLecturer.vue';
 // import ManageTopicProposalLecturerVue from '../components/Lecturer/ManageTopicProposalLecturer.vue';
 import ManageApproveProposalLecturerVue from '../components/Lecturer/ManageApproveProposalLecturer.vue';
+import ManageTopicAdvisorLecturerVue from '../components/Lecturer/ManageTopicAdvisorLecturer.vue';
+import ManageTopicCriticalLecturerVue from '../components/Lecturer/ManageTopicCriticalLecturer.vue';
 // import FormTopicProposalVue from '../components/Lecturer/FormTopicProposal.vue';
 import FormTopicVue from '../components/Lecturer/FormTopic.vue';
 import FormApproveProposalVue from '../components/Lecturer/FormApproveProposal.vue';
@@ -92,6 +104,8 @@ export default {
     TaskBarScheduleVue,
     TaskBarTopicVue,
     TaskDraggableVue,
+    ManageTopicAdvisorLecturerVue,
+    ManageTopicCriticalLecturerVue,
   },
   props: {
   },

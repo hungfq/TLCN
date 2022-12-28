@@ -184,6 +184,42 @@ export default class TopicApi {
     return res.data;
   }
 
+  static async listTopicAdvisorApprove (token) {
+    const res = await axios.get('/topic-advisor', {
+      headers: {
+        authorization: `bearer ${token}`,
+      },
+    });
+    return res.data;
+  }
+
+  static async listTopicCriticalApprove (token) {
+    const res = await axios.get('/topic-critical', {
+      headers: {
+        authorization: `bearer ${token}`,
+      },
+    });
+    return res.data;
+  }
+
+  static async topicAdvisorApprove (token, id) {
+    const res = await axios.get(`/topic-advisor/approve/${id}`, {
+      headers: {
+        authorization: `bearer ${token}`,
+      },
+    });
+    return res.data;
+  }
+
+  static async topicCriticalApprove (token, id) {
+    const res = await axios.get(`/topic-critical/approve/${id}`, {
+      headers: {
+        authorization: `bearer ${token}`,
+      },
+    });
+    return res.data;
+  }
+
   static async importTopic (token, xlsx) {
     const formData = new FormData();
 
