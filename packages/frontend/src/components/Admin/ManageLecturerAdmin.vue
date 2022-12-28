@@ -24,7 +24,13 @@
             scope="col"
             class="py-3 px-6"
           >
-            Tên sinh viên
+            Mã giảng viên
+          </th>
+          <th
+            scope="col"
+            class="py-3 px-6"
+          >
+            Tên giảng viên
           </th>
           <th
             scope="col"
@@ -46,6 +52,13 @@
           :key="`user-${user._id}`"
           class="bg-slate-300 hover:bg-gray-50 "
         >
+          <th
+            :key="`user-${user._id}`"
+            scope="row"
+            class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap "
+          >
+            {{ user.code }}
+          </th>
           <th
             :key="`user-${user._id}`"
             scope="row"
