@@ -231,7 +231,6 @@ const declineProposalTopic = async (req, res, next) => {
     const { id } = req.params;
 
     const topic = await topicService.findOneProposalTopic(id);
-    console.log('🚀 ~ file: topic.controller.js:234 ~ declineProposalTopic ~ topic', topic);
     if (!topic) {
       return res.status(404).send('Not found');
     }
