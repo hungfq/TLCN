@@ -128,7 +128,7 @@ export default {
         topics: this.topics,
       };
       try {
-        await this.$store.dispatch('committee/updateCommittee', { token: this.token, value });
+        await this.$store.dispatch('committee/updateCommittee', { token: this.token, value, type: 'ADD_TOPIC' });
         this.$toast.success('Đã cập nhật một thành công!');
       } catch (e) {
         this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');

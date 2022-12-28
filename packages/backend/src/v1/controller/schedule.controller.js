@@ -33,7 +33,15 @@ const updateOne = async (req, res, next) => {
   try {
     const { id } = req.params;
     const value = req.body;
-    await scheduleService.updateOne(id, value);
+    if (value.type === 'UPDATE_INFO') {
+      // to something
+    } else if (value.type === 'ADD_TOPIC') {
+      // to something
+    }
+    const cloneValue = { ...value };
+    delete cloneValue.id;
+    delete cloneValue.type;
+    await scheduleService.updateOne(id, cloneValue);
     return res.status(200).send('Successfully');
   } catch (err) {
     return next(err);

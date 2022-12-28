@@ -176,7 +176,7 @@ export default {
         if (this.isSave) {
           await this.$store.dispatch('committee/addCommittee', { token: this.token, value });
         } else if (this.isUpdate) {
-          await this.$store.dispatch('committee/updateCommittee', { token: this.token, value: { ...value, id: this.id } });
+          await this.$store.dispatch('committee/updateCommittee', { token: this.token, value: { ...value, id: this.id, type: 'UPDATE_INFO' } });
         }
         this.$toast.success('Đã cập nhật một thành công!');
       } catch (e) {
