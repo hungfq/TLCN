@@ -69,13 +69,10 @@
             scope="col"
             class="py-3 px-6"
           >
-            <span class="sr-only">import</span>
-          </th>
-          <th
-            scope="col"
-            class="py-3 px-6"
-          >
-            <span class="sr-only">Edit</span>
+            <a
+              class="rounded bg-gray-800 text-white font-sans font-semibold cursor-pointer p-2 ml-4"
+              href="http://localhost:5000/template/User"
+            >Tải mẫu tệp excel</a>
           </th>
         </tr>
       </thead>
@@ -85,19 +82,19 @@
           :key="`schedule-${schedule._id}`"
           class="bg-slate-300 hover:bg-gray-50 "
         >
-          <th
+          <td
             scope="row"
             class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap "
           >
             {{ schedule.code }}
-          </th>
-          <th
+          </td>
+          <td
             :key="`schedule-${schedule._id}`"
             scope="row"
             class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap "
           >
             {{ schedule.name }}
-          </th>
+          </td>
           <td class="py-4 px-6">
             <div class="font-bold cursor-pointer">
               {{ formatDay(schedule.startProposalDate) }}
@@ -108,15 +105,11 @@
               {{ formatDay(schedule.endRegisterDate) }}
             </div>
           </td>
-          <td class="py-4 px-6">
-            <div class="flex flex-col">
-              <a
-                class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
-                @click="handleClickStudent(schedule._id)"
-              >Nhập sinh viên bằng file excel</a>
-            </div>
-          </td>
           <td class="py-4 text-right">
+            <a
+              class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
+              @click="handleClickStudent(schedule._id)"
+            >Nhập sinh viên bằng file excel</a>
             <a
               class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
               :href="getLink(schedule._id)"
@@ -285,6 +278,7 @@ export default {
           const startDate = this.formatDay(schedule.startDate);
           const endDate = this.formatDay(schedule.endDate);
           if (schedule.name.match(re)) return true;
+          if (schedule.code.match(re)) return true;
           if (endDate.match(re)) return true;
           if (startDate.match(re)) return true;
           return false;

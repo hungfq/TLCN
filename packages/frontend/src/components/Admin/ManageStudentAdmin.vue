@@ -8,7 +8,10 @@
     </div>
     <UploadButtonVue @uploadFileExcel="upload" />
     <div class="flex items-center justify-center mr-4">
-      <a href="http://localhost:5000/template/User">Tải mẫu</a>
+      <a
+        class=" rounded ml-auto mr-4 my-2 bg-gray-800 text-white font-sans font-semibold py-2 px-4 cursor-pointer"
+        href="http://localhost:5000/template/User"
+      >Tải mẫu tệp excel</a>
     </div>
   </div>
   <div class="shadow-md sm:rounded-lg m-4">

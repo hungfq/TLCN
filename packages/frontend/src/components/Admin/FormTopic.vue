@@ -258,8 +258,8 @@ export default {
     });
     if (this.isUpdate || this.isView) {
       const { id } = this.$store.state.url;
-      const { listTopics } = this.$store.state.topic;
-      const topic = listTopics.find((s) => s._id.toString() === id.toString());
+      const { listTopicsByLecturerSchedule } = this.$store.state.topic;
+      const topic = listTopicsByLecturerSchedule.find((s) => s._id.toString() === id.toString());
       if (topic) {
         this.title = topic.title;
         this.code = topic.code;
@@ -310,14 +310,15 @@ export default {
       try {
         if (this.isSave) {
           await this.$store.dispatch('topic/addTopic', { token: this.token, value });
+          this.$toast.success('Đã thêm một thành công!');
+          this.rollBack();
         } else if (this.isUpdate) {
           await this.$store.dispatch('topic/updateTopic', { token: this.token, value: { ...value, _id: this.id } });
+          this.rollBack();
+          this.$toast.success('Đã cập nhật một thành công!');
         }
-        this.$toast.success('Đã cập nhật một thành công!');
       } catch (e) {
         this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
-      } finally {
-        this.rollBack();
       }
     },
   },

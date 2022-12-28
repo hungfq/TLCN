@@ -12,7 +12,13 @@
             scope="col"
             class="py-3 px-6"
           >
-            Tên đề tài hướng dẫn
+            Mã đề tài
+          </th>
+          <th
+            scope="col"
+            class="py-3 px-6"
+          >
+            Tên đề tài phản biện
           </th>
           <th
             scope="col"
@@ -34,6 +40,13 @@
           :key="`topic-${topic._id}`"
           class="bg-slate-300 hover:bg-gray-50 "
         >
+          <th
+            :key="`topic-${topic._id}`"
+            scope="row"
+            class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap "
+          >
+            {{ topic.code }}
+          </th>
           <th
             :key="`topic-${topic._id}`"
             scope="row"

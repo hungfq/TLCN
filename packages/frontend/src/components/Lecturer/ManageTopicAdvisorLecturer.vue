@@ -12,6 +12,12 @@
             scope="col"
             class="py-3 px-6"
           >
+            Mã đề tài
+          </th>
+          <th
+            scope="col"
+            class="py-3 px-6"
+          >
             Tên đề tài hướng dẫn
           </th>
           <th
@@ -34,20 +40,27 @@
           :key="`topic-${topic._id}`"
           class="bg-slate-300 hover:bg-gray-50 "
         >
-          <th
+          <td
+            :key="`topic-${topic._id}`"
+            scope="row"
+            class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap "
+          >
+            {{ topic.code }}
+          </td>
+          <td
             :key="`topic-${topic._id}`"
             scope="row"
             class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap "
           >
             {{ topic.title }}
-          </th>
-          <th
+          </td>
+          <td
             :key="`topic-${topic._id}`"
             scope="row"
             class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap "
           >
             {{ topic.scheduleId.name }}
-          </th>
+          </td>
 
           <td class="py-4 px-6 text-right">
             <a
@@ -165,10 +178,6 @@ export default {
     },
     async handleApproveTopic (id) {
       try {
-        const value = {
-          id,
-          token: this.token,
-        };
         await TopicApi.topicAdvisorApprove(this.token, id);
         this.$toast.success('Đã phê duyệt đề tài ra hội đồng thành công!');
 
@@ -183,9 +192,11 @@ export default {
     async search () {
       const list = await TopicApi.listTopicAdvisorApprove(this.token);
       if (this.searchVal !== '') {
-        const topicFilter = this.list.filter((topic) => {
+        const topicFilter = list.filter((topic) => {
           const re = new RegExp(`\\b${this.searchVal}`, 'gi');
+          if (topic.code.match(re)) return true;
           if (topic.title.match(re)) return true;
+          return false;
         });
         this.topics = topicFilter;
       } else this.topics = list;
