@@ -3,6 +3,7 @@
 const topicService = require('../services/topic.service');
 const userService = require('../services/user.service');
 const notificationService = require('../services/notification.service');
+const scheduleService = require('../services/schedule.service');
 const fileUtils = require('../utils/file');
 const _TopicProposal = require('../models/topic_proposal.model');
 const _Schedule = require('../models/schedule.model');
@@ -14,6 +15,7 @@ const importTopics = async (req, res, next) => {
 
     jsonData.forEach(async (topic) => {
       const lecturer = await userService.findOneByCode('LECTURER', topic.LECTURER_CODE);
+      const schedule = await scheduleService.findOneByCode(topic.SCHEDULE);
       await topicService.upsertOne(
         topic.CODE,
         topic.TITLE,
@@ -22,6 +24,7 @@ const importTopics = async (req, res, next) => {
         topic.DEADLINE,
         topic.MAJOR,
         lecturer ? lecturer._id : undefined,
+        schedule ? schedule._id : undefined,
       );
     });
 
