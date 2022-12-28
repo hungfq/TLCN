@@ -17,7 +17,7 @@
       </div>
       <div class=" mx-4 my-4">
         <span class="font-bold text-sm">
-          Thư kí hội đồng
+          Danh đề tài được GVHD và GVPB duyệt
         </span>
         <div class="mt-1">
           <Multiselect

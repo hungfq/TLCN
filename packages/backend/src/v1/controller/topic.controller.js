@@ -512,9 +512,24 @@ const listTopicAdvisorApprove = async (req, res, next) => {
 const topicAdvisorApprove = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const topic = await _Topic.updateOne({ _id: id }, {
-      advisorLecturerApprove: true,
+    const topic = await _Topic.findById(id);
+    topic.advisorLecturerApprove = true;
+    topic.save();
+
+    const { students, criticalLecturerId } = topic;
+    const listStudents = await userService.getStudentByCodes(students);
+    const listStudentIds = listStudents.map((s) => s._id);
+    const notificationTo = [...listStudentIds, criticalLecturerId];
+    const notification = await notificationService.addNotification(
+      'DUYỆT HỘI ĐỒNG',
+      `Đề tài ${topic.code} đã được giảng viên hướng dẫn duyệt.`,
+      req.user._id,
+      notificationTo,
+    );
+    notificationTo.forEach(async (t) => {
+      await notificationService.sendNotification(t, notification);
     });
+
     return res.status(200).send(topic);
   } catch (err) {
     return next(err);
@@ -523,8 +538,21 @@ const topicAdvisorApprove = async (req, res, next) => {
 const topicCriticalApprove = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const topic = await _Topic.updateOne({ _id: id }, {
-      criticalLecturerApprove: true,
+    const topic = await _Topic.findById(id);
+    topic.criticalLecturerApprove = true;
+    topic.save();
+    const { students, lecturerId } = topic;
+    const listStudents = await userService.getStudentByCodes(students);
+    const listStudentIds = listStudents.map((s) => s._id);
+    const notificationTo = [...listStudentIds, lecturerId];
+    const notification = await notificationService.addNotification(
+      'DUYỆT HỘI ĐỒNG',
+      `Đề tài ${topic.code} đã được giảng viên phản biện duyệt.`,
+      req.user._id,
+      notificationTo,
+    );
+    notificationTo.forEach(async (t) => {
+      await notificationService.sendNotification(t, notification);
     });
     return res.status(200).send(topic);
   } catch (err) {
