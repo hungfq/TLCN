@@ -129,7 +129,7 @@ export default {
       'listScheduleApproveLecturer',
     ]),
     isScheduleApprove () {
-      if (!this.listScheduleApproveLecturer && this.listScheduleApproveLecturer.length < 1) return false;
+      if (!this.listScheduleApproveLecturer || this.listScheduleApproveLecturer.length < 1) return false;
       return true;
     },
   },

@@ -21,13 +21,13 @@
             scope="col"
             class="py-3 px-6"
           >
-            Tên hội đồng
+            Mã hội đồng
           </th>
           <th
             scope="col"
             class="py-3 px-6"
           >
-            Mã hội đồng
+            Tên hội đồng
           </th>
           <th
             scope="col"
@@ -49,6 +49,11 @@
           :key="`committee-${committee._id}`"
           class="bg-slate-300 hover:bg-gray-50 "
         >
+          <td class="py-4 px-6">
+            <div class="font-bold cursor-pointer">
+              {{ committee.code }}
+            </div>
+          </td>
           <th
             :key="`committee-${committee._id}`"
             scope="row"
@@ -56,11 +61,6 @@
           >
             {{ committee.name }}
           </th>
-          <td class="py-4 px-6">
-            <div class="font-bold cursor-pointer">
-              {{ committee.code }}
-            </div>
-          </td>
           <td class=" flex py-4 px-6 flex-col">
             <div class="font-semibold cursor-pointer">
               - Chủ tịch hội đồng: {{ committee.committeePresidentId ? committee.committeePresidentId.name : '' }}

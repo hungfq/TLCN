@@ -263,8 +263,8 @@ export default {
     });
     if (this.isUpdate || this.isView) {
       const { id } = this.$store.state.url;
-      const { listTopics } = this.$store.state.topic;
-      const topic = listTopics.find((s) => s._id.toString() === id.toString());
+      const { listTopicsByLecturerSchedule } = this.$store.state.topic;
+      const topic = listTopicsByLecturerSchedule.find((s) => s._id.toString() === id.toString());
       if (topic) {
         this.title = topic.title;
         this.code = topic.code;

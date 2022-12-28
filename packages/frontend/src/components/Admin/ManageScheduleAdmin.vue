@@ -45,6 +45,12 @@
             scope="col"
             class="py-3 px-6"
           >
+            Mã đợt đăng ký
+          </th>
+          <th
+            scope="col"
+            class="py-3 px-6"
+          >
             Tên đợt đăng ký
           </th>
           <th
@@ -79,6 +85,12 @@
           :key="`schedule-${schedule._id}`"
           class="bg-slate-300 hover:bg-gray-50 "
         >
+          <th
+            scope="row"
+            class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap "
+          >
+            {{ schedule.code }}
+          </th>
           <th
             :key="`schedule-${schedule._id}`"
             scope="row"

@@ -1,27 +1,27 @@
 <template>
-  <div class="flex">
-    <div class="inline-block p-2 rounded-md">
-      <select
-        v-model="selectVal"
-        class="mt-1 block w-full rounded-md bg-gray-100 border border-gray-300 py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-        @change="selectHandler"
-      >
-        <option
-          v-for="option in listScheduleApproveLecturer"
-          :key="`key-${option._id}`"
-          :value="option._id"
-        >
-          {{ option.code }} : {{ option.name }}
-        </option>
-      </select>
-    </div>
-  </div>
   <template v-if="!open">
     <div class="py-2 mx-2 font-medium text-red-600 ">
       Hiện tại đang không có đợt duyệt đề tài, vui lòng chọn mục khác!
     </div>
   </template>
   <template v-else>
+    <div class="flex">
+      <div class="inline-block p-2 rounded-md">
+        <select
+          v-model="selectVal"
+          class="mt-1 block w-full rounded-md bg-gray-100 border border-gray-300 py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+          @change="selectHandler"
+        >
+          <option
+            v-for="option in listScheduleApproveLecturer"
+            :key="`key-${option._id}`"
+            :value="option._id"
+          >
+            {{ option.code }} : {{ option.name }}
+          </option>
+        </select>
+      </div>
+    </div>
     <div class="shadow-md sm:rounded-lg m-4">
       <SearchInput
         v-model="searchVal"
@@ -229,7 +229,7 @@ export default {
         };
         await this.$store.dispatch('topic_proposal/approveTopicProposalByLecturer', value);
         await this.$store.dispatch('topic_proposal/fetchListTopicProposalByLectures', { token: this.token, scheduleId: this.selectVal });
-
+        this.search();
         this.$toast.success('Đã từ gửi đề tài lên khoa thành công!');
       } catch (e) {
         this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');

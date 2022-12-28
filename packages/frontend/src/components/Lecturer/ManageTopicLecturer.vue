@@ -20,6 +20,7 @@
       </select>
     </div>
     <div
+      v-if="canEdit"
       class=" rounded ml-auto mr-4 my-2 bg-blue-800 text-white font-sans font-semibold py-2 px-4 cursor-pointer"
       @click="$store.dispatch('url/updateSection', 'topic-import')"
     >
@@ -192,9 +193,9 @@ export default {
     await this.$store.dispatch('student/fetchListStudent', this.token);
     await this.$store.dispatch('schedule/fetchListSchedules', this.token);
     this.topics = this.listTopicsLecturer;
-    this.selectVal = this.listSchedules ? this.listSchedules[0]._id : null;
+    this.selectVal = this.listSchedules[0] ? this.listSchedules[0]._id : null;
     this.$store.commit('topic/setTopicScheduleId', this.selectVal);
-    await this.$store.dispatch('topic/fetchListTopicByLecturerSchedule', { token: this.token, lecturerId: this.userId, scheduleId: this.selectVal });
+    if (this.selectVal) { await this.$store.dispatch('topic/fetchListTopicByLecturerSchedule', { token: this.token, lecturerId: this.userId, scheduleId: this.selectVal }); }
     this.checkCanEdit(this.selectVal);
   },
   methods: {
