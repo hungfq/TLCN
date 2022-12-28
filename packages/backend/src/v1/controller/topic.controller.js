@@ -437,7 +437,10 @@ const getResultRegister = async (req, res, next) => {
       students: {
         $in: [code],
       },
-    });
+    })
+      .populate({ path: 'lecturerId', select: 'name _id' })
+      .populate({ path: 'criticalLecturerId', select: 'name _id' })
+      .populate({ path: 'scheduleId', select: 'name code _id' });
     return res.status(200).send(topic);
   } catch (err) {
     return next(err);

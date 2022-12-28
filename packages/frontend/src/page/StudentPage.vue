@@ -17,7 +17,7 @@
           v-if="page === 'task'"
           :username="userName"
         />
-        <div class="bg-white mx-4 border rounded h-full">
+        <div class="bg-white mx-4 border rounded overflow-scroll">
           <template v-if="page === 'management'">
             <template v-if="module === 'topic'">
               <ManageTopicStudentVue
@@ -35,8 +35,13 @@
                 v-if="section === 'topic_proposal-update' || section === 'topic_proposal-import' || section === 'topic_proposal-view'"
               />
             </template>
-            <template v-if="module === 'result'">
-              <FormResultVue v-if="section==='result-list'" />
+            <template v-if="module === 'topic_result'">
+              <ManageTopicResult
+                v-if="section==='topic_result-list'"
+              />
+              <FormResultVue
+                v-if="section === 'topic_result-view'"
+              />
             </template>
           </template>
           <template v-if="page === 'task'">
@@ -61,6 +66,7 @@ import LeftMiniBarVue from '../components/Student/LeftMiniBar.vue';
 import ManageBarStudentVue from '../components/Student/ManageBarStudent.vue';
 import ManageTopicStudentVue from '../components/Student/ManageTopicStudent.vue';
 import ManageTopicProposalStudentVue from '../components/Student/ManageTopicProposalStudent.vue';
+import ManageTopicResult from '../components/Student/ManageTopicResult.vue';
 import FormTopicVue from '../components/Student/FormTopic.vue';
 import FormResultVue from '../components/Student/FormResult.vue';
 import FormTopicProposalVue from '../components/Student/FormTopicProposal.vue';
@@ -77,6 +83,7 @@ export default {
     ManageBarStudentVue,
     ManageTopicStudentVue,
     ManageTopicProposalStudentVue,
+    ManageTopicResult,
     FormTopicVue,
     HeaderBarVue,
     MiniHeaderBarVue,

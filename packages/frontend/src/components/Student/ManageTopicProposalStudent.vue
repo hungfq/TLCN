@@ -91,17 +91,17 @@
 
             <td class="py-4 px-6 text-right">
               <a
-                class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
+                class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
                 @click="handleUpdateTopicProposal(topic._id)"
               >Sửa</a>
               <a
-                class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
-                @click="handleRemoveTopicProposal(topic._id)"
-              >Xóa</a>
-              <a
-                class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
+                class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
                 @click="handleShowTopicProposal(topic._id)"
               >Xem chi tiết</a>
+              <a
+                class="cursor-pointer font-medium text-red-600 dark:text-red-500 hover:underline mx-2"
+                @click="handleRemoveTopicProposal(topic._id)"
+              >Xóa</a>
             </td>
           </tr>
         </tbody>

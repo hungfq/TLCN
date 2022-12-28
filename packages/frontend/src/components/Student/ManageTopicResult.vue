@@ -1,30 +1,13 @@
 <template>
   <template v-if="!open">
     <div class="py-2 mx-2 font-medium text-red-600 ">
-      Hiện tại đang không có đợt đăng ký, vui lòng chọn mục khác!
+      Hiện tại đang không có đợt kết quả đăng ký, vui lòng chọn mục khác!
     </div>
   </template>
   <template v-if="open">
     <div
       class="shadow-md sm:rounded-lg m-4"
     >
-      <div class="flex">
-        <div class="inline-block p-2 rounded-md">
-          <select
-            v-model="currentScheduleId"
-            class="mt-1 block w-full rounded-md bg-gray-100 border border-gray-300 py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-            @change="handleChange"
-          >
-            <option
-              v-for="option in listSchedules"
-              :key="`key-${option._id}`"
-              :value="option._id"
-            >
-              {{ option.code }} : {{ option.name }}
-            </option>
-          </select>
-        </div>
-      </div>
       <SearchInput
         v-model="searchVal"
         :search-icon="true"
@@ -33,6 +16,12 @@
       <table class="w-full text-sm text-left text-gray-500">
         <thead class="text-xs text-gray-700 uppercase bg-gray-300">
           <tr>
+            <th
+              scope="col"
+              class="py-3 px-6"
+            >
+              Đợt đăng ký
+            </th>
             <th
               scope="col"
               class="py-3 px-6"
@@ -50,12 +39,6 @@
               class="py-3 px-6"
             >
               Mô tả
-            </th>
-            <th
-              scope="col"
-              class="py-3 px-6"
-            >
-              Số lượng
             </th>
             <th
               scope="col"
@@ -82,6 +65,13 @@
               scope="row"
               class="py-2 px-6 font-medium text-gray-900 whitespace-nowrap "
             >
+              {{ displaySchedule(topic.scheduleId) }}
+            </th>
+            <th
+              :key="`topic-${topic._id}`"
+              scope="row"
+              class="py-2 px-6 font-medium text-gray-900 whitespace-nowrap "
+            >
               {{ topic.code }}
             </th>
             <th
@@ -103,23 +93,15 @@
                 scope="row"
                 class="py-2 px-4 font-medium text-gray-900  "
               >
-                {{ topic.students.length }} / {{ topic.limit }}
-              </th>
-            </td>
-            <td class="py-2 pl-6">
-              <th
-                scope="row"
-                class="py-2 px-4 font-medium text-gray-900  "
-              >
                 {{ displayLecturer(topic.lecturerId) }}
               </th>
             </td>
 
             <td class="py-2 px-6">
-              <a
+              <!-- <a
                 class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
                 @click="handleRegisterTopic(topic._id)"
-              >Đăng ký</a>
+              >Đăng ký</a> -->
               <a
                 class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
                 @click="handleShowTopic(topic._id)"
@@ -165,7 +147,7 @@ export default {
       'userId', 'userEmail', 'userRole', 'token',
     ]),
     ...mapGetters('topic', [
-      'listTopicByScheduleStudent',
+      'topicResult',
     ]),
     ...mapGetters('url', [
       'page', 'module', 'section', 'id',
@@ -178,14 +160,8 @@ export default {
     ]),
   },
   async mounted () {
-    if (this.open) {
-      await this.$store.dispatch('student/fetchListStudent', this.token);
-      await this.$store.dispatch('schedule/fetchListScheduleToday', this.token);
-      this.currentScheduleId = this.listScheduleRegisterStudent[0] ? this.listScheduleRegisterStudent[0]._id : '';
-      this.listSchedules = this.listScheduleRegisterStudent;
-      await this.$store.dispatch('topic/fetchListTopicBySchedule', { token: this.token, scheduleId: this.currentScheduleId });
-      this.topics = this.listTopicByScheduleStudent || [];
-    }
+    await this.$store.dispatch('topic/fetchTopicResult', this.token);
+    this.topics = this.topicResult;
   },
   methods: {
     async handleRegisterTopic (id) {
@@ -206,12 +182,6 @@ export default {
         else this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
       }
     },
-    async handleChange () {
-      if (this.currentScheduleId) {
-        await this.$store.dispatch('topic/fetchListTopicBySchedule', { token: this.token, scheduleId: this.currentScheduleId });
-        this.topics = this.listTopicByScheduleStudent || [];
-      }
-    },
     async handleShowTopic (id) {
       await this.$store.dispatch('url/updateSection', `${this.module}-view`);
       await this.$store.dispatch('url/updateId', id);
@@ -228,12 +198,15 @@ export default {
         this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
       }
     },
+    displaySchedule (schedule) {
+      return schedule ? schedule.name : '';
+    },
     displayLecturer (lecturer) {
       return lecturer ? lecturer.name : '';
     },
     search () {
       if (this.searchVal !== '') {
-        const topicFilter = this.listTopicByScheduleStudent.filter((topic) => {
+        const topicFilter = this.topicResult.filter((topic) => {
           const re = new RegExp(`\\b${this.searchVal}`, 'gi');
           if (topic.title.match(re)) return true;
           if (topic.description.match(re)) return true;
@@ -243,7 +216,7 @@ export default {
           return false;
         });
         this.topics = topicFilter;
-      } else this.topics = this.listTopicByScheduleStudent;
+      } else this.topics = this.topicResult;
     },
   },
 };
