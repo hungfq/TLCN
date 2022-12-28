@@ -198,7 +198,7 @@ export default {
           scheduleId: this.selectVal,
         };
         await this.$store.commit('topic_proposal/setTopicScheduleId', this.selectVal);
-        await this.$store.dispatch('topic_proposal/removeTopicProposal', value);
+        await this.$store.dispatch('topic_proposal/declineTopicProposal', value);
         await this.$store.dispatch('topic_proposal/fetchListTopicProposalByLectures', value);
 
         this.$toast.success('Đã từ chối hướng dẫn đề tài thành công!');

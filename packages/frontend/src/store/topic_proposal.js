@@ -50,6 +50,12 @@ const actions = {
     await dispatch('fetchListTopicProposalCreated', { token, scheduleId: state.topicScheduleId });
     await dispatch('fetchListTopicProposalAdmin', token);
   },
+  async declineTopicProposal ({ dispatch, state }, payload) {
+    const { token, id } = payload;
+    await TopicProposalApi.declineTopicProposal(token, id);
+    await dispatch('fetchListTopicProposalCreated', { token, scheduleId: state.topicScheduleId });
+    await dispatch('fetchListTopicProposalAdmin', token);
+  },
   async approveTopicProposalByLecturer ({ dispatch }, payload) {
     const { token, id, scheduleId } = payload;
     await TopicProposalApi.approveTopicProposalByLecturer(token, id);
