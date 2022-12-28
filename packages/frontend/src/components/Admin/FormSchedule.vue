@@ -97,7 +97,10 @@
           validation="required"
           :disabled="isView"
         />
-        <div class="my-2-1 w-3/4">
+        <div
+          v-if="!isView"
+          class="my-2-1 w-3/4"
+        >
           <span class="font-bold text-sm py-4 my-4">
             Sinh viên đăng kí
           </span>
@@ -109,7 +112,6 @@
               :searchable="true"
               :create-option="true"
               :options="listStudents"
-              :disabled="isView"
             />
           </div>
         </div>
@@ -122,6 +124,13 @@
           validation="required"
           :disabled="isView"
         />
+        <div
+          v-if="isView"
+          class="rounded px-2 py-2 bg-slate-500 h-[50px] w-[200px]  text-white font-semibold cursor-pointer "
+          @click="showInfoStudent"
+        >
+          Xem thông tin sinh viên
+        </div>
       </div>
       <!-- Modal footer -->
       <div class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200">
@@ -136,21 +145,28 @@
       </div>
     </div>
   </div>
+  <InfoStudentVue
+    v-model="showInfo"
+    :students="infoUser"
+  />
 </template>
 
 <script>
 import Multiselect from '@vueform/multiselect';
 import { mapGetters } from 'vuex';
+import InfoStudentVue from '../Modal/InfoStudent.vue';
 
 export default {
   name: 'FormSchedule',
   components: {
     Multiselect,
+    InfoStudentVue,
   },
   props: {
   },
   data () {
     return {
+      showInfo: false,
       name: '',
       code: '',
       startDate: '',
@@ -166,6 +182,7 @@ export default {
       students: [],
       listTopics: [],
       listStudents: [],
+      infoUser: [],
     };
   },
   computed: {
@@ -229,9 +246,17 @@ export default {
         this.students = schedule.students;
         this.topics = schedule.topics;
       }
+      const set = new Set(this.students);
+      console.log('🚀 ~ file: FormSchedule.vue:246 ~ mounted ~ set', set);
+      console.log('🚀 ~ file: FormSchedule.vue:248 ~ mounted ~ listStudents', this.listStudents);
+      this.infoUser = students.filter((st) => set.has(st.code));
+      console.log('🚀 ~ file: FormSchedule.vue:246 ~ mounted ~ this.infoUser', this.infoUser);
     }
   },
   methods: {
+    showInfoStudent () {
+      this.showInfo = true;
+    },
     rollBack () {
       this.$store.dispatch('url/updateSection', `${this.module}-list`);
     },
@@ -241,7 +266,6 @@ export default {
         endProposalDate, startRegisterDate, endRegisterDate, startApproveDate,
         endApproveDate, topics, students, code,
       } = this;
-      console.log(this.code);
       const value = {
         name,
         description,
