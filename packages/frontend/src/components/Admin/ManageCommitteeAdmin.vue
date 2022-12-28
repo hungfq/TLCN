@@ -6,7 +6,7 @@
     >
       Thêm hội đồng
     </div>
-    <UploadButtonVue @uploadFileExcel="upload" />
+    <!-- <UploadButtonVue @uploadFileExcel="upload" /> -->
   </div>
   <div class="shadow-md sm:rounded-lg m-4">
     <SearchInput

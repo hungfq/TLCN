@@ -1,12 +1,15 @@
 <template>
   <div class="flex">
     <div
-      class=" rounded ml-auto mr-4 my-2 bg-blue-800 text-white font-sans font-semibold py-2 px-4 cursor-pointer"
+      class=" rounded mr-auto ml-4 my-2 bg-blue-800 text-white font-sans font-semibold py-2 px-4 cursor-pointer"
       @click="$store.dispatch('url/updateSection', 'admin-import')"
     >
-      Thêm
+      Thêm admin
     </div>
     <UploadButtonVue @uploadFileExcel="upload" />
+    <div class="flex items-center justify-center mr-4">
+      <a href="http://localhost:5000/template/User">Tải mẫu</a>
+    </div>
   </div>
   <div class="shadow-md sm:rounded-lg m-4">
     <SearchInput

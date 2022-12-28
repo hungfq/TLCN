@@ -10,6 +10,11 @@ const findOne = async (_id) => {
   return schedule;
 };
 
+const findOneByCode = async (code) => {
+  const schedule = _Schedule.findOne({ code });
+  return schedule;
+};
+
 const createOne = async (value) => {
   const schedule = await _Schedule.create(value);
   return schedule;
@@ -121,6 +126,7 @@ const updateTopics = async (_id, topics) => {
 
 module.exports = {
   findOne,
+  findOneByCode,
   createOne,
   updateOne,
   listBetweenTime,

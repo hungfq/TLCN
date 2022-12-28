@@ -290,8 +290,8 @@ export default {
     }
   },
   methods: {
-    rollBack () {
-      this.$store.dispatch('url/updateSection', `${this.module}-list`);
+    async rollBack () {
+      await this.$store.dispatch('url/updateSection', `${this.module}-list`);
     },
     async handleAddTopicAdmin () {
       const {
