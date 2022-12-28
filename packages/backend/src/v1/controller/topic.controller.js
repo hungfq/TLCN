@@ -275,14 +275,14 @@ const updateProposalByUser = async (req, res, next) => {
     const { id } = req.params;
     let {
       // eslint-disable-next-line prefer-const
-      title, description, lecturerId, limit, students, deadline, major,
+      title, description, lecturerId, limit, students, scheduleId,
     } = req.body;
     const proposal = await _TopicProposal.findById(id);
     // TODO: Only the admin and created users update proposal
     if (!proposal) return res.status(404).send('Not found');
 
     await _TopicProposal.updateOne({ _id: id }, {
-      title, description, lecturerId, limit, students, deadline, major,
+      title, description, lecturerId, limit, students, scheduleId,
     });
     return res.status(200).send(
       'Successfully updated proposal',
@@ -298,10 +298,13 @@ const approveProposalByLecturer = async (req, res, next) => {
     const proposal = await _TopicProposal.findById(id);
     // TODO: Only the admin and created users update proposal
     if (!proposal) return res.status(404).send('Not found');
-
-    await _TopicProposal.updateOne({ _id: id }, {
-      status: 'ADMIN',
+    const {
+      title, description, lecturerId, limit, students, scheduleId,
+    } = proposal;
+    const topic = await topicService.createOne({
+      title, description, lecturerId, limit, students, scheduleId,
     });
+    await _TopicProposal.deleteOne({ _id: id });
     return res.status(200).send(
       'Successfully updated proposal',
     );

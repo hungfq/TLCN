@@ -79,6 +79,7 @@
               :create-option="true"
               :options="listStudents"
               :disabled="isView"
+              :limit="limit"
             />
           </div>
         </div>
@@ -127,7 +128,7 @@ export default {
       title: '',
       code: '',
       description: '',
-      limit: '',
+      limit: 1,
       deadline: '',
       lecturerId: '',
       studentIds: [],

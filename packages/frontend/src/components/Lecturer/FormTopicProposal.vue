@@ -39,7 +39,7 @@
           name="limit"
           type="number"
           label="Số thành viên"
-          validation="min:1"
+          validation="min:1|max:3"
           :disabled="isView"
         />
         <FormKit
@@ -220,7 +220,6 @@ export default {
         major: this.major,
         students: studentIds,
         lecturerId: this.userId,
-        status: 'ADMIN',
       };
       try {
         if (this.isSave) {
