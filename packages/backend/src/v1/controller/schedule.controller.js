@@ -263,8 +263,7 @@ const getScheduleToday = async (req, res, next) => {
 const excelExport = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const schedule = await _Schedule.findById(id);
-    const topicList = await _Topic.find({ code: { $in: schedule.topics } })
+    const topicList = await _Topic.find({ scheduleId: id })
       .select('students code title lecturerId -_id')
       .lean();
     const result = await Promise.all(topicList.map(async (topic) => {

@@ -78,7 +78,7 @@ const listScheduleTopicLecturerShort = async (_id, lecturerId) => {
   const schedules = await _Schedule.find({});
   const topicList = await Promise.all(
     schedules.map(async (k) => {
-      const topics = await _Topic.find({ code: { $in: k.topics }, lecturerId })
+      const topics = await _Topic.find({ scheduleId: k._id, lecturerId })
         .select('_id title code');
       return { _id: k._id, name: k.name, topics };
     }),

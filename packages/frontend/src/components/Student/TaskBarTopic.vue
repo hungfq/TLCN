@@ -15,18 +15,18 @@
       class="flex items-center min-h-screen"
     >
       <div class="flex-1 px-1 space-y-2 overflow-hidden hover:overflow-auto">
-        <!-- <template
+        <template
           v-for="topic in topics"
           :key="`topic-${topic._id}`"
-        > -->
-        <button
-          :class="[ isTopic(topics._id) ? 'flex p-2 items-center w-full space-x-2 text-white bg-indigo-600 rounded-lg' : 'flex p-2   items-center space-x-2 text-indigo-600 transition-colors rounded-lg group hover:bg-indigo-600 hover:text-white']"
-          @click="topicClick(topics._id)"
         >
-          <!-- {{ topics }} -->
-          {{ topics.code }}: {{ topics.title }}
-        </button>
-        <!-- </template> -->
+          <button
+            :class="[ isTopic(topic._id) ? 'flex p-2 items-center w-full space-x-2 text-white bg-indigo-600 rounded-lg' : 'flex p-2   items-center space-x-2 text-indigo-600 transition-colors rounded-lg group hover:bg-indigo-600 hover:text-white']"
+            @click="topicClick(topic._id)"
+          >
+            <!-- {{ topics }} -->
+            {{ topic.code }}: {{ topic.title }}
+          </button>
+        </template>
       </div>
     </nav>
   </div>

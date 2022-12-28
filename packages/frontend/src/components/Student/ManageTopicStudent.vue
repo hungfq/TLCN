@@ -8,13 +8,6 @@
     <div
       class="shadow-md sm:rounded-lg m-4"
     >
-      <!-- <div class="my-4">
-        <Multiselect
-          v-model="currentScheduleId"
-          :options="listSchedules"
-          @change="handleChange"
-        />
-      </div> -->
       <div class="flex">
         <div class="inline-block p-2 rounded-md">
           <select
@@ -31,12 +24,12 @@
             </option>
           </select>
         </div>
-        <div
+        <!-- <div
           class=" rounded ml-auto mr-4 my-2 bg-blue-800 text-white font-sans font-semibold py-2 px-4 cursor-pointer"
           @click="$store.dispatch('url/updateSection', 'topic-import')"
         >
           Thêm đề tài
-        </div>
+        </div> -->
       </div>
       <SearchInput
         v-model="searchVal"
@@ -212,9 +205,9 @@ export default {
         this.topics = this.listTopicByScheduleStudent || [];
       }
     },
-    handleShowTopic (id) {
-      this.$store.dispatch('url/updateSection', `${this.module}-view`);
-      this.$store.dispatch('url/updateId', id);
+    async handleShowTopic (id) {
+      await this.$store.dispatch('url/updateSection', `${this.module}-view`);
+      await this.$store.dispatch('url/updateId', id);
     },
     async handleRemoveTopic (id) {
       try {

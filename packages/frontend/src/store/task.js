@@ -8,6 +8,7 @@ const initState = {
   topicId: null,
   listTask: [],
   listMember: [],
+  listStudents: [],
   taskDetail: '',
 };
 
@@ -17,6 +18,7 @@ const getters = {
   topicId: (state) => state.topicId,
   listTask: (state) => state.listTask,
   listMember: (state) => state.listMember,
+  listStudents: (state) => state.listStudents,
   taskDetail: (state) => state.taskDetail,
 };
 
@@ -53,6 +55,16 @@ const actions = {
       const { token, topicId } = payload;
       const listMember = await TopicApi.listTopicMember(token, topicId);
       commit('setListMember', listMember);
+    } catch (e) {
+      console.log(e.message);
+    }
+  },
+
+  async fetchListStudents ({ commit }, payload) {
+    try {
+      const { token, topicId } = payload;
+      const listStudents = await TopicApi.listTopicStudents(token, topicId);
+      commit('setListStudents', listStudents);
     } catch (e) {
       console.log(e.message);
     }
@@ -136,6 +148,9 @@ const mutations = {
   },
   setListMember: (state, listMember) => {
     state.listMember = listMember;
+  },
+  setListStudents: (state, listStudents) => {
+    state.listStudents = listStudents;
   },
   setTaskDetail: (state, taskDetail) => {
     state.taskDetail = taskDetail;

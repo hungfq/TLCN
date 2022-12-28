@@ -133,6 +133,16 @@ const getTopicMember = async (req, res, next) => {
   }
 };
 
+const getTopicStudent = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const result = await topicService.getTopicStudent(id);
+    return res.status(200).send(result);
+  } catch (err) {
+    return next(err);
+  }
+};
+
 const addProposalTopic = async (req, res, next) => {
   try {
     let {
@@ -423,7 +433,7 @@ const removeRegisterTopicStudent = async (req, res, next) => {
 const getResultRegister = async (req, res, next) => {
   try {
     const { code } = req.user;
-    const topic = await _Topic.findOne({
+    const topic = await _Topic.find({
       students: {
         $in: [code],
       },
@@ -445,7 +455,7 @@ module.exports = {
   getResultRegister,
 
   getTopicMember,
-
+  getTopicStudent,
   addProposalTopic,
   approveProposalTopic,
   removeProposalTopic,

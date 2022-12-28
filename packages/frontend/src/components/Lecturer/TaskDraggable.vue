@@ -26,7 +26,7 @@
           :value="''"
         />
         <option
-          v-for="option in listMember"
+          v-for="option in listStudents"
           :key="`key-${option._id}`"
           :value="option._id"
         >
@@ -138,7 +138,7 @@
               class="mt-1 block w-full rounded-md bg-gray-100 border border-gray-300 py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
             >
               <option
-                v-for="option in listMember"
+                v-for="option in listStudents"
                 :key="`key-${option._id}`"
                 :value="option._id"
               >
@@ -210,7 +210,7 @@ export default {
       'page', 'module', 'subModule', 'section', 'id',
     ]),
     ...mapGetters('task', [
-      'listTask', 'topicId', 'listMember',
+      'listTask', 'topicId', 'listStudents',
     ]),
   },
   watch: {
@@ -249,12 +249,10 @@ export default {
         await this.$store.dispatch('task/fetchAllTask', { token: this.token, topicId: this.topicId });
       }
       this.editTask = null;
-      console.log('🚀 ~ file: TaskDraggable.vue:107 ~ onDragEnd ~ column', column);
     },
     handleChange (task) {
       this.editTask = null;
       this.editTask = task;
-      console.log('🚀 ~ file: TaskDraggable.vue:111 ~ handleChange ~ task', task);
     },
     search () {
       if (this.searchVal !== '') {
@@ -271,7 +269,6 @@ export default {
     },
     selectHandler () {
       if (this.selectVal !== '') {
-        console.log('🚀 ~ file: TaskDraggable.vue:267 ~ selectHandler ~ event', this.selectVal);
         const taskFilters = this.listTask.filter((st) => st.assignTo === this.selectVal);
         this.tasks = taskFilters;
       } else {

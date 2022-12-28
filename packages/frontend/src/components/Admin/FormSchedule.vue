@@ -27,7 +27,7 @@
         />
         <FormKit
           v-model="code"
-          name="description"
+          name="code"
           type="text"
           label="Mã đợt"
           validation="required"
@@ -43,7 +43,7 @@
         />
         <FormKit
           v-model="deadline"
-          name="startDate"
+          name="deadline"
           type="date"
           label="Thời gian kết thúc làm đề tài"
           validation="required"
@@ -51,7 +51,7 @@
         />
         <FormKit
           v-model="startProposalDate"
-          name="startDate"
+          name="startProposalDate"
           type="date"
           label="Thời gian bắt đầu đề xuất"
           validation="required"
@@ -59,7 +59,7 @@
         />
         <FormKit
           v-model="endProposalDate"
-          name="endDate"
+          name="startProposalDate"
           type="date"
           label="Thời gian kết thúc đề xuất"
           validation="required"
@@ -67,7 +67,7 @@
         />
         <FormKit
           v-model="startApproveDate"
-          name="startDate"
+          name="startApproveDate"
           type="date"
           label="Thời gian bắt đầu chấp thuận"
           validation="required"
@@ -75,7 +75,7 @@
         />
         <FormKit
           v-model="endApproveDate"
-          name="endDate"
+          name="endApproveDate"
           type="date"
           label="Thời gian kết thúc chấp thuận"
           validation="required"
@@ -83,7 +83,7 @@
         />
         <FormKit
           v-model="startRegisterDate"
-          name="startDate"
+          name="startRegisterDate"
           type="date"
           label="Thời gian bắt đầu đăng ký"
           validation="required"
@@ -91,7 +91,7 @@
         />
         <FormKit
           v-model="endRegisterDate"
-          name="endDate"
+          name="endRegisterDate"
           type="date"
           label="Thời gian kết thúc đăng ký"
           validation="required"
@@ -140,8 +140,7 @@
 
 <script>
 import Multiselect from '@vueform/multiselect';
-import { getValidationMessages } from '@formkit/validation';
-import { mapState, mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'FormSchedule',
@@ -219,8 +218,8 @@ export default {
         this.name = schedule.name;
         this.description = schedule.description;
         this.code = schedule.code;
-        this.startDate = this.formatDate(schedule.startProposalDate);
-        this.deadline = this.formatDate(schedule.startProposalDate);
+        this.startDate = this.formatDate(schedule.startDate);
+        this.deadline = this.formatDate(schedule.deadline);
         this.startProposalDate = this.formatDate(schedule.startProposalDate);
         this.endProposalDate = this.formatDate(schedule.endProposalDate);
         this.startApproveDate = this.formatDate(schedule.startApproveDate);

@@ -19,7 +19,6 @@ const createNewTask = async (topicId, code, title, description, status,  created
     comment: [],
   };
   if (code) task.code = code;
-  if (description) task.description = description;
   if (status) task.status = status;
 
   const newTask = await _Task.create(task);

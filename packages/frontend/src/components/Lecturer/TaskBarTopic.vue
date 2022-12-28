@@ -62,7 +62,7 @@ export default {
     async topicClick (id) {
       this.updateSubModule(`topic-${id}`);
       await this.$store.dispatch('task/fetchAllTask', { token: this.token, topicId: id });
-      await this.$store.dispatch('task/fetchListMember', { token: this.token, topicId: id });
+      await this.$store.dispatch('task/fetchListStudents', { token: this.token, topicId: id });
     },
     isTopic (id) {
       return this.subModule === `topic-${id}`;

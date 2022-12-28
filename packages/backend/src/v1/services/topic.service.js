@@ -211,6 +211,14 @@ const getTopicMember = async (topicId) => {
   return result;
 };
 
+const getTopicStudent = async (topicId) => {
+  const topic = await _Topic.findById(topicId);
+  const result = [];
+  const students = await userService.getStudentByCodes(topic.students);
+  students.forEach((student) => result.push({ _id: student._id, code: student.code, name: student.name }));
+  return result;
+};
+
 module.exports = {
   createOne,
   findOne,
@@ -228,4 +236,5 @@ module.exports = {
   listProposalTopic,
   searchAndSort,
   getTopicMember,
+  getTopicStudent,
 };

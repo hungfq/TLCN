@@ -175,6 +175,15 @@ export default class TopicApi {
     return res.data;
   }
 
+  static async listTopicStudents (token, topicId) {
+    const res = await axios.get(`/topic/${topicId}/students`, {
+      headers: {
+        authorization: `bearer ${token}`,
+      },
+    });
+    return res.data;
+  }
+
   static async importTopic (token, xlsx) {
     const formData = new FormData();
 

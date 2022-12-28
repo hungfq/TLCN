@@ -47,6 +47,7 @@ const vuexLocal = createPersistedState({
     'task.topicId',
     'task.listTask',
     'task.listMember',
+    'task.listStudents',
     'topic_proposal.listTopicProposalCreated',
     'topic_proposal.listTopicProposalByLecturer',
     'topic_proposal.listTopicProposalAdmin',
