@@ -13,7 +13,7 @@ const {
   listTopicCriticalApprove,
   topicAdvisorApprove,
   topicCriticalApprove,
-  addNewRegisterTopicStudentNew, getTopicStudent, declineProposalTopic,
+  declineProposalTopic,
 } = require('../controller/topic.controller');
 
 const authMiddleware = require('../middlewares/auth.middleware');
