@@ -177,9 +177,6 @@ const addProposalTopic = async (req, res, next) => {
       );
 
       await notificationService.sendNotification(lecturerId, notification);
-
-      // await userService.addNotificationByType('LECTURER', lecturerId, notification._id);
-      // console.log(`TODO: send notification to ${lecturerId}`);
     }
     return res.status(201).send(topic);
   } catch (err) {
@@ -198,7 +195,16 @@ const approveProposalTopic = async (req, res, next) => {
 
     await topicService.deleteOneProposalTopic(id);
 
-    console.log(`TODO: send notification to ${topicProposal.createdBy}`);
+    if (topicProposal.createdBy) {
+      const notification = await notificationService.addNotification(
+        'ĐỀ XUẤT ĐỀ TÀI',
+        `Đề tài ${topicProposal.title} đã được chấp thuận.`,
+        req.user._id,
+        [topicProposal.createdBy],
+      );
+
+      await notificationService.sendNotification(topicProposal.createdBy, notification);
+    }
 
     return res.status(200).send('Successfully');
   } catch (err) {
@@ -215,7 +221,33 @@ const removeProposalTopic = async (req, res, next) => {
       return res.status(404).send('Not found');
     }
     await topicService.deleteOneProposalTopic(id);
-    console.log(`TODO: send notification to ${topic.createdBy}`);
+    return res.status(200).send('Successfully');
+  } catch (err) {
+    return next(err);
+  }
+};
+const declineProposalTopic = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const topic = await topicService.findOneProposalTopic(id);
+    if (!topic) {
+      return res.status(404).send('Not found');
+    }
+
+    if (topic.createdBy) {
+      const notification = await notificationService.addNotification(
+        'ĐỀ XUẤT ĐỀ TÀI',
+        `Đề tài ${topic.title} bị từ chối!`,
+        req.user._id,
+        [topic.createdBy],
+      );
+
+      await notificationService.sendNotification(topic.createdBy, notification);
+    }
+
+    await topicService.deleteOneProposalTopic(id);
+
     return res.status(200).send('Successfully');
   } catch (err) {
     return next(err);
@@ -305,6 +337,17 @@ const approveProposalByLecturer = async (req, res, next) => {
       title, description, lecturerId, limit, students, scheduleId,
     });
     await _TopicProposal.deleteOne({ _id: id });
+
+    if (proposal.createdBy) {
+      const notification = await notificationService.addNotification(
+        'ĐỀ XUẤT ĐỀ TÀI',
+        `Đề tài ${proposal.title} đã được chấp thuận`,
+        req.user._id,
+        [proposal.createdBy],
+      );
+
+      await notificationService.sendNotification(proposal.createdBy, notification);
+    }
     return res.status(200).send(
       'Successfully updated proposal',
     );
@@ -440,7 +483,10 @@ const getResultRegister = async (req, res, next) => {
       students: {
         $in: [code],
       },
-    });
+    })
+      .populate({ path: 'lecturerId', select: 'name _id' })
+      .populate({ path: 'criticalLecturerId', select: 'name _id' })
+      .populate({ path: 'scheduleId', select: 'name code _id' });
     return res.status(200).send(topic);
   } catch (err) {
     return next(err);
@@ -513,6 +559,7 @@ module.exports = {
   addProposalTopic,
   approveProposalTopic,
   removeProposalTopic,
+  declineProposalTopic,
   listProposalTopic,
   listTopicReviewByLecturer,
   listTopicProposalByCreatedId,

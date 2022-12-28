@@ -79,7 +79,6 @@
               :create-option="true"
               :options="listStudents"
               :disabled="isView"
-              :limit="limit"
             />
           </div>
         </div>

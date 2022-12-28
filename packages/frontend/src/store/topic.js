@@ -18,6 +18,7 @@ const getters = {
   listTopicsByLecturerSchedule: (state) => state.listTopicsByLecturerSchedule,
   topicScheduleId: (state) => state.topicScheduleId,
   listTopicByScheduleStudent: (state) => state.listTopicByScheduleStudent,
+  topicResult: (state) => state.topicResult,
 };
 
 const actions = {

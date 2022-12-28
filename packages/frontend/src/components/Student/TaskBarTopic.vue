@@ -71,7 +71,7 @@ export default {
       return this.subModule === `topic-${id}`;
     },
     updateSubModule (subModule) {
-      this.$store.dispatch('url/updateSubModule', subModule);
+      this.$store.dispatch('url/updateModule', subModule);
       this.$store.dispatch('url/updateSection', `${subModule}-task`);
     },
   },

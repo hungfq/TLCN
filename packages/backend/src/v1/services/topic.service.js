@@ -176,7 +176,7 @@ const addProposalTopic = async (title, description, lecturerId, createdBy) => {
 };
 
 const findOneProposalTopic = async (_id) => {
-  const topic = await _TopicProposal.findOne({ _id });
+  const topic = await _TopicProposal.findById(_id);
   return topic;
 };
 

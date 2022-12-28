@@ -58,6 +58,15 @@ export default class TopicProposalApi {
     return res.data;
   }
 
+  static async declineTopicProposal (token, id) {
+    const res = await axios.delete(`/topic-proposal-decline/${id}`, {
+      headers: {
+        authorization: `bearer ${token}`,
+      },
+    });
+    return res.data;
+  }
+
   static async approveTopicProposalByLecturer (token, id) {
     const res = await axios.get(`/approve/${id}`, {
       headers: {

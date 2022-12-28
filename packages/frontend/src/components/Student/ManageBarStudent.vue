@@ -27,20 +27,23 @@
       <!-- Links -->
       <div class="flex-1 px-4 space-y-2 overflow-hidden hover:overflow-auto">
         <a
+          class="cursor-pointer"
           :class="[ isTopic ? 'flex p-2 items-center w-full space-x-2 text-white bg-indigo-600 rounded-lg' : 'flex p-2   items-center space-x-2 text-indigo-600 transition-colors rounded-lg group hover:bg-indigo-600 hover:text-white']"
           @click="updateModule('topic')"
         >
           Đăng ký đề tài
         </a>
         <a
+          class="cursor-pointer"
           :class="[ isTopicProposal ? 'flex p-2 items-center w-full space-x-2 text-white bg-indigo-600 rounded-lg' : 'flex p-2   items-center space-x-2 text-indigo-600 transition-colors rounded-lg group hover:bg-indigo-600 hover:text-white']"
           @click="updateModule('topic_proposal')"
         >
           Đề xuất đề tài
         </a>
         <a
+          class="cursor-pointer"
           :class="[ isResult ? 'flex p-2 items-center w-full space-x-2 text-white bg-indigo-600 rounded-lg' : 'flex p-2   items-center space-x-2 text-indigo-600 transition-colors rounded-lg group hover:bg-indigo-600 hover:text-white']"
-          @click="updateModule('result')"
+          @click="updateModule('topic_result')"
         >
           Kiểm tra kết quả
         </a>
@@ -50,7 +53,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'ManageBarStudent',
@@ -73,7 +76,7 @@ export default {
       return this.module === 'topic_proposal';
     },
     isResult () {
-      return this.module === 'result';
+      return this.module === 'topic_result';
     },
   },
   mounted () {

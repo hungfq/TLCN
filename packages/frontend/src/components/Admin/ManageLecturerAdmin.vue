@@ -57,11 +57,11 @@
           </td>
           <td class="py-4 px-6 text-right">
             <a
-              class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
+              class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
               @click="handleUpdateLecturer(user._id)"
             >Sửa</a>
             <a
-              class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
+              class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
               @click="handleShowLecturer(user._id)"
             >Xem chi tiết</a>
           </td>
