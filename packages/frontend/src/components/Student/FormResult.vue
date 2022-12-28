@@ -232,6 +232,18 @@ export default {
     isView () {
       return this.section === 'topic_result-view';
     },
+    canUnregister () {
+      const schedules = this.$store.state.schedule.listSchedules;
+      if (this.scheduleId && this.listSchedules) {
+        const schedule = schedules.find((sc) => sc._id.toString() === this.scheduleId.toString());
+
+        const now = Date.now();
+        const start = new Date(schedule.startRegisterDate);
+        const end = new Date(schedule.endRegisterDate);
+        return (start < now && now < end);
+      }
+      return false;
+    },
   },
   async mounted () {
     await this.$store.dispatch('lecturer/fetchListLecturer', this.token);
@@ -322,10 +334,6 @@ export default {
     async handleRemoveTopic () {
       this.removeId = this.id;
       this.showConfirmModal = true;
-    },
-    async canUnregister () {
-      // a = this.scheduleId;
-      console.log('🚀 ~ file: FormResult.vue:328 ~ canUnregister ~ this.scheduleId', this.scheduleId);
     },
   },
 };

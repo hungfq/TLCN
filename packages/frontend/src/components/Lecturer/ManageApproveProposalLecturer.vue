@@ -41,6 +41,12 @@
               scope="col"
               class="py-3 px-6"
             >
+              Mô tả
+            </th>
+            <th
+              scope="col"
+              class="py-3 px-6"
+            >
               Người đề xuất
             </th>
             <th
@@ -65,6 +71,13 @@
               {{ topic.title }}
             </th>
             <th
+              :key="`topic-${topic._id}`"
+              scope="row"
+              class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap "
+            >
+              {{ topic.description }}
+            </th>
+            <th
               scope="row"
               class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap "
             >
@@ -73,19 +86,19 @@
 
             <td class="py-4 px-6 text-right">
               <a
-                class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
+                class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
                 @click="handleUpdateTopic(topic._id)"
               >Sửa</a>
               <a
-                class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
+                class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
                 @click="handleShowTopic(topic._id)"
               >Xem chi tiết</a>
               <a
-                class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
+                class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
                 @click="handleApproveTopic(topic._id)"
               >Gửi đề tài lên khoa</a>
               <a
-                class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
+                class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
                 @click="handleRemoveTopicProposal(topic._id)"
               >Từ chối</a>
             </td>

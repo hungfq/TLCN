@@ -109,17 +109,17 @@
           </td>
           <td class="py-4 px-6 text-right">
             <a
-              class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
+              class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
               @click="handleShowTopic(topic._id)"
             >Xem chi tiết</a>
             <a
               v-if="canEdit"
-              class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
+              class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
               @click="handleUpdateTopic(topic._id)"
             >Sửa</a>
             <a
               v-if="canEdit"
-              class="font-medium text-red-600 dark:text-red-500 hover:underline mx-2"
+              class="cursor-pointer font-medium text-red-600 dark:text-red-500 hover:underline mx-2"
               @click="handleRemoveTopic(topic._id)"
             >Xóa</a>
           </td>

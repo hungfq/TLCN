@@ -99,7 +99,7 @@
           <td class="py-4 px-6">
             <div class="flex flex-col">
               <a
-                class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
+                class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
                 @click="handleClickStudent(schedule._id)"
               >Nhập sinh viên bằng file excel</a>
             </div>
@@ -110,15 +110,15 @@
               :href="getLink(schedule._id)"
             >Xuất báo cáo</a>
             <a
-              class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
+              class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
               @click="handleUpdateSchedule(schedule._id)"
             >Sửa</a>
             <a
-              class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
+              class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
               @click="handleRemoveSchedule(schedule._id)"
             >Xóa</a>
             <a
-              class="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
+              class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
               @click="handleShowSchedule(schedule._id)"
             >Xem chi tiết</a>
           </td>
