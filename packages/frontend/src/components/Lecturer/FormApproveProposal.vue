@@ -23,15 +23,7 @@
           label="Tiêu đề"
           help="Vd: Xây dụng web thương mại điện tử e-shop"
           validation="required"
-          :disabled="isView"
-        />
-        <FormKit
-          v-model="description"
-          name="description"
-          type="textarea"
-          label="Mô tả"
-          help="Ghi các thông tin chi tiết tại đây"
-          validation="required"
+          :validation-messages="{ required: 'Vui lòng điền thông tin vào ô này' }"
           :disabled="isView"
         />
         <FormKit
@@ -39,24 +31,9 @@
           name="limit"
           type="number"
           label="Số thành viên"
-          validation="min:1"
+          validation="min:1|max:3"
           :disabled="isView"
-        />
-        <FormKit
-          v-model="major"
-          name="major"
-          type="text"
-          label="Chuyên ngành"
-          validation="required"
-          :disabled="isView"
-        />
-        <FormKit
-          v-model="deadline"
-          name="deadline"
-          type="date"
-          label="Thời hạn hoàn thành"
-          validation="required"
-          :disabled="isView"
+          :validation-messages="{ min: 'Phải có ít nhất 1 thành viên', max:'Có tối đa 3 thành viên' }"
         />
         <div
           v-show="false"
@@ -84,9 +61,43 @@
               mode="tags"
               :close-on-select="false"
               :searchable="true"
-              :create-option="true"
               :options="listStudents"
               :disabled="isView"
+              :limit="limit"
+            />
+          </div>
+        </div>
+        <div class="my-2-1 w-3/4">
+          <span class="font-bold text-sm py-4 my-4">
+            Giảng viên hướng dẫn
+          </span>
+          <div class="mt-1">
+            <Multiselect
+              v-model="lecturerId"
+              :options="listLecturers"
+              :disabled="true"
+            />
+          </div>
+        </div>
+        <FormKit
+          v-model="description"
+          name="description"
+          type="textarea"
+          label="Mô tả"
+          help="Ghi các thông tin chi tiết tại đây"
+          :validation-messages="{ required: 'Vui lòng điền thông tin vào ô này' }"
+          validation="required"
+          :disabled="isView"
+        />
+        <div class="my-2-1 w-3/4">
+          <span class="font-bold text-sm py-4 my-4">
+            Đợt đăng ký
+          </span>
+          <div class="mt-1">
+            <Multiselect
+              v-model="scheduleId"
+              :options="listSchedules"
+              :disabled="true"
             />
           </div>
         </div>
@@ -123,10 +134,9 @@ export default {
       title: '',
       code: '',
       description: '',
-      limit: '',
-      deadline: '',
+      limit: 1,
       lecturerId: '',
-      major: '',
+      scheduleId: '',
       studentIds: [],
       listStudents: [
         'student1',
@@ -140,6 +150,7 @@ export default {
         'lecturer3',
       ],
       messages: '',
+      listSchedules: [],
     };
   },
   computed: {
@@ -147,7 +158,10 @@ export default {
       'page', 'module', 'section', 'id',
     ]),
     ...mapGetters('auth', [
-      'token', 'userId',
+      'token', 'userId', 'userInfo',
+    ]),
+    ...mapGetters('schedule', [
+      'currentScheduleId', 'listScheduleApproveLecturer',
     ]),
     isSave () {
       return this.section === 'topic_proposal_approve-import';
@@ -162,18 +176,12 @@ export default {
   async mounted () {
     await this.$store.dispatch('lecturer/fetchListLecturer', this.token);
     await this.$store.dispatch('student/fetchListStudent', this.token);
-    const lecturers = this.$store.state.lecturer.listLecturer;
     const students = this.$store.state.student.listStudents;
-    this.listLecturers = lecturers.map((lecturer) => {
-      let l = {
-        value: lecturer._id,
-        label: lecturer.name,
-      };
-      if (this.isView) {
-        l = { ...l, disabled: true };
-      }
-      return l;
-    });
+    this.listLecturers = [{
+      value: this.userInfo._id,
+      label: this.userInfo.name,
+      disabled: true,
+    }];
     this.listStudents = students.map((student) => {
       let st = {
         value: student.code,
@@ -184,6 +192,14 @@ export default {
       }
       return st;
     });
+    const scheduleApprove = this.listScheduleApproveLecturer.find((schedule) => schedule._id.toString() === this.currentScheduleId.toString());
+    if (scheduleApprove) {
+      this.listSchedules = [{
+        value: scheduleApprove._id,
+        label: `${scheduleApprove.code}: ${scheduleApprove.name}`,
+        disabled: true,
+      }];
+    }
     if (this.isUpdate || this.isView) {
       const { id } = this.$store.state.url;
       const { listTopicProposalByLecturer } = this.$store.state.topic_proposal;
@@ -193,16 +209,12 @@ export default {
         this.code = topic.code;
         this.description = topic.description;
         this.limit = topic.limit;
-        if (topic.deadline) {
-          const date = new Date(topic.deadline);
-          const dateString = new Date(date.getTime() - (date.getTimezoneOffset() * 60000))
-            .toISOString()
-            .split('T')[0];
-          this.deadline = dateString;
+        if (topic.lecturerId) {
+          this.lecturerId = topic.lecturerId;
         }
-        if (topic.lecturerId) this.lecturerId = topic.lecturerId._id;
-        this.major = topic.major;
         this.studentIds = topic.students;
+        this.scheduleId = this.currentScheduleId;
+        if (this.currentScheduleId) this.$store.commit('topic_proposal/setTopicScheduleId', this.currentScheduleId);
       }
     }
   },

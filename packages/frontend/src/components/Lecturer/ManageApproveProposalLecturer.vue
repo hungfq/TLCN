@@ -170,6 +170,7 @@ export default {
     this.selectVal = this.listScheduleApproveLecturer[0] ? this.listScheduleApproveLecturer[0]._id : null;
     if (this.selectVal) {
       await this.$store.dispatch('topic_proposal/fetchListTopicProposalByLectures', { token: this.token, scheduleId: this.selectVal });
+      this.$store.commit('schedule/setCurrentScheduleId', this.selectVal);
     }
     this.search();
   },
@@ -181,9 +182,11 @@ export default {
         const value = {
           id,
           token: this.token,
+          scheduleId: this.selectVal,
         };
+        await this.$store.commit('topic_proposal/setTopicScheduleId', this.selectVal);
         await this.$store.dispatch('topic_proposal/removeTopicProposal', value);
-        await this.$store.dispatch('topic_proposal/fetchListTopicProposalByLectures', { token: this.token, scheduleId: this.selectVal });
+        await this.$store.dispatch('topic_proposal/fetchListTopicProposalByLectures', value);
 
         this.$toast.success('Đã từ chối hướng dẫn đề tài thành công!');
       } catch (e) {
@@ -209,8 +212,9 @@ export default {
         const value = {
           id,
           token: this.token,
+          scheduleId: this.selectVal,
         };
-        await this.$store.dispatch('topic_proposal/approveTopicProposalByLecturer', value, this.selectVal);
+        await this.$store.dispatch('topic_proposal/approveTopicProposalByLecturer', value);
         await this.$store.dispatch('topic_proposal/fetchListTopicProposalByLectures', { token: this.token, scheduleId: this.selectVal });
 
         this.$toast.success('Đã từ gửi đề tài lên khoa thành công!');
@@ -237,7 +241,9 @@ export default {
     },
     async selectHandler () {
       await this.$store.commit('topic/setTopicScheduleId', this.selectVal);
+      await this.$store.commit('topic_proposal/setTopicScheduleId', this.selectVal);
       await this.$store.dispatch('topic_proposal/fetchListTopicProposalByLectures', { token: this.token, scheduleId: this.selectVal });
+      this.$store.commit('schedule/setCurrentScheduleId', this.selectVal);
       this.search();
     },
   },

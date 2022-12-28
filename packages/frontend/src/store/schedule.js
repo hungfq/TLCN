@@ -9,6 +9,7 @@ const initState = {
   isScheduleProposal: false,
   isScheduleRegister: false,
   isScheduleApprove: false,
+  currentScheduleId: null,
 };
 
 const getters = {
@@ -20,6 +21,7 @@ const getters = {
   isScheduleProposal: (state) => state.isScheduleProposal,
   isScheduleRegister: (state) => state.isScheduleRegister,
   isScheduleApprove: (state) => state.isScheduleApprove,
+  currentScheduleId: (state) => state.currentScheduleId,
 };
 
 const actions = {
@@ -120,6 +122,9 @@ const mutations = {
   },
   setIsPermit: (state, value) => {
     state.isPermit = value;
+  },
+  setCurrentScheduleId: (state, value) => {
+    state.currentScheduleId = value;
   },
 };
 
