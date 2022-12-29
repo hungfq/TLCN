@@ -16,7 +16,7 @@
         <span class=" text-base font-sans font-light text-center">Giảng viên hướng dẫn</span>
         <span class=" text-base font-sans font-light text-center"> {{ displayLecturer(topic.lecturerId) }}</span>
         <div
-          class="my-auto h-[30px] font-sans font-medium rounded-lg bg-blue-800 text-white text-center center"
+          class="my-auto h-[30px] font-sans font-medium rounded-lg bg-blue-800 text-white text-center center cursor-pointer"
           @click="$router.push('/student')"
         >
           Tìm hiểu thêm

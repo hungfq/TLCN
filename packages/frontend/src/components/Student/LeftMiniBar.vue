@@ -7,7 +7,7 @@
   >
     <!-- Logo -->
     <div class="flex-shrink-0 py-4">
-      <a href="#">
+      <a @click="$router.push('/home')">
         <img
           class="h-[40px] my-auto w-[50px]"
           src="/fit.png"
