@@ -32,12 +32,25 @@
             <span class="sr-only">Close modal</span>
           </button>
         </div>
+        <div class="px-6 py-2">
+          <SearchInput
+            v-model="searchVal"
+            :search-icon="true"
+            @keydown.space.enter="search"
+          />
+        </div>
         <!-- Modal body -->
-        <div class="p-2 space-y-6 h-96 overflow-y-scroll">
+        <div class="px-2 h-96 overflow-y-scroll">
           <div class="shadow-md sm:rounded-lg m-4 overflow-y-auto">
             <table class="w-full text-sm text-left text-gray-500">
               <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                 <tr>
+                  <th
+                    scope="col"
+                    class="py-3 px-6"
+                  >
+                    STT
+                  </th>
                   <th
                     scope="col"
                     class="py-3 px-6"
@@ -60,24 +73,27 @@
               </thead>
               <tbody>
                 <tr
-                  v-for="user in listStudentsOfSchedule"
+                  v-for="(user, index) in listStudents"
                   :key="`user-${user._id}`"
                   class="bg-slate-300 hover:bg-gray-50 "
                 >
-                  <th
+                  <td class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap ">
+                    {{ index+1 }}
+                  </td>
+                  <td
                     :key="`user-${user._id}`"
                     scope="row"
                     class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap "
                   >
                     {{ user.code }}
-                  </th>
-                  <th
+                  </td>
+                  <td
                     :key="`user-${user._id}`"
                     scope="row"
                     class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap "
                   >
                     {{ user.name }}
-                  </th>
+                  </td>
                   <td class="py-4 px-6">
                     <div class="font-bold cursor-pointer">
                       {{ user.email }}
@@ -105,15 +121,25 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
+import SearchInput from 'vue-search-input';
 
 export default {
   name: 'InfoModal',
+  components: {
+    SearchInput,
+  },
   inheritAttrs: false,
   props: {
     scheduleId: {
       type: String,
       default: '',
     },
+  },
+  data () {
+    return {
+      searchVal: '',
+      listStudents: [],
+    };
   },
   computed: {
     ...mapGetters('auth', [
@@ -126,6 +152,20 @@ export default {
   methods: {
     async handleShow (scheduleId) {
       await this.$store.dispatch('schedule/fetchStudentsOfSchedule', { token: this.token, id: scheduleId });
+      this.listStudents = this.listStudentsOfSchedule;
+    },
+
+    search () {
+      if (this.searchVal !== '') {
+        const listStudentsFilter = this.listStudentsOfSchedule.filter((st) => {
+          const re = new RegExp(`\\b${this.searchVal}`, 'gi');
+          if (st.name.match(re)) return true;
+          if (st.code.match(re)) return true;
+          if (st.email.match(re)) return true;
+          return false;
+        });
+        this.listStudents = listStudentsFilter;
+      } else this.listStudents = this.listStudentsOfSchedule;
     },
   },
 };

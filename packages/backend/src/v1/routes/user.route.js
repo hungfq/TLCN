@@ -11,10 +11,10 @@ const {
 const { upload } = require('../utils/file');
 
 const authMiddleware = require('../middlewares/auth.middleware');
-// const roleMiddleware = require('../middlewares/role.middlewares');
+const roleMiddleware = require('../middlewares/role.middleware');
 
 const { isAuth } = authMiddleware;
-// const { permit } = roleMiddleware;
+const { permit } = roleMiddleware;
 
 const router = (app) => {
   app.get('/check-status', (req, res) => {
@@ -24,10 +24,11 @@ const router = (app) => {
     });
   });
 
-  app.post('/v1/user', isAuth, addOneUser); // only admin
+  app.post('/v1/user', isAuth, permit('ADMIN'), addOneUser); // only admin
+  app.put('/v1/user/:code', isAuth, permit('ADMIN'), updateOneByCode);
+
   app.get('/v1/user/', isAuth, listUserByType);
   app.get('/v1/user/:code', isAuth, findOneByCode);
-  app.put('/v1/user/:code', isAuth, updateOneByCode);
   app.get('/v1/profile', isAuth, viewProfile);
 
   app.get('/template/User', (req, res) => {

@@ -21,18 +21,18 @@ const {
 const { upload } = require('../utils/file');
 
 const authMiddleware = require('../middlewares/auth.middleware');
-// const roleMiddleware = require('../middlewares/role.middleware');
+const roleMiddleware = require('../middlewares/role.middleware');
 
 const { isAuth } = authMiddleware;
-// const { permit } = roleMiddleware; // permit('ADMIN', 'LECTURER'),
+const { permit } = roleMiddleware;
 
 const router = (app) => {
-  app.post('/v1/schedule', isAuth, createOne);
+  app.post('/v1/schedule', isAuth, permit('ADMIN'), createOne);
   app.get('/v1/schedule/today', isAuth, getScheduleToday);
   app.get('/v1/schedule', isAuth, listSchedules);
   app.get('/v1/schedule/:id', isAuth, findOne);
-  app.put('/v1/schedule/:id', isAuth, updateOne);
-  app.delete('/v1/schedule/:id', isAuth, removeSchedule);
+  app.put('/v1/schedule/:id', isAuth, permit('ADMIN'), updateOne);
+  app.delete('/v1/schedule/:id', isAuth, permit('ADMIN'), removeSchedule);
   app.post('/v1/schedule/:id/student', upload.single('xlsx'), importStudents);
   app.get('/v1/schedule/:id/student', isAuth, listStudents);
   app.post('/v1/schedule/:id/topic', upload.single('xlsx'), importTopics);

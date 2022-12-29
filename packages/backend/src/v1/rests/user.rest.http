@@ -6,12 +6,12 @@ Authorization: Bearer {{student_token}}
 ###
 
 POST {{host}}/v1/user
-Authorization: Bearer {{jwt_token}}
+Authorization: Bearer {{lecturer_token}}
 Content-Type: application/json
 
 {
     "type": "STUDENT",
-    "code": "19110373",
+    "code": "aaaaaa",
     "name": "Pham Quang Hung",
     "email": "19110373@student.hcmute.edu.vn",
     "gender": "male",
