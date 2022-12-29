@@ -18,7 +18,11 @@ const createOne = async (req, res, next) => {
     if (!value.name) {
       return res.status(422).send('Name is required');
     }
-    const schedule = await scheduleService.createOne(value);
+    let schedule = await scheduleService.findOneByCode(value.code);
+    if (!schedule) {
+      return res.status(409).send('Schedule already exist');
+    }
+    schedule = await scheduleService.createOne(value);
     return res.status(201).send(schedule);
   } catch (err) {
     return next(err);
@@ -44,6 +48,10 @@ const updateOne = async (req, res, next) => {
     }
     if (!value.name) {
       return res.status(422).send('Name is required');
+    }
+    const schedule = await scheduleService.findOneByCode(value.code);
+    if (!schedule) {
+      return res.status(409).send('Schedule already exist');
     }
     await scheduleService.updateOne(id, value);
     return res.status(200).send('Successfully');
