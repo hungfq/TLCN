@@ -175,38 +175,40 @@ export default {
         code: this.code, name: this.name, email: this.email, gender: this.gender, type: 'STUDENT',
       };
       try {
-        if (this.isUpdate) {
-          if (this.module === 'student') {
-            await this.$store.dispatch('student/updateStudent', {
-              token: this.token, value,
-            });
-          } else if (this.module === 'lecturer') {
-            await this.$store.dispatch('lecturer/updateLecturer', {
-              token: this.token, value,
-            });
-          } else if (this.module === 'admin') {
-            await this.$store.dispatch('admin/updateAdmin', {
-              token: this.token, value,
-            });
+        if (this.check()) {
+          if (this.isUpdate) {
+            if (this.module === 'student') {
+              await this.$store.dispatch('student/updateStudent', {
+                token: this.token, value,
+              });
+            } else if (this.module === 'lecturer') {
+              await this.$store.dispatch('lecturer/updateLecturer', {
+                token: this.token, value,
+              });
+            } else if (this.module === 'admin') {
+              await this.$store.dispatch('admin/updateAdmin', {
+                token: this.token, value,
+              });
+            }
+            this.$toast.success('Đã cập nhật thành công!');
+            this.rollBack();
+          } else if (this.isSave) {
+            if (this.module === 'student') {
+              await this.$store.dispatch('student/addStudent', {
+                token: this.token, value,
+              });
+            } else if (this.module === 'lecturer') {
+              await this.$store.dispatch('lecturer/addLecturer', {
+                token: this.token, value,
+              });
+            } else if (this.module === 'admin') {
+              await this.$store.dispatch('admin/addAdmin', {
+                token: this.token, value,
+              });
+            }
+            this.$toast.success('Đã thêm thành công!');
+            this.rollBack();
           }
-          this.$toast.success('Đã cập nhật thành công!');
-          this.rollBack();
-        } else if (this.isSave) {
-          if (this.module === 'student') {
-            await this.$store.dispatch('student/addStudent', {
-              token: this.token, value,
-            });
-          } else if (this.module === 'lecturer') {
-            await this.$store.dispatch('lecturer/addLecturer', {
-              token: this.token, value,
-            });
-          } else if (this.module === 'admin') {
-            await this.$store.dispatch('admin/addAdmin', {
-              token: this.token, value,
-            });
-          }
-          this.$toast.success('Đã thêm thành công!');
-          this.rollBack();
         }
       } catch (e) {
         this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');

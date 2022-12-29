@@ -171,14 +171,16 @@ export default {
         criticalLecturerId: this.criticalLecturerId,
       };
       try {
-        if (this.check() && this.isSave) {
-          await this.$store.dispatch('committee/addCommittee', { token: this.token, value });
-          this.$toast.success('Đã thêm thành công!');
-          this.rollBack();
-        } else if (this.check() && this.isUpdate) {
-          await this.$store.dispatch('committee/updateCommittee', { token: this.token, value: { ...value, id: this.id, type: 'UPDATE_INFO' } });
-          this.$toast.success('Đã cập nhật thành công!');
-          this.rollBack();
+        if (this.check()) {
+          if (this.isSave) {
+            await this.$store.dispatch('committee/addCommittee', { token: this.token, value });
+            this.$toast.success('Đã thêm thành công!');
+            this.rollBack();
+          } else if (this.isUpdate) {
+            await this.$store.dispatch('committee/updateCommittee', { token: this.token, value: { ...value, id: this.id, type: 'UPDATE_INFO' } });
+            this.$toast.success('Đã cập nhật thành công!');
+            this.rollBack();
+          }
         }
       } catch (e) {
         this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
