@@ -1,13 +1,14 @@
 <template>
   <vue-final-modal
-    v-slot="{ params, close }"
+    v-slot="{ close }"
     v-bind="$attrs"
+    @before-open="handleShow(scheduleId)"
   >
-    <div class="relative p-4 w-full max-w-2xl h-full md:h-auto mx-auto mt-[10%]">
+    <div class="relative p-4 w-full max-w-4xl mx-auto mt-[5%] ">
       <!-- Modal content -->
       <div class="relative bg-white rounded-lg shadow ">
         <!-- Modal header -->
-        <div class="flex justify-between items-start p-4 rounded-t border-b ">
+        <div class="flex justify-between items-start p-4 rounded-t border-b">
           <h3 class="text-xl font-semibold text-gray-900 ">
             Thông tin sinh viên
           </h3>
@@ -32,11 +33,17 @@
           </button>
         </div>
         <!-- Modal body -->
-        <div class="p-6 space-y-6">
+        <div class="p-2 space-y-6 h-96 overflow-y-scroll">
           <div class="shadow-md sm:rounded-lg m-4 overflow-y-auto">
             <table class="w-full text-sm text-left text-gray-500">
               <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                 <tr>
+                  <th
+                    scope="col"
+                    class="py-3 px-6"
+                  >
+                    Mã sinh viên
+                  </th>
                   <th
                     scope="col"
                     class="py-3 px-6"
@@ -53,10 +60,17 @@
               </thead>
               <tbody>
                 <tr
-                  v-for="user in students"
+                  v-for="user in listStudentsOfSchedule"
                   :key="`user-${user._id}`"
                   class="bg-slate-300 hover:bg-gray-50 "
                 >
+                  <th
+                    :key="`user-${user._id}`"
+                    scope="row"
+                    class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap "
+                  >
+                    {{ user.code }}
+                  </th>
                   <th
                     :key="`user-${user._id}`"
                     scope="row"
@@ -75,7 +89,7 @@
           </div>
         </div>
         <!-- Modal footer -->
-        <div class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200  ">
+        <div class="flex items-center pl-6 p-2 space-x-2 rounded-b border-t border-gray-200  ">
           <button
             data-modal-toggle="defaultModal"
             type="button"
@@ -90,11 +104,29 @@
   </vue-final-modal>
 </template>
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
-  name: 'ErrorModal',
+  name: 'InfoModal',
   inheritAttrs: false,
   props: {
-    students: [],
+    scheduleId: {
+      type: String,
+      default: '',
+    },
+  },
+  computed: {
+    ...mapGetters('auth', [
+      'token',
+    ]),
+    ...mapGetters('schedule', [
+      'listStudentsOfSchedule',
+    ]),
+  },
+  methods: {
+    async handleShow (scheduleId) {
+      await this.$store.dispatch('schedule/fetchStudentsOfSchedule', { token: this.token, id: scheduleId });
+    },
   },
 };
 </script>

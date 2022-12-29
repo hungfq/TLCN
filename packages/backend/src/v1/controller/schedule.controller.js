@@ -12,6 +12,12 @@ const _Topic = require('../models/topic.model');
 const createOne = async (req, res, next) => {
   try {
     const value = req.body;
+    if (!value.code) {
+      return res.status(422).send('Code is required');
+    }
+    if (!value.name) {
+      return res.status(422).send('Name is required');
+    }
     const schedule = await scheduleService.createOne(value);
     return res.status(201).send(schedule);
   } catch (err) {
@@ -33,6 +39,12 @@ const updateOne = async (req, res, next) => {
   try {
     const { id } = req.params;
     const value = req.body;
+    if (!value.code) {
+      return res.status(422).send('Code is required');
+    }
+    if (!value.name) {
+      return res.status(422).send('Name is required');
+    }
     await scheduleService.updateOne(id, value);
     return res.status(200).send('Successfully');
   } catch (err) {
@@ -302,6 +314,16 @@ const excelExport = async (req, res, next) => {
   }
 };
 
+const listStudents = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const students = await scheduleService.listStudents(id);
+    return res.status(200).send(students);
+  } catch (error) {
+    return next(error);
+  }
+};
+
 module.exports = {
   createOne,
   findOne,
@@ -318,4 +340,5 @@ module.exports = {
   getScheduleToday,
   excelExport,
   listScheduleApproveLecturer,
+  listStudents,
 };

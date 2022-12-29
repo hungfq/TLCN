@@ -10,6 +10,7 @@ const initState = {
   isScheduleRegister: false,
   isScheduleApprove: false,
   currentScheduleId: null,
+  listStudentsOfSchedule: [],
 };
 
 const getters = {
@@ -22,6 +23,7 @@ const getters = {
   isScheduleRegister: (state) => state.isScheduleRegister,
   isScheduleApprove: (state) => state.isScheduleApprove,
   currentScheduleId: (state) => state.currentScheduleId,
+  listStudentsOfSchedule: (state) => state.listStudentsOfSchedule,
 };
 
 const actions = {
@@ -89,6 +91,16 @@ const actions = {
       throw new Error(e.message);
     }
   },
+  async fetchStudentsOfSchedule ({ commit }, payload) {
+    try {
+      const { token, id } = payload;
+      const data = await ScheduleApi.fetchStudentsOfSchedule(token, id);
+      commit('setListStudentsOfSchedule', data);
+      return data;
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  },
   async exportExcel ({ }, payload) {
     try {
       const { token, id } = payload;
@@ -125,6 +137,9 @@ const mutations = {
   },
   setCurrentScheduleId: (state, value) => {
     state.currentScheduleId = value;
+  },
+  setListStudentsOfSchedule: (state, value) => {
+    state.listStudentsOfSchedule = value;
   },
 };
 

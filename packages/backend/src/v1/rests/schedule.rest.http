@@ -35,7 +35,7 @@ Content-Type: multipart/form-data
 #   POSTMAN
 
 ###
-GET {{host}}/v1/schedule/638ab9a345a87774343b2781/student
+GET {{host}}/v1/schedule/63ac0853a47b9616bce88a5d/student
 Authorization: Bearer {{student_token}}
 ###
 

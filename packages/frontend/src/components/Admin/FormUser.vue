@@ -189,7 +189,7 @@ export default {
               token: this.token, value,
             });
           }
-          this.$toast.success('Đã cập nhật một thành công!');
+          this.$toast.success('Đã cập nhật thành công!');
           this.rollBack();
         } else if (this.isSave) {
           if (this.module === 'student') {
@@ -205,7 +205,7 @@ export default {
               token: this.token, value,
             });
           }
-          this.$toast.success('Đã thêm một thành công!');
+          this.$toast.success('Đã thêm thành công!');
           this.rollBack();
         }
       } catch (e) {

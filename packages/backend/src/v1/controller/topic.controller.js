@@ -38,6 +38,18 @@ const importTopics = async (req, res) => {
 const insertTopic = async (req, res, next) => {
   try {
     const value = req.body;
+    if (!value.title) {
+      return res.status(422).send('Title is required');
+    }
+    if (!value.description) {
+      return res.status(422).send('Description is required');
+    }
+    if (!value.lecturerId) {
+      value.lecturerId = null;
+    }
+    if (!value.scheduleId) {
+      value.scheduleId = null;
+    }
     const topic = await topicService.createOne(value);
     return res.status(201).send(topic);
   } catch (err) {
@@ -65,6 +77,18 @@ const updateOneTopic = async (req, res, next) => {
   try {
     const { id } = req.params;
     const value = req.body;
+    if (!value.title) {
+      return res.status(422).send('Title is required');
+    }
+    if (!value.description) {
+      return res.status(422).send('Description is required');
+    }
+    if (!value.lecturerId) {
+      value.lecturerId = null;
+    }
+    if (!value.scheduleId) {
+      value.scheduleId = null;
+    }
     delete value.id;
     const topic = await topicService.findOne(id);
     if (!topic) {
@@ -337,7 +361,7 @@ const approveProposalByLecturer = async (req, res, next) => {
     const {
       title, description, lecturerId, limit, students, scheduleId,
     } = proposal;
-    const topic = await topicService.createOne({
+    await topicService.createOne({
       title, description, lecturerId, limit, students, scheduleId,
     });
     await _TopicProposal.deleteOne({ _id: id });

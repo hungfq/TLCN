@@ -47,7 +47,7 @@ const updateCommittee = async (req, res, next) => {
     if (value.type === 'UPDATE_INFO') {
       // to something
     } else if (value.type === 'ADD_TOPIC') {
-      const committee = _Committee.findById(id);
+      // const committee = _Committee.findById(id);
     }
     return res.status(200).send('Success');
   } catch (err) {

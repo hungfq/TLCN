@@ -110,11 +110,16 @@ export default class ScheduleApi {
     return res;
   }
 
-  static s2ab (s) {
-    const buf = new ArrayBuffer(s.length);
-    const view = new Uint8Array(buf);
-    for (let i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
-    return buf;
+  static async fetchStudentsOfSchedule (token, id) {
+    const res = await axios.get(
+      `/schedule/${id}/student`,
+      {
+        headers: {
+          authorization: `bearer ${token}`,
+        },
+      },
+    );
+    return res.data;
   }
 
   static async exportExcel (token, id) {

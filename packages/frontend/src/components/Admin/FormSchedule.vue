@@ -147,7 +147,7 @@
   </div>
   <InfoStudentVue
     v-model="showInfo"
-    :students="infoUser"
+    :schedule-id="id"
   />
 </template>
 
@@ -210,7 +210,7 @@ export default {
     this.listStudents = students.map((student) => {
       let st = {
         value: student.code,
-        label: student.name,
+        label: `${student.code} - ${student.name}`,
       };
       if (this.isView) {
         st = { ...st, disabled: true };
@@ -246,11 +246,11 @@ export default {
         this.students = schedule.students;
         this.topics = schedule.topics;
       }
-      const set = new Set(this.students);
-      console.log('🚀 ~ file: FormSchedule.vue:246 ~ mounted ~ set', set);
-      console.log('🚀 ~ file: FormSchedule.vue:248 ~ mounted ~ listStudents', this.listStudents);
-      this.infoUser = students.filter((st) => set.has(st.code));
-      console.log('🚀 ~ file: FormSchedule.vue:246 ~ mounted ~ this.infoUser', this.infoUser);
+      // const set = new Set(this.students);
+      // console.log('🚀 ~ file: FormSchedule.vue:246 ~ mounted ~ set', set);
+      // console.log('🚀 ~ file: FormSchedule.vue:248 ~ mounted ~ listStudents', this.listStudents);
+      // this.infoUser = students.filter((st) => set.has(st.code));
+      // console.log('🚀 ~ file: FormSchedule.vue:246 ~ mounted ~ this.infoUser', this.infoUser);
     }
   },
   methods: {
@@ -285,18 +285,18 @@ export default {
         if (this.isSave) {
           if (this.checkDate()) {
             await this.$store.dispatch('schedule/addSchedule', { token: this.token, value });
-            this.$toast.success('Đã cập nhật một thành công!');
+            this.$toast.success('Đã thêm thành công!');
+            this.rollBack();
           }
         } else if (this.isUpdate) {
           if (this.checkDate()) {
             await this.$store.dispatch('schedule/updateSchedule', { token: this.token, value: { ...value, _id: this.id } });
-            this.$toast.success('Đã cập nhật một thành công!');
+            this.$toast.success('Đã cập nhật thành công!');
+            this.rollBack();
           }
         }
       } catch (e) {
         this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
-      } finally {
-        this.rollBack();
       }
     },
     formatDate (rawDate) {

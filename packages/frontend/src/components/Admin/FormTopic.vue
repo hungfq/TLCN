@@ -55,7 +55,7 @@
           :disabled="isView"
           :validation-messages="{ required: 'Vui lòng điền thông tin vào ô này' }"
         />
-        <div class="w-2/5">
+        <div class="w-3/5">
           <span class="font-bold text-sm">
             Giáo viên hướng dẫn
           </span>
@@ -68,7 +68,7 @@
             />
           </div>
         </div>
-        <div class="w-2/5">
+        <div class="w-3/5">
           <span class="font-bold text-sm">
             Giáo viên phản biện
           </span>
@@ -81,7 +81,7 @@
             />
           </div>
         </div>
-        <div class="my-2-1 w-2/5">
+        <div class="my-2-1 w-3/5">
           <span class="font-bold text-sm py-4 my-4">
             Sinh viên đăng kí
           </span>
@@ -97,7 +97,7 @@
             />
           </div>
         </div>
-        <div class="my-2-1 w-2/5">
+        <div class="my-2-1 w-3/5">
           <span class="font-bold text-sm py-4 my-4">
             Đợt đăng ký
           </span>
@@ -239,7 +239,7 @@ export default {
     this.listStudents = students.map((student) => {
       let st = {
         value: student.code,
-        label: student.name,
+        label: `${student.code} - ${student.name}`,
       };
       if (this.isView) {
         st = { ...st, disabled: true };
@@ -310,12 +310,12 @@ export default {
       try {
         if (this.isSave) {
           await this.$store.dispatch('topic/addTopic', { token: this.token, value });
-          this.$toast.success('Đã thêm một thành công!');
+          this.$toast.success('Đã thêm thành công!');
           this.rollBack();
         } else if (this.isUpdate) {
           await this.$store.dispatch('topic/updateTopic', { token: this.token, value: { ...value, _id: this.id } });
           this.rollBack();
-          this.$toast.success('Đã cập nhật một thành công!');
+          this.$toast.success('Đã cập nhật thành công!');
         }
       } catch (e) {
         this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
