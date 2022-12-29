@@ -33,15 +33,7 @@ const updateOne = async (req, res, next) => {
   try {
     const { id } = req.params;
     const value = req.body;
-    if (value.type === 'UPDATE_INFO') {
-      // to something
-    } else if (value.type === 'ADD_TOPIC') {
-      // to something
-    }
-    const cloneValue = { ...value };
-    delete cloneValue.id;
-    delete cloneValue.type;
-    await scheduleService.updateOne(id, cloneValue);
+    await scheduleService.updateOne(id, value);
     return res.status(200).send('Successfully');
   } catch (err) {
     return next(err);
@@ -292,6 +284,7 @@ const excelExport = async (req, res, next) => {
     const worksheet = xlsx.utils.json_to_sheet([]);
     xlsx.utils.sheet_add_aoa(worksheet, heading);
     xlsx.utils.sheet_add_json(worksheet, result, { origin: 'A2', skipHeader: true });
+    worksheet['!cols'] = [{ width: 16 }, { width: 24 }, { width: 16 }, { width: 44 }, { width: 16 }, { width: 24 }];
     const workbook = xlsx.utils.book_new();
     xlsx.utils.book_append_sheet(workbook, worksheet);
     // xlsx.writeFile(workbook, 'ScheduleReport.xlsx');

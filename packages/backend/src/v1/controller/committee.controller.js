@@ -16,8 +16,15 @@ const updateCommittee = async (req, res, next) => {
   try {
     const { id } = req.params;
     const value = req.body;
-    delete value.id;
-    await _Committee.updateOne({ _id: id }, value);
+    const cloneValue = { ...value };
+    delete cloneValue.id;
+    delete cloneValue.type;
+    await _Committee.updateOne({ _id: id }, cloneValue);
+    if (value.type === 'UPDATE_INFO') {
+      // to something
+    } else if (value.type === 'ADD_TOPIC') {
+      const committee = _Committee.findById(id);
+    }
     return res.status(200).send('Success');
   } catch (err) {
     return next(err);
