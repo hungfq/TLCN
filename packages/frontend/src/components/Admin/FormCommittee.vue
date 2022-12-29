@@ -192,7 +192,7 @@ export default {
         return false;
       }
       if (!this.code) {
-        this.$toast.error('Vui lòng nhập mã đề tài');
+        this.$toast.error('Vui lòng nhập mã hội đồng');
         return false;
       }
       if (!this.committeePresidentId) {
@@ -204,7 +204,7 @@ export default {
         return false;
       }
       if (!this.criticalLecturerId) {
-        this.$toast.error('Vui lòng chọn giảng viên phản biện đề tài');
+        this.$toast.error('Vui lòng chọn giảng viên phản biện');
         return false;
       }
       return true;

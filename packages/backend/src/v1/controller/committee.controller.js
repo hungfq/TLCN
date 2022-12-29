@@ -18,7 +18,7 @@ const insertCommittee = async (req, res, next) => {
     if (!value.code) {
       return res.status(422).send('Committee code is required');
     }
-    let committee = await _Committee.find({ code: value.code });
+    let committee = await _Committee.findOne({ code: value.code });
     if (committee) {
       return res.status(409).send('Committee already exist');
     }
