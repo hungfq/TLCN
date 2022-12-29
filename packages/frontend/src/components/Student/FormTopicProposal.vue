@@ -258,6 +258,7 @@ export default {
           this.$toast.error('Vui lòng chọn GVHD');
         }
       } catch (e) {
+        console.log('🚀 ~ file: FormTopicProposal.vue:261 ~ handleAddTopicAdmin ~ e', e);
         this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
       }
     },
