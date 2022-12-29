@@ -6,8 +6,8 @@
     class="z-20 flex-col items-center flex-shrink-0 hidden w-16 py-4 bg-white border-r-2 border-indigo-100 shadow-md sm:flex rounded-tr-3xl rounded-br-3xl"
   >
     <!-- Logo -->
-    <div class="flex-shrink-0 py-4">
-      <a @click="$router.push('/home')">
+    <div class="flex-shrink-0 py-4 cursor-pointer">
+      <a @click="$router.push('/')">
         <img
           class="h-[40px] my-auto w-[50px]"
           src="/fit.png"
