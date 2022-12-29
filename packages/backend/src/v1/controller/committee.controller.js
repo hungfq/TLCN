@@ -20,7 +20,7 @@ const insertCommittee = async (req, res, next) => {
     }
     let committee = await _Committee.find({ code: value.code });
     if (committee) {
-      return res.status(409).send('Comittee already exist');
+      return res.status(409).send('Committee already exist');
     }
     committee = await _Committee.create(value);
     return res.status(201).send(committee);
