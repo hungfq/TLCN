@@ -70,9 +70,9 @@
             class="py-3 px-6"
           >
             <a
-              class="rounded bg-gray-800 text-white font-sans font-semibold cursor-pointer p-2 ml-4"
+              class="rounded bg-gray-800 text-white font-sans font-semibold cursor-pointer p-2"
               href="http://localhost:5000/template/User"
-            >Tải mẫu tệp excel</a>
+            >Tải mẫu nhập sinh viên</a>
           </th>
         </tr>
       </thead>
