@@ -245,11 +245,11 @@ export default {
       };
       try {
         if (value.lecturerId !== '' && !!value.lecturerId) {
-          if (this.isSave) {
+          if (this.check() && this.isSave) {
             await this.$store.dispatch('topic_proposal/addTopicProposal', { token: this.token, value });
             this.$toast.success('Đã thêm thành công!');
             this.rollBack();
-          } else if (this.isUpdate) {
+          } else if (this.check() && this.isUpdate) {
             await this.$store.dispatch('topic_proposal/updateTopicProposal', { token: this.token, value: { ...value, _id: this.id } });
             this.$toast.success('Đã cập nhật thành công!');
             this.rollBack();
@@ -260,6 +260,29 @@ export default {
       } catch (e) {
         this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
       }
+    },
+    check () {
+      if (!this.title) {
+        this.$toast.error('Vui lòng nhập tên đề tài');
+        return false;
+      }
+      if (!this.limit) {
+        this.$toast.error('Vui lòng số lượng thành viên mã đề tài');
+        return false;
+      }
+      if (Number(this.code) < 1 || Number(this.code) > 3) {
+        this.$toast.error('Số lượng thành viên không quá 3 thành viên và không nhỏ hơn 1');
+        return false;
+      }
+      if (!this.lecturerId) {
+        this.$toast.error('Vui lòng chọn giảng viên đề tài');
+        return false;
+      }
+      if (this.students.length > this.limit) {
+        this.$toast.error('Số lượng sinh viên được chọn không được quá số lượng giới hạn');
+        return false;
+      }
+      return true;
     },
   },
 };

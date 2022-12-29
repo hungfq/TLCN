@@ -48,8 +48,7 @@
 
 <script>
 import Multiselect from '@vueform/multiselect';
-import { getValidationMessages } from '@formkit/validation';
-import { mapState, mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 import TopicApi from '../../utils/api/topic';
 
 export default {
@@ -130,10 +129,9 @@ export default {
       try {
         await this.$store.dispatch('committee/updateCommittee', { token: this.token, value, type: 'ADD_TOPIC' });
         this.$toast.success('Đã cập nhật một thành công!');
+        this.rollBack();
       } catch (e) {
         this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
-      } finally {
-        this.rollBack();
       }
     },
   },

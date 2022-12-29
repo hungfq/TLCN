@@ -47,7 +47,7 @@
           name="limit"
           type="number"
           label="Số thành viên"
-          validation="min:1"
+          validation="min:1|max:3"
           :disabled="isView"
         />
         <FormKit

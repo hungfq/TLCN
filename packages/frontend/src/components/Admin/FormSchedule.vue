@@ -312,6 +312,14 @@ export default {
       }
     },
     checkDate () {
+      if (!this.name) {
+        this.$toast.error('Tên đợt đăng ký là bắt buộc');
+        return false;
+      }
+      if (!this.code) {
+        this.$toast.error('Mã đợt đăng ký là bắt buộc');
+        return false;
+      }
       if (this.startProposalDate > this.endProposalDate) {
         this.$toast.error('Ngày bắt đầu đề xuất phải nhỏ hơn ngày kết thúc đề xuất ');
         return false;

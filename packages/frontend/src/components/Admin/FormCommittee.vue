@@ -171,11 +171,11 @@ export default {
         criticalLecturerId: this.criticalLecturerId,
       };
       try {
-        if (this.isSave) {
+        if (this.check() && this.isSave) {
           await this.$store.dispatch('committee/addCommittee', { token: this.token, value });
           this.$toast.success('Đã thêm thành công!');
           this.rollBack();
-        } else if (this.isUpdate) {
+        } else if (this.check() && this.isUpdate) {
           await this.$store.dispatch('committee/updateCommittee', { token: this.token, value: { ...value, id: this.id, type: 'UPDATE_INFO' } });
           this.$toast.success('Đã cập nhật thành công!');
           this.rollBack();
@@ -183,6 +183,29 @@ export default {
       } catch (e) {
         this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
       }
+    },
+    check () {
+      if (!this.name) {
+        this.$toast.error('Vui lòng nhập tên hội đồng');
+        return false;
+      }
+      if (!this.code) {
+        this.$toast.error('Vui lòng nhập mã đề tài');
+        return false;
+      }
+      if (!this.committeePresidentId) {
+        this.$toast.error('Vui lòng chọn chủ tịch hội đồng');
+        return false;
+      }
+      if (!this.committeeSecretaryId) {
+        this.$toast.error('Vui lòng chọn thư ký hội đồng');
+        return false;
+      }
+      if (!this.criticalLecturerId) {
+        this.$toast.error('Vui lòng chọn giảng viên phản biện đề tài');
+        return false;
+      }
+      return true;
     },
   },
 };

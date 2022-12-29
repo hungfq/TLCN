@@ -313,7 +313,7 @@ export default {
         criticalLecturerGrade: this.criticalLecturerGrade,
       };
       try {
-        if (this.isSave) {
+        if (this.check() && this.isSave) {
           await this.$store.dispatch('topic/addTopic', { token: this.token, value });
           this.rollBack();
         } else if (this.isUpdate) {
@@ -324,6 +324,25 @@ export default {
       } catch (e) {
         this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
       }
+    },
+    check () {
+      if (!this.title) {
+        this.$toast.error('Vui lòng nhập tên đề tài');
+        return false;
+      }
+      if (!this.limit) {
+        this.$toast.error('Vui lòng số lượng thành viên mã đề tài');
+        return false;
+      }
+      if (Number(this.code) < 1 || Number(this.code) > 3) {
+        this.$toast.error('Số lượng thành viên không quá 3 thành viên và không nhỏ hơn 1');
+        return false;
+      }
+      if (this.students.length > this.limit) {
+        this.$toast.error('Số lượng sinh viên được chọn không được quá số lượng giới hạn');
+        return false;
+      }
+      return true;
     },
   },
 };

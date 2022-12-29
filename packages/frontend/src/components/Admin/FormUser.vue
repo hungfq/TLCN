@@ -212,6 +212,21 @@ export default {
         this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
       }
     },
+    check () {
+      if (!this.name) {
+        this.$toast.error('Vui lòng nhập tên ');
+        return false;
+      }
+      if (!this.code) {
+        this.$toast.error('Vui lòng nhập mã ');
+        return false;
+      }
+      if (!this.email) {
+        this.$toast.error('Vui lòng nhập email ');
+        return false;
+      }
+      return true;
+    },
   },
 };
 </script>
