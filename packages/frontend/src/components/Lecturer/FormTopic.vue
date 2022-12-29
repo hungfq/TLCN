@@ -335,11 +335,11 @@ export default {
         this.$toast.error('Vui lòng số lượng thành viên mã đề tài');
         return false;
       }
-      if (Number(this.code) < 1 || Number(this.code) > 3) {
+      if (Number(this.limit) < 1 || Number(this.limit) > 3) {
         this.$toast.error('Số lượng thành viên không quá 3 thành viên và không nhỏ hơn 1');
         return false;
       }
-      if (this.students.length > this.limit) {
+      if (this.studentIds.length > this.limit) {
         this.$toast.error('Số lượng sinh viên được chọn không được quá số lượng giới hạn');
         return false;
       }
