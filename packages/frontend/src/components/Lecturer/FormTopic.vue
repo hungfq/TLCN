@@ -315,12 +315,13 @@ export default {
       try {
         if (this.check() && this.isSave) {
           await this.$store.dispatch('topic/addTopic', { token: this.token, value });
+          this.$toast.success('Đã thêm thành công!');
           this.rollBack();
         } else if (this.isUpdate) {
           await this.$store.dispatch('topic/updateTopic', { token: this.token, value: { ...value, _id: this.id } });
+          this.$toast.success('Đã cập nhật thành công!');
           this.rollBack();
         }
-        this.$toast.success('Đã cập nhật một thành công!');
       } catch (e) {
         this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
       }
