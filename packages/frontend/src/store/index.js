@@ -68,9 +68,10 @@ const vuexLocal = createPersistedState({
 
 const createWebSocketPlugin = (socket) => (store) => {
   store.$socket = socket;
-  // socket.on('connect', () => {
-  //   socket.emit('login', null);
-  // });
+  socket.on('connect', () => {
+    const { _id } = store.state.auth.userInfo;
+    if (_id) { socket.emit('login', _id); }
+  });
 
   socket.on('notify', async () => {
     const { token } = store.state.auth.userInfo;
