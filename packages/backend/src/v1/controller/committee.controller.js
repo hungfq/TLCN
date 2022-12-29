@@ -6,6 +6,18 @@ const userService = require('../services/user.service');
 const insertCommittee = async (req, res, next) => {
   try {
     const value = req.body;
+    if (!value.committeePresidentId) {
+      return res.status(422).send('President is required');
+    }
+    if (!value.committeeSecretaryId) {
+      return res.status(422).send('Secretary is required');
+    }
+    if (!value.criticalLecturerId) {
+      return res.status(422).send('Critical lecturer is required');
+    }
+    if (!value.code) {
+      return res.status(422).send('Committee code is required');
+    }
     const topic = await _Committee.create(value);
     return res.status(201).send(topic);
   } catch (err) {
@@ -16,6 +28,18 @@ const updateCommittee = async (req, res, next) => {
   try {
     const { id } = req.params;
     const value = req.body;
+    if (!value.committeePresidentId) {
+      return res.status(422).send('President is required');
+    }
+    if (!value.committeeSecretaryId) {
+      return res.status(422).send('Secretary is required');
+    }
+    if (!value.criticalLecturerId) {
+      return res.status(422).send('Critical lecturer is required');
+    }
+    if (!value.code) {
+      return res.status(422).send('Committee code is required');
+    }
     const cloneValue = { ...value };
     delete cloneValue.id;
     delete cloneValue.type;
