@@ -116,7 +116,7 @@
     <template #title>
       Xác nhận
     </template>
-    <div>Bạn sẽ xóa  đúng không?</div>
+    <div>Bạn có xác nhận xóa đề xuất này?</div>
   </ConfirmModal>
 </template>
 

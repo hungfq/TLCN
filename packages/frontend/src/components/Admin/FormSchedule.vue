@@ -124,13 +124,13 @@
           validation="required"
           :disabled="isView"
         />
-        <div
+        <button
           v-if="isView"
-          class="rounded px-2 py-2 bg-slate-500 h-[50px] w-[200px]  text-white font-semibold cursor-pointer "
+          class="rounded bg-slate-500 h-[60px] w-[300px]  text-white font-semibold cursor-pointer "
           @click="showInfoStudent"
         >
           Xem thông tin sinh viên
-        </div>
+        </button>
       </div>
       <!-- Modal footer -->
       <div class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200">

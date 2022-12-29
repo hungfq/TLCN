@@ -1,6 +1,6 @@
 <template>
   <vue-final-modal
-    v-slot="{ params, close }"
+    v-slot="{ close }"
     v-bind="$attrs"
   >
     <div class="relative p-4 w-full max-w-2xl h-full md:h-auto mx-auto mt-[10%]">
@@ -57,7 +57,11 @@ export default {
   name: 'ErrorModal',
   inheritAttrs: false,
   props: {
-    message: '',
+    message: {
+      type: String,
+      default: '',
+    },
   },
+  emits: ['closeError'],
 };
 </script>

@@ -86,7 +86,7 @@
               @click="handleShowStudent(committee._id)"
             >Xem chi tiết</a>
             <a
-              class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
+              class="cursor-pointer font-medium text-red-600 dark:text-red-500 hover:underline mx-2"
               @click="handleRemoveStudent(committee._id)"
             >Xóa</a>
           </td>
@@ -102,7 +102,7 @@
     <template #title>
       Xác nhận
     </template>
-    <div>Bạn sẽ xóa đúng không?</div>
+    <div>Bạn có xác nhận xóa hội đồng này không?</div>
   </ConfirmModal>
 </template>
 
@@ -111,14 +111,12 @@ import { mapState, mapGetters } from 'vuex';
 import SearchInput from 'vue-search-input';
 import 'vue-search-input/dist/styles.css';
 import ConfirmModal from '../Modal/ConfirmModal.vue';
-import UploadButtonVue from './UploadButton.vue';
 
 export default {
   name: 'ManageStudentAdmin',
   components: {
     SearchInput,
     ConfirmModal,
-    UploadButtonVue,
   },
   data () {
     return {

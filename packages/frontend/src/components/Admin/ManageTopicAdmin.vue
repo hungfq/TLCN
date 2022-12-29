@@ -153,7 +153,7 @@
     <template #title>
       Xác nhận
     </template>
-    <div>Bạn sẽ xóa đề tài đúng không?</div>
+    <div>Bạn có xác nhận xóa đề tài này không?</div>
   </ConfirmModal>
 </template>
 

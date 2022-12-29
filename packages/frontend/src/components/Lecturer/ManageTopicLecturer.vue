@@ -128,11 +128,22 @@
       </tbody>
     </table>
   </div>
+  <ConfirmModal
+    v-model="showConfirmModal"
+    @confirm="confirmRemove"
+    @cancel="showConfirmModal=false"
+  >
+    <template #title>
+      Xác nhận
+    </template>
+    <div>Bạn có xác nhận xóa đề tài này không?</div>
+  </ConfirmModal>
 </template>
 
 <script>
 import { mapState, mapGetters } from 'vuex';
 import SearchInput from 'vue-search-input';
+import ConfirmModal from '../Modal/ConfirmModal.vue';
 // Optionally import default styling
 import 'vue-search-input/dist/styles.css';
 
@@ -140,6 +151,7 @@ export default {
   name: 'ManageTopicLecturer',
   components: {
     SearchInput,
+    ConfirmModal,
   },
   data () {
     return {
@@ -147,6 +159,7 @@ export default {
       searchVal: '',
       topics: [],
       canEdit: false,
+      showConfirmModal: false,
     };
   },
   computed: {
@@ -207,7 +220,9 @@ export default {
       await this.$store.dispatch('url/updateSection', `${this.module}-view`);
       await this.$store.dispatch('url/updateId', id);
     },
-    async handleRemoveTopic (id) {
+    async confirmRemove () {
+      const id = this.removeId;
+      this.showConfirmModal = false;
       try {
         const value = {
           id,
@@ -219,6 +234,12 @@ export default {
       } catch (e) {
         this.$toast.error('Đã có lỗi xảy ra, vui lòng kiểm tra lại dữ liệu!');
       }
+
+      this.removeId = '';
+    },
+    async handleRemoveTopic (id) {
+      this.removeId = id;
+      this.showConfirmModal = true;
     },
     displayLecturer (lecturer) {
       return lecturer ? lecturer.name : '';

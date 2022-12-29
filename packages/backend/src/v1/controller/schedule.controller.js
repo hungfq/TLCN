@@ -276,10 +276,11 @@ const excelExport = async (req, res, next) => {
   try {
     const { id } = req.params;
     const topicList = await _Topic.find({ scheduleId: id })
-      .select('students code title lecturerId -_id')
+      .select('students code title lecturerId criticalLecturerId -_id')
       .lean();
     const result = await Promise.all(topicList.map(async (topic) => {
       const lecturer = await userService.findOneWithOnlyId(topic.lecturerId);
+      const critical = await userService.findOneWithOnlyId(topic.criticalLecturerId);
       const students = await userService.getStudentByCodes(topic.students);
       const studentCode = students.map((st) => st.code);
       const studentName = students.map((st) => st.name);
@@ -290,18 +291,19 @@ const excelExport = async (req, res, next) => {
         topic_title: topic.title,
         lecturer_code: lecturer ? lecturer.code : undefined,
         lecturer_name: lecturer ? lecturer.name : undefined,
+        critical_code: critical ? critical.code : undefined,
+        critical_name: critical ? critical.name : undefined,
       };
     }));
-    const heading = [['STUDENT CODE', 'STUDENT NAME', 'TOPIC CODE', 'TOPIC NAME', 'LECTURER CODE', 'LECTURER NAME']];
+    const heading = [['STUDENT CODE', 'STUDENT NAME', 'TOPIC CODE', 'TOPIC NAME', 'LECTURER CODE', 'LECTURER NAME', 'CRITICAL CODE', 'CRITICAL NAME']];
     const worksheet = xlsx.utils.json_to_sheet([]);
     xlsx.utils.sheet_add_aoa(worksheet, heading);
     xlsx.utils.sheet_add_json(worksheet, result, { origin: 'A2', skipHeader: true });
-    worksheet['!cols'] = [{ width: 16 }, { width: 24 }, { width: 16 }, { width: 44 }, { width: 16 }, { width: 24 }];
+    worksheet['!cols'] = [{ width: 16 }, { width: 24 }, { width: 16 }, { width: 44 }, { width: 16 }, { width: 24 }, { width: 16 }, { width: 24 }];
     const workbook = xlsx.utils.book_new();
     xlsx.utils.book_append_sheet(workbook, worksheet);
     // xlsx.writeFile(workbook, 'ScheduleReport.xlsx');
 
-    // return res.status(200).send(xlsx.writeFile(workbook, 'ScheduleReport.xlsx'));
     const filename = 'ScheduleReport.xlsx';
     const wbOpts = { bookType: 'xlsx', type: 'buffer' };
     xlsx.writeFile(workbook, filename, wbOpts);

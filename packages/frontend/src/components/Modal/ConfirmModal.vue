@@ -54,7 +54,7 @@
       ml-1"
         @click="$emit('cancel')"
       >
-        Từ chối
+        Hủy
       </button>
     </div>
     <button

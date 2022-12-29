@@ -247,11 +247,11 @@ export default {
         if (value.lecturerId !== '' && !!value.lecturerId) {
           if (this.isSave) {
             await this.$store.dispatch('topic_proposal/addTopicProposal', { token: this.token, value });
-            this.$toast.success('Đã cập nhật một thành công!');
+            this.$toast.success('Đã thêm thành công!');
             this.rollBack();
           } else if (this.isUpdate) {
             await this.$store.dispatch('topic_proposal/updateTopicProposal', { token: this.token, value: { ...value, _id: this.id } });
-            this.$toast.success('Đã cập nhật một thành công!');
+            this.$toast.success('Đã cập nhật thành công!');
             this.rollBack();
           }
         } else {

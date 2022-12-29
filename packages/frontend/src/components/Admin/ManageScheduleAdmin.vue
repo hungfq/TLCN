@@ -116,16 +116,16 @@
             >Xuất báo cáo</a>
             <a
               class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
+              @click="handleShowSchedule(schedule._id)"
+            >Xem chi tiết</a>
+            <a
+              class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
               @click="handleUpdateSchedule(schedule._id)"
             >Sửa</a>
             <a
-              class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
+              class="cursor-pointer font-medium text-red-600 dark:text-red-500 hover:underline mx-2"
               @click="handleRemoveSchedule(schedule._id)"
             >Xóa</a>
-            <a
-              class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline mx-2"
-              @click="handleShowSchedule(schedule._id)"
-            >Xem chi tiết</a>
           </td>
         </tr>
       </tbody>
@@ -139,7 +139,7 @@
     <template #title>
       Xác nhận
     </template>
-    <div>Bạn sẽ xóa  đúng không?</div>
+    <div>Bạn có xác nhận xóa đợt đăng ký này không?</div>
   </ConfirmModal>
 </template>
 

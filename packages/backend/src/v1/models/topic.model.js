@@ -18,7 +18,10 @@ const TopicSchema = new mongoose.Schema({
     ref: 'Schedule',
     default: null,
   },
-  criticalLecturerId: { type: Schema.Types.ObjectId, ref: 'Lecturer' },
+  criticalLecturerId: {
+    type: Schema.Types.ObjectId,
+    ref: 'Lecturer',
+  },
   students: { type: Array, default: [] },
   advisorLecturerGrade: { type: String, default: '0' },
   committeePresidentGrade: { type: String, default: '0' },
