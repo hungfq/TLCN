@@ -64,9 +64,9 @@ const findOneTopic = async (req, res, next) => {
     if (!topic) {
       return res.status(404).send('Not found');
     }
-    const { students } = topic;
-    const studentList = await userService.getStudentByCodes(students);
-    topic.students = studentList;
+    // const { students } = topic;
+    // const studentList = await userService.getStudentByCodes(students);
+    // topic.students = studentList;
     return res.status(200).send(topic);
   } catch (err) {
     return next(err);

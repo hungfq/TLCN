@@ -32,19 +32,10 @@
           :disabled="true"
         />
         <FormKit
-          v-model="description"
-          name="description"
-          type="textarea"
-          label="Mô tả"
-          validation="required"
-          :disabled="true"
-        />
-        <FormKit
           v-model="limit"
           name="limit"
           type="number"
           label="Số thành viên"
-          validation="min:1"
           :disabled="true"
         />
         <FormKit
@@ -286,8 +277,8 @@ export default {
     });
     if (this.isUpdate || this.isView) {
       const { id } = this.$store.state.url;
-      const { listTopics } = this.$store.state.topic;
-      const topic = listTopics.find((s) => s._id.toString() === id.toString());
+      await this.$store.dispatch('topic/fetchTopicById', { token: this.token, topicId: id });
+      const { topic } = this.$store.state.topic;
       if (topic) {
         this.title = topic.title;
         this.code = topic.code;

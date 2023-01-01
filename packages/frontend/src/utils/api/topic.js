@@ -13,6 +13,15 @@ export default class TopicApi {
     return res.data;
   }
 
+  static async getTopic (token, id) {
+    const res = await axios.get(`/topic/${id}`, {
+      headers: {
+        authorization: `bearer ${token}`,
+      },
+    });
+    return res.data;
+  }
+
   static async listAllTopicsByLecturerId (token, lecturerId) {
     const res = await axios.get(`/topic?lecturerId=${lecturerId}`, {
       headers: {

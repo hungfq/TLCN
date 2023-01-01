@@ -3,6 +3,7 @@ import TopicApi from '../utils/api/topic';
 const initState = {
   listTopics: [],
   listTopicByLecturer: [],
+  topic: null,
   listTopicsByLecturerSchedule: [],
   listTopicByStudent: [],
   topicResult: null,
@@ -13,6 +14,7 @@ const initState = {
 
 const getters = {
   listTopics: (state) => state.listTopics,
+  topic: (state) => state.topic,
   listTopicByStudent: (state) => state.listTopicByStudent,
   listTopicPermitRegister: (state) => state.listTopicPermitRegister,
   listTopicsByLecturerSchedule: (state) => state.listTopicsByLecturerSchedule,
@@ -25,6 +27,11 @@ const actions = {
   async fetchListTopics ({ commit }, token) {
     const listTopics = await TopicApi.listAllTopics(token);
     commit('setListTopics', listTopics);
+  },
+  async fetchTopicById ({ commit }, value) {
+    const { token, topicId } = value;
+    const topic = await TopicApi.getTopic(token, topicId);
+    commit('setTopic', topic);
   },
   async fetchListTopicByStudent ({ commit }, token) {
     const listTopics = await TopicApi.listAllTopics(token);
@@ -108,6 +115,9 @@ const actions = {
 const mutations = {
   setListTopics: (state, listTopics) => {
     state.listTopics = listTopics;
+  },
+  setTopic: (state, topic) => {
+    state.topic = topic;
   },
   setListTopicsByLecturer: (state, listTopicByLecturer) => {
     state.listTopicByLecturer = listTopicByLecturer;

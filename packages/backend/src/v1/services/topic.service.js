@@ -35,7 +35,9 @@ const createOne = async (value) => {
 
 const findOne = async (_id) => {
   const topic = await _Topic.findOne({ _id })
-    .populate({ path: 'lecturerId', select: 'name email _id' });
+    .populate({ path: 'lecturerId', select: 'name _id' })
+    .populate({ path: 'criticalLecturerId', select: 'name _id' })
+    .populate({ path: 'scheduleId' });
   return topic;
 };
 
